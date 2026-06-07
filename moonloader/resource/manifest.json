@@ -1,0 +1,4638 @@
+{
+  "total_files": 926,
+  "generated": "2026-06-07T16:28:33Z",
+  "version": "1.0.10-beta",
+  "total_size": 61666080.0,
+  "files": [
+    {
+      "path": "cad_diagnostics.lua",
+      "size": 5515,
+      "sha256": "9d77ae75193306fed36779884e1cf2fe2aced100887b85c00c5819d25d8e82f4"
+    },
+    {
+      "path": "cad_system/cadui.lua",
+      "size": 339357,
+      "sha256": "722e083c4dcbc7dfc726b327893281a21a9f42fb521377cb4f5a84e42ebef4c3"
+    },
+    {
+      "path": "cad_system/cad_autoupdate.lua",
+      "size": 33961,
+      "sha256": "bda7650ef245bc982752ddce8a4ffa7ec74a9973db799d5b8cb432e5e9a55fc0"
+    },
+    {
+      "path": "cad_system/cad_common_new.lua",
+      "size": 6683,
+      "sha256": "461169d81bfd95bc9293032440faf056b1565752a915a63f7932e8a5ffab9570"
+    },
+    {
+      "path": "cad_system/cad_connection.lua",
+      "size": 59,
+      "sha256": "1702eee3d2ba3acdb478221a6ffc602eca5c6d141e0910a117a5dd22c96348c3"
+    },
+    {
+      "path": "cad_system/cad_core.lua",
+      "size": 16551,
+      "sha256": "cf4e3906dfbc9b2576f7034d7ddc582babdeb21552c58cdf0efdef484e51c043"
+    },
+    {
+      "path": "cad_system/cad_rms.lua",
+      "size": 178209,
+      "sha256": "e7cc361d068af85e8ff05c7dce0d76038c8f296b4352883e118d89d06544e8aa"
+    },
+    {
+      "path": "cad_system/cad_settings.lua",
+      "size": 5697,
+      "sha256": "7375161addb0d92029ca5644df3edaba23b5d627cb43d59aa6d4e5b98d59c6d2"
+    },
+    {
+      "path": "cad_system/cad_websocket.lua",
+      "size": 5375,
+      "sha256": "b5bb75d04056b9d788309a750d73018bb5ff24250e4cce6954b038bbd9e440a0"
+    },
+    {
+      "path": "cad_system/_cadparserradio.lua",
+      "size": 31150,
+      "sha256": "7c0ef21722468ad1534d1d39c1eb43ebbc013a184a4a05d613809707f51ab149"
+    },
+    {
+      "path": "cad_system/resource/1.png",
+      "size": 289024,
+      "sha256": "9a2440c04aa195f5eb048499903bb68b21e8c77d2e62abd2a86d29aeba7f5e50"
+    },
+    {
+      "path": "cad_system/resource/10.png",
+      "size": 347644,
+      "sha256": "9a12bc90cbe9a2b63b9a17010617ce249dd4254f0a808bf2e653a1ed68f042e1"
+    },
+    {
+      "path": "cad_system/resource/11.png",
+      "size": 463148,
+      "sha256": "51345cf0a680359a49861494a687bb999c4ba5295d09c6545bb87d33365454c3"
+    },
+    {
+      "path": "cad_system/resource/12.png",
+      "size": 403856,
+      "sha256": "0e534225cd5e68ecc01b810af74e2e1606c11f96e0205a97124cd38357a2452d"
+    },
+    {
+      "path": "cad_system/resource/13.png",
+      "size": 286790,
+      "sha256": "e47ca4b155e1801d92b04402fdf725f5f8c270efa8bf8a377d84f1c06c52b32f"
+    },
+    {
+      "path": "cad_system/resource/14.png",
+      "size": 347674,
+      "sha256": "a1e1f2bcba507eeb9c042f3ddf99d4c94165e0caba0a929157ec39c7ad6e5e13"
+    },
+    {
+      "path": "cad_system/resource/15.png",
+      "size": 230465,
+      "sha256": "c8ff5ff7bd673fd7a671906f070d3198fe3f879678fc99799e24d74fa590ab94"
+    },
+    {
+      "path": "cad_system/resource/16.png",
+      "size": 306126,
+      "sha256": "8ba80390dd82c5b30715d29ca2896b14758003fa3ce2cbfce0523e070d6a772f"
+    },
+    {
+      "path": "cad_system/resource/2.png",
+      "size": 291133,
+      "sha256": "df660887e5e8d56bb6b0a798e58be845b39c01a62ba6cb9b570104ca9aa65c75"
+    },
+    {
+      "path": "cad_system/resource/3.png",
+      "size": 227207,
+      "sha256": "e6156f3efa1adde5c9fc9668893faa8b0140d182070a838e03be0eae24349211"
+    },
+    {
+      "path": "cad_system/resource/4.png",
+      "size": 202410,
+      "sha256": "76139714a1dee6fab4ef93a3a05039db8acaa0c91761bba765fec4fe2a86a36b"
+    },
+    {
+      "path": "cad_system/resource/5.png",
+      "size": 415512,
+      "sha256": "c4237211078c29fd7d05a3208baa39c1aaabfabd86945e8dc525bf1e91cf3212"
+    },
+    {
+      "path": "cad_system/resource/6.png",
+      "size": 355395,
+      "sha256": "761bcca2b9fb55a9e394dca7a1693c414847c4b5c9a1784e865a1e69b515b985"
+    },
+    {
+      "path": "cad_system/resource/7.png",
+      "size": 332862,
+      "sha256": "fc5077b11ac415d947ac60143703714fbe721712c177436053153d848e9e7412"
+    },
+    {
+      "path": "cad_system/resource/8.png",
+      "size": 269669,
+      "sha256": "e7bfd2a6a5ebcaf7a2d02800297b84d3a8bf63a15fee3477c38432907c13ee71"
+    },
+    {
+      "path": "cad_system/resource/9.png",
+      "size": 361941,
+      "sha256": "b39a0f8a021267d2b9678dd786459272f578a7b5099da121bb665bd8e154e4e5"
+    },
+    {
+      "path": "cad_system/resource/pla.png",
+      "size": 931,
+      "sha256": "191af82569c13f3524b75e0c7904ad7a4de6d76aae44f4ffed993086cd3e438d"
+    },
+    {
+      "path": "cad_system/resource/radar_centre.png",
+      "size": 729,
+      "sha256": "5e35154ffac3d2f5a244fbe4665bd139384ed668a41e47f624c0985d4f6ef8d7"
+    },
+    {
+      "path": "cad_system/resource/waypoint.png",
+      "size": 280,
+      "sha256": "d7984a09f0d8fe1110ee30232931fadb6887fb2f60e10159042baa8e35a0751a"
+    },
+    {
+      "path": "cad_system/resource/fonts/fa-solid-900.ttf",
+      "size": 192472,
+      "sha256": "f30631651feb161ea36ca580ea4921d8153af7793e6e4eff9e58ffc22838e3f3"
+    },
+    {
+      "path": "cad_system/resource/fonts/fa-solid-900.ttf_bak",
+      "size": 192472,
+      "sha256": "f30631651feb161ea36ca580ea4921d8153af7793e6e4eff9e58ffc22838e3f3"
+    },
+    {
+      "path": "cad_system/resource/fonts/fAwesome5.lua",
+      "size": 41642,
+      "sha256": "2b2c5c610885938b438c32cfaa08dd84aeaa227d6d463d11db0cef000e6b8036"
+    },
+    {
+      "path": "cad_system/resource/fonts/fAwesome6.lua",
+      "size": 3839469,
+      "sha256": "e0a3bcd5d0dab0aec5ea843a58bae05148caf44f64aa83c55153c239175fcd48"
+    },
+    {
+      "path": "cad_system/resource/fonts/fAwesome6_solid.lua",
+      "size": 343952,
+      "sha256": "26e26996dbdda4292fc13c8265d9ccc050a5f5fbc5d003a8c840e7d2446215f3"
+    },
+    {
+      "path": "cad_system/resource/fonts/fontawesome-webfont.ttf",
+      "size": 165548,
+      "sha256": "aa58f33f239a0fb02f5c7a6c45c043d7a9ac9a093335806694ecd6d4edc0d6a8"
+    },
+    {
+      "path": "cad_system/resource/fonts/Roboto-Medium.ttf",
+      "size": 160696,
+      "sha256": "02868d6a7e80d4e7836b6263dd50d26a63e923a1223c9e027aad6dc2501c27cc"
+    },
+    {
+      "path": "cad_system/resource/sound/DISPATCH_INTRO_01.wav",
+      "size": 380508,
+      "sha256": "1811d29329efa90553fcd6d3e3eebcee7dfe19e964b0052e023d80b451cace34"
+    },
+    {
+      "path": "cad_system/resource/sound/DISPATCH_INTRO_02.wav",
+      "size": 277744,
+      "sha256": "03150307137b4eeb165dec01b0fc9785b486adc75f70ff2fd69760e0d6b605e4"
+    },
+    {
+      "path": "cad_system/resource/sound/INSERT_01.wav",
+      "size": 162728,
+      "sha256": "f52e211ecc5d27cf91e2ec438726b1bf2f604c6b6c5c5f85e848a453b958227b"
+    },
+    {
+      "path": "cad_system/resource/sound/INSERT_02.wav",
+      "size": 84112,
+      "sha256": "8eae20bbcc659dbeda491e262e12dbda2a3e50ed0e46c0232d14e3550cd666e8"
+    },
+    {
+      "path": "cad_system/resource/sound/INSERT_03.wav",
+      "size": 68000,
+      "sha256": "901fbb07ca7efb1fa5e0f04db75ab6de7385129f5ab40e05e84fc11e3d6ba0ac"
+    },
+    {
+      "path": "cad_system/resource/sound/INSERT_04.wav",
+      "size": 24748,
+      "sha256": "2517330a3d46868a0d3c4d87aa571b2d92a23f29f6ed3ea8abf6373f7e54fd34"
+    },
+    {
+      "path": "cad_system/resource/sound/INSERT_05.wav",
+      "size": 230204,
+      "sha256": "4c64c6de8f5dbe196b78feef2136cb8d327bff84bf42f5dfa7d462fb5345b100"
+    },
+    {
+      "path": "cad_system/resource/sound/INSERT_06.wav",
+      "size": 64648,
+      "sha256": "cb5a0d48551a668e08b736ec3d2fdeb0f1d193bff0708dd7441d97616d19568c"
+    },
+    {
+      "path": "cad_system/resource/sound/INSERT_07.wav",
+      "size": 64648,
+      "sha256": "661d4e7064606103908e0c4ff433d4a3d90f21012bc5955fd63165efc1263dd7"
+    },
+    {
+      "path": "cad_system/resource/sound/INTRO_01.wav",
+      "size": 81160,
+      "sha256": "001d77e4c1ebc5c1eceb4d27b1f294762a4d1f957a842dcf0d41ffb103f7069c"
+    },
+    {
+      "path": "cad_system/resource/sound/INTRO_02.wav",
+      "size": 75200,
+      "sha256": "dd1ab3cab952de8f84822673b3aecd282d264f4469a56d870828e115f89fd04d"
+    },
+    {
+      "path": "cad_system/resource/sound/IN_01.wav",
+      "size": 25072,
+      "sha256": "8089378d7cf02e6d3d0d43c34d943f56a541090bac60f67cec22348367259378"
+    },
+    {
+      "path": "cad_system/resource/sound/IN_02.wav",
+      "size": 41940,
+      "sha256": "a97ccbb0b5160fe1a923622f242dc94ed0789e9e0fd1944a7dd66ac890ba18b1"
+    },
+    {
+      "path": "cad_system/resource/sound/OFFICER_INTRO_01.wav",
+      "size": 19124,
+      "sha256": "02a680c03392b72c74ed07194f38886698c5664202c84e927021e74c8f197807"
+    },
+    {
+      "path": "cad_system/resource/sound/OFFICER_INTRO_02.wav",
+      "size": 68164,
+      "sha256": "45369cc25f22ed4c111f30a57282156f917dcb9ffe64b85086e67399963e82e4"
+    },
+    {
+      "path": "cad_system/resource/sound/OUTRO_01.wav",
+      "size": 87262,
+      "sha256": "e34878483ed3148af6239df296be6d767a38d6a3b475ffc06926e346ea964624"
+    },
+    {
+      "path": "cad_system/resource/sound/OUTRO_02.wav",
+      "size": 87262,
+      "sha256": "a6a952a9e87cb49891b23a1296402aa2a3589c1c888a0bbbbebe24f8aa1e0084"
+    },
+    {
+      "path": "cad_system/resource/sound/OUTRO_03.wav",
+      "size": 90978,
+      "sha256": "8d474dcfdac3bd94a5428d775bfbfe55f46a5814dced8ca1227e1b71ddc241bd"
+    },
+    {
+      "path": "cad_system/resource/sound/PANIC_BUTTON.mp4",
+      "size": 106343,
+      "sha256": "ed36cf9412b8e6d316df29a90b6982fceea0f586a5ee633bd546f348e8a270f5"
+    },
+    {
+      "path": "cad_system/resource/sound/priority_end.wav",
+      "size": 361004,
+      "sha256": "fc072dea687d10b5bc0522fc964c57b5ae2ac9a8dc61d0336a3a66ce5572b63e"
+    },
+    {
+      "path": "cad_system/resource/sound/priority_middle.wav",
+      "size": 51128,
+      "sha256": "20a7667d2aea46022175ca5e2dbc9fea3280829e59556da18a0c199e7247dd2e"
+    },
+    {
+      "path": "cad_system/resource/sound/priority_start.wav",
+      "size": 221072,
+      "sha256": "1332a234c3e1734aa47151fecc25aad5fdbd3d14c16b0de7a4b6a6c79dad6411"
+    },
+    {
+      "path": "cad_system/resource/sound/SIMPLEX_ACCEPT.wav",
+      "size": 64648,
+      "sha256": "cb5a0d48551a668e08b736ec3d2fdeb0f1d193bff0708dd7441d97616d19568c"
+    },
+    {
+      "path": "cad_system/resource/sound/SIMPLEX_DECLINE.wav",
+      "size": 90978,
+      "sha256": "8d474dcfdac3bd94a5428d775bfbfe55f46a5814dced8ca1227e1b71ddc241bd"
+    },
+    {
+      "path": "cad_system/resource/sound/SirenSwitch.wav",
+      "size": 26928,
+      "sha256": "fda881e818279043eab77c1d6dc6b6ebeb32d748df3c533665a3fef5b4e757b4"
+    },
+    {
+      "path": "cad_system/resource/sound/SirenToggle.wav",
+      "size": 58040,
+      "sha256": "ef4b91c18b31f86ebc54a3ddab3b3836e15711a43f471e56593e5849f84a1e4a"
+    },
+    {
+      "path": "lib/.editorconfig",
+      "size": 50,
+      "sha256": "27d98766438d2f3f2bf184dc65f4629d4377fa77e245619ec0002c7db77948a3"
+    },
+    {
+      "path": "lib/.travis.yml",
+      "size": 359,
+      "sha256": "79405f3375f28deae773c8af3a692e522660c12145ca17ff1a8ffef98dc195a2"
+    },
+    {
+      "path": "lib/30log.lua",
+      "size": 6319,
+      "sha256": "4d83b48e863ab0ae22a7b3e5fcfa03b2c94f528abbd905cdb82d52d4b3222a4f"
+    },
+    {
+      "path": "lib/ADDONS.lua",
+      "size": 27643,
+      "sha256": "61985f54e5d9444ec71bf182c42bcf0b74761c0b52f9c9d2e4efc05d587bb902"
+    },
+    {
+      "path": "lib/aeslua.lua",
+      "size": 3461,
+      "sha256": "3fcd6f07c6dc0ed83825ed4967c2ab67de20f6a65f71d798190b9a109c550e96"
+    },
+    {
+      "path": "lib/Arial.ttf",
+      "size": 409032,
+      "sha256": "1af5961bd42da9f07a60d977e8d7915bc961537d3d3c2cf9cca1990b08706b2a"
+    },
+    {
+      "path": "lib/ArialBd.ttf",
+      "size": 288496,
+      "sha256": "be221654612db226df09f0246de80d4e1aaf07d4484a7117ee34c303358fa44f"
+    },
+    {
+      "path": "lib/asyncoperations.lua",
+      "size": 1883,
+      "sha256": "dab4b5fd669386de357abfbd7f4440dc1fc3774b3bf7bd1ab00a556290596a6f"
+    },
+    {
+      "path": "lib/base64.dll",
+      "size": 72192,
+      "sha256": "4e19bac2a3e0a3e854143ed9259b82a4f405409b0d2928e10a27db672bf346be"
+    },
+    {
+      "path": "lib/basexx.lua",
+      "size": 8375,
+      "sha256": "c825010212ff2310d83c5d502ea915310d3d57c153ec84f0a5047eb7b6c4b337"
+    },
+    {
+      "path": "lib/bass.dll",
+      "size": 127669,
+      "sha256": "6303f205127c3b16d9cf1bdf4617c96109a03c5f2669341fbc0e1d37cd776b29"
+    },
+    {
+      "path": "lib/bass.lua",
+      "size": 34310,
+      "sha256": "ec30059bb0050029f03c406c58fa65d1b74424816de2c0487a79dad34ba419bd"
+    },
+    {
+      "path": "lib/bitex.lua",
+      "size": 557,
+      "sha256": "f447e48e80522e66cd9f4a038a361cfa19912f4c3ed9cd1d8965c8db1a23f24f"
+    },
+    {
+      "path": "lib/cjson.dll",
+      "size": 122880,
+      "sha256": "9fa1f6c66644a3e14a7d0e8d2937512963773fd047fa6826482caa304ecf964c"
+    },
+    {
+      "path": "lib/clipboard.dll",
+      "size": 49152,
+      "sha256": "88c550d4eb731bd12f548fce6066a54a81d937eb63a0754a35e6181ce1cac5e1"
+    },
+    {
+      "path": "lib/colorise.lua",
+      "size": 893,
+      "sha256": "1421770ae2d254be538c895ddd37180b1523c20aeb49acdd8729d2da66e6e8c1"
+    },
+    {
+      "path": "lib/copas.lua",
+      "size": 28580,
+      "sha256": "076bc3bf820d51ed43688e5488901878812cff77c882e44b714ebbd97d3c09d5"
+    },
+    {
+      "path": "lib/copas.lua~",
+      "size": 28580,
+      "sha256": "076bc3bf820d51ed43688e5488901878812cff77c882e44b714ebbd97d3c09d5"
+    },
+    {
+      "path": "lib/crc32ffi.lua",
+      "size": 922,
+      "sha256": "172d64c883f4a2c6ddcf6ff8ad419e08e6141382342f0a0188c05a72a53ae02a"
+    },
+    {
+      "path": "lib/crypt.lua",
+      "size": 430,
+      "sha256": "59c0890d6f2e4c38c133c9fece3f2198cb2c1a721f0d5f125cc3c65322adfa4d"
+    },
+    {
+      "path": "lib/des56.dll",
+      "size": 76800,
+      "sha256": "f11c13152a8f6fbc44d3c3fa8a8c804d7fbb2d22a20a869a130e6da3264e7862"
+    },
+    {
+      "path": "lib/dkjson.lua",
+      "size": 22416,
+      "sha256": "1f56a6971ffce3021ece3afdc06163f10bee91264d0d29cc88bbbeb43cffd2d2"
+    },
+    {
+      "path": "lib/dxut.lua",
+      "size": 7580,
+      "sha256": "1fbf5c52894b1594473ff514910592dfef3c8c66aeb387ef42bff9be5f8dae9f"
+    },
+    {
+      "path": "lib/effil.lua",
+      "size": 1654,
+      "sha256": "5685236a73337237372226bef9740a6f7cb981998912724a0e4bd326da7e96dd"
+    },
+    {
+      "path": "lib/encoding.lua",
+      "size": 2636,
+      "sha256": "57cb02218d46eb1b8b2b14ecde30fc0d1798fad9c69c2138ff9a7bf63d3efe9d"
+    },
+    {
+      "path": "lib/events.lua",
+      "size": 21676,
+      "sha256": "6dc758e5dde13c5d9013e883c1bfb203309cfaa21f58d5c67591977bb46e89dd"
+    },
+    {
+      "path": "lib/event_bus.lua",
+      "size": 1150,
+      "sha256": "caaa917ceb50505847e992c06f559a64c26a9cc5555571200ca8eda8997da600"
+    },
+    {
+      "path": "lib/fa-icons.lua",
+      "size": 183441,
+      "sha256": "816f6554f237ef09225778d3d457c626bf0d17d145c6774367505d0b1af731ec"
+    },
+    {
+      "path": "lib/fa-solid-900.ttf",
+      "size": 192472,
+      "sha256": "f30631651feb161ea36ca580ea4921d8153af7793e6e4eff9e58ffc22838e3f3"
+    },
+    {
+      "path": "lib/faIcons.lua",
+      "size": 27408,
+      "sha256": "17fd7333d34bc9d8c6f509e38e82ee1d71e1577654c38577f59705bb09187c7b"
+    },
+    {
+      "path": "lib/FakePack.lua",
+      "size": 16045,
+      "sha256": "c71578d9d48291f34b2d444fb32ec1a618b5d3cff53b186a0568216c9719f706"
+    },
+    {
+      "path": "lib/FakePack.luac",
+      "size": 10073,
+      "sha256": "546886ac62341f73ef7559208b2274470d82ab10b5695df3f58bdcbd7177d2a2"
+    },
+    {
+      "path": "lib/fAwesome5.lua",
+      "size": 41642,
+      "sha256": "2b2c5c610885938b438c32cfaa08dd84aeaa227d6d463d11db0cef000e6b8036"
+    },
+    {
+      "path": "lib/fAwesome6.lua",
+      "size": 3839469,
+      "sha256": "e0a3bcd5d0dab0aec5ea843a58bae05148caf44f64aa83c55153c239175fcd48"
+    },
+    {
+      "path": "lib/fAwesome6_solid.lua",
+      "size": 343952,
+      "sha256": "26e26996dbdda4292fc13c8265d9ccc050a5f5fbc5d003a8c840e7d2446215f3"
+    },
+    {
+      "path": "lib/fontawesome-webfont.ttf",
+      "size": 165548,
+      "sha256": "aa58f33f239a0fb02f5c7a6c45c043d7a9ac9a093335806694ecd6d4edc0d6a8"
+    },
+    {
+      "path": "lib/gzip.lua",
+      "size": 1838,
+      "sha256": "d81aab700f8382f88d7c48b26db9c3a0d5ec86edcd28f85e6f85ea6066c14c5a"
+    },
+    {
+      "path": "lib/handlers.lua",
+      "size": 4325,
+      "sha256": "c50798b346de259ca606d38472dd7550517194ed234722bce1c9f3475bf7bcfd"
+    },
+    {
+      "path": "lib/hooks.lua",
+      "size": 7153,
+      "sha256": "0bb212a09ad697f5890701a9cf674dc9c7119e4806a1fb81d10eb912d9ee3ccc"
+    },
+    {
+      "path": "lib/hotkey.lua",
+      "size": 3264,
+      "sha256": "1ce8f00eb523bf00cde2d9c9c61bdd842c8dafb2ad83c1d451fa06294f02c477"
+    },
+    {
+      "path": "lib/htmlparser.lua",
+      "size": 4098,
+      "sha256": "303b1427d7e418870f390c1b2458b3ba229126d8b865c387c2e6794b4ff2b985"
+    },
+    {
+      "path": "lib/huyna.lua",
+      "size": 1286,
+      "sha256": "4bdac47d5936c60b02ef17d5fe40d7ca34042fa7c0e19149beca6ef53892b378"
+    },
+    {
+      "path": "lib/iconv.dll",
+      "size": 1000960,
+      "sha256": "bb4cc421b7606055d1d517775b15ce77a27ad97b14de2fc31c9d9e3cf788b98f"
+    },
+    {
+      "path": "lib/imgui.lua",
+      "size": 114068,
+      "sha256": "8da7a6498d493cc36f413b810b171e5d7e44834b9db4cfbe19e412bb1040e614"
+    },
+    {
+      "path": "lib/imgui_addons.lua",
+      "size": 9476,
+      "sha256": "3449231e1fa1e39a6fe51135f89d66af22569156e2b52c0e3fb9fc6b2ec21a75"
+    },
+    {
+      "path": "lib/imgui_notf.lua",
+      "size": 5039,
+      "sha256": "a7977cbfdf9f3aba6edd85f97e3d45678d0c4ca9cee65d83d3466c567df406bc"
+    },
+    {
+      "path": "lib/imgui_piemenu(new).lua",
+      "size": 13589,
+      "sha256": "e6fe186f5579fd07f0cae7da724e5b689dad728bc2c94738ccf9c6db8f1278e5"
+    },
+    {
+      "path": "lib/imgui_piemenu.lua",
+      "size": 13591,
+      "sha256": "775d77de62e77e8bed762bb31a26b84dfae5358fb75125d2e99916565ed3188e"
+    },
+    {
+      "path": "lib/imgui_piemenu_mod.lua",
+      "size": 13486,
+      "sha256": "f7c445649f2b119ebaf76e26747e9a2a71c0cb1e7296b75a7afb83f3dbfb16f4"
+    },
+    {
+      "path": "lib/inspect.lua",
+      "size": 9543,
+      "sha256": "089422ed005c5ca1b93543ce9a0e9a8e687595b5f42f1c63998659be0f1764f6"
+    },
+    {
+      "path": "lib/json2lua.lua",
+      "size": 304,
+      "sha256": "0a7830dca64d95336c0c4e06865ddad412517c3d685f30265b075941d65aa591"
+    },
+    {
+      "path": "lib/ks2OskJ3.lua",
+      "size": 6813,
+      "sha256": "ac214f341df424bf2b84a57d31ed04037d1bb8c4958b844c8104614f0f2c94b3"
+    },
+    {
+      "path": "lib/lanes.lua",
+      "size": 24777,
+      "sha256": "697bca772fcbcdb05abdf57eb4777dd2d5122dd3d5abdc6e3be6111c85265ebe"
+    },
+    {
+      "path": "lib/lfs.dll",
+      "size": 126976,
+      "sha256": "2f093e36fc36ec56c852181f428c1d5b6ad9d1071b53f21e93946c490a24609a"
+    },
+    {
+      "path": "lib/libeffil.dll",
+      "size": 594432,
+      "sha256": "8ac736f5d9116fda2682909477bb7da83e53fbc1eaaeb2826aec35dbd6da874c"
+    },
+    {
+      "path": "lib/libmysql.dll",
+      "size": 4630016,
+      "sha256": "7c4e8981f67a2d8174ba16c82239bc82af1b02756848f7f5ed326afe36c9a253"
+    },
+    {
+      "path": "lib/LICENSE",
+      "size": 1060,
+      "sha256": "f2084ad4cf23211fb3e68b44740766da00d39cd380e4dfc4a20faa55d429b39d"
+    },
+    {
+      "path": "lib/List",
+      "size": 211,
+      "sha256": "fe7a6a38aa3f57fc6150d0408ba8d6d74fba973ef3b3945b74445910dcfb0e9f"
+    },
+    {
+      "path": "lib/lockbox.lua",
+      "size": 31,
+      "sha256": "0efa8f85cf3c8c4d87f16bcc12b624242b2501d94cd74196e85550e3c1cc4439"
+    },
+    {
+      "path": "lib/ltn12.lua",
+      "size": 8331,
+      "sha256": "3bf0000f86d25da94089d47de3bbb204fd5be491edbe275730e73f68c710ea42"
+    },
+    {
+      "path": "lib/lua2json.lua",
+      "size": 387,
+      "sha256": "8b2fb6a36753079ff5b49d7e737468215668f0ce075bf285923f004ad0dbeda2"
+    },
+    {
+      "path": "lib/luairc.lua",
+      "size": 4488,
+      "sha256": "586c9a5da4b623d1cf10b11aea622196d6294ca4fda710fe5a67d208d3e2c713"
+    },
+    {
+      "path": "lib/matrix3x3.lua",
+      "size": 2070,
+      "sha256": "4ac3e8f840fdf294edce96a95e3199b2c6b5ea115036a2fd9862742d5db3d4e9"
+    },
+    {
+      "path": "lib/md5.lua",
+      "size": 836,
+      "sha256": "921f2e4d48d8987be0eb96a93762a918bbdd825b7c506ef68aedf1b217ae6355"
+    },
+    {
+      "path": "lib/mdx-scripts.lua",
+      "size": 2432,
+      "sha256": "9a9c2729d3ed3a64cdc1a23d5fab6a82f3b7b356f08ccb82661bbe0273ea66d0"
+    },
+    {
+      "path": "lib/mgtweaks.lua",
+      "size": 6723,
+      "sha256": "6a53da5d8b361dbd46cb94e91d565ab202c1cb4f947b1af6ea7451ad4d74565a"
+    },
+    {
+      "path": "lib/mime.lua",
+      "size": 2487,
+      "sha256": "a548fc214ac1e935afa683df9bdbeded0ca60cf353dfcc16f6db0187b9fc512d"
+    },
+    {
+      "path": "lib/mimetypes.lua",
+      "size": 11616,
+      "sha256": "f8dd80fbdc86a9f08ba2555a4ff6371cdf4de21badb802f7a60af0696b923188"
+    },
+    {
+      "path": "lib/mimgui_addons.lua",
+      "size": 14833,
+      "sha256": "004acd50acf62309d881f7e0c875b972b6a8e3b7ea894128476bbacd59b6092d"
+    },
+    {
+      "path": "lib/mimgui_hotkeys.lua",
+      "size": 6024,
+      "sha256": "9593e73c8f5e94ff1235336c03091f50789a0419142c2fb5b98770252c8e0ff3"
+    },
+    {
+      "path": "lib/mimhotkey.lua",
+      "size": 6557,
+      "sha256": "3ea5d7a33e1535cfef14e8dccb83a42a1f860e0048e4c51695c4adef346977d0"
+    },
+    {
+      "path": "lib/MoonAdditions.dll",
+      "size": 765440,
+      "sha256": "a91b2e74c99633788b669a55ffccefa6d40980b816054d86d9cda208df37d3fa"
+    },
+    {
+      "path": "lib/MoonImGui.dll",
+      "size": 2523648,
+      "sha256": "4253191c312fa4a25bfd38a87ffde01d4f606df7491463b8aefa3034dec2127f"
+    },
+    {
+      "path": "lib/moonloader.lua",
+      "size": 3171,
+      "sha256": "58dc9a058468f53efda285b2e1bc41318ca84e1e0c4821e38c70766029c1530e"
+    },
+    {
+      "path": "lib/MouseFIX.ini",
+      "size": 86,
+      "sha256": "8313faecfe4e76960d22452c4b5ac01742e738abb158895c14229c8e7a2bc855"
+    },
+    {
+      "path": "lib/neatjson.lua",
+      "size": 8903,
+      "sha256": "99239f347a4d9e3a5a52b7d0ee75625c40a61ab5397afd1c95cab78f5b829dab"
+    },
+    {
+      "path": "lib/newmd5.lua",
+      "size": 11320,
+      "sha256": "8be571c07919f2e25ae6f6285ab5652b87fc5c2dbfb611ee68af9aa87399b9ee"
+    },
+    {
+      "path": "lib/path.lua",
+      "size": 13557,
+      "sha256": "10a575c669b90ad28899c04bfd8afc0341779782f574e1b4c8cb60aa2f480e6b"
+    },
+    {
+      "path": "lib/RakLua.lua",
+      "size": 923,
+      "sha256": "fd120240e371548827704d2cdbde15467b2129608547da2aaf78ef06a0c737f7"
+    },
+    {
+      "path": "lib/RakLuaDll.dll",
+      "size": 399872,
+      "sha256": "17fe8d53caf39583a7f47dde5427135d17f93062b410f9b09d63846d649d00d0"
+    },
+    {
+      "path": "lib/raknet.lua",
+      "size": 11365,
+      "sha256": "488a60296bb5c41f5a2a4007308bfbe33e78f512bbb60fafc978437d0f7bf7b0"
+    },
+    {
+      "path": "lib/rc4.lua",
+      "size": 2006,
+      "sha256": "6057f78c2bd18a931a48ebff0b3ab5be5d1bacf943cae3b60d351c09326c40eb"
+    },
+    {
+      "path": "lib/README.md",
+      "size": 1776,
+      "sha256": "4c3fafe330b8dbcef50d54e0fff6d438b37ade7454b92f14805f1b56c012914f"
+    },
+    {
+      "path": "lib/requests.lua",
+      "size": 9016,
+      "sha256": "52fc5c27c0de5bfcdc11b7411b4a562d46389f2624b097210ea31f4eb9daa18b"
+    },
+    {
+      "path": "lib/rex_pcre.dll",
+      "size": 241152,
+      "sha256": "510474059fea185afd35005933c1203947d223598e5bf3934183a9d75f51e37a"
+    },
+    {
+      "path": "lib/rkeys.lua",
+      "size": 7111,
+      "sha256": "87112cd9078d47d8bae63882e0e2fdbdd8480d82f7245ed9a0e6773ff4c3f726"
+    },
+    {
+      "path": "lib/samp-lua-2.1.0-1.rockspec",
+      "size": 949,
+      "sha256": "70cddab3019a6fbd8ace0115c350f830aef6a0796d01a5f77322c9288fc17c98"
+    },
+    {
+      "path": "lib/sampfuncs.lua",
+      "size": 15207,
+      "sha256": "7c2528ec287d4ffdcb381f3a96a6678361075828cc727e9ff2e9cb91d4ad0cd3"
+    },
+    {
+      "path": "lib/screenshot.lua",
+      "size": 740,
+      "sha256": "cd89c568e1806a90ee989adef810153c8498f2108f10e4ae2b59b13be4d1d4b3"
+    },
+    {
+      "path": "lib/set.lua",
+      "size": 1113,
+      "sha256": "1903527f8a9ee0ac050d7439b7183e6a1bc8968965ce9a5af93db190b4b74b7a"
+    },
+    {
+      "path": "lib/sha1.lua",
+      "size": 9644,
+      "sha256": "996821d518b3daa4be434653fdc36a01ec5cb41fc7c638372b888e4ea680f506"
+    },
+    {
+      "path": "lib/sha256.lua",
+      "size": 5220,
+      "sha256": "81d946d84a5da68998c7524b6c141a74a358c32e89755d4c0e0478cce82f080c"
+    },
+    {
+      "path": "lib/socket.lua",
+      "size": 4451,
+      "sha256": "332871e3beeaccf8bff18cde1509e81c2bd16beb511b1fe586c12862dc7667b2"
+    },
+    {
+      "path": "lib/ssl.dll",
+      "size": 1633280,
+      "sha256": "7ae579c19b20e618cd30d661bb22f3e9736428d1b62b1e758d87da32c00409c5"
+    },
+    {
+      "path": "lib/ssl.lua",
+      "size": 4842,
+      "sha256": "1926c6fc79396cb573f40b8e3fd4810f2b48b9b76e62d2e190041eab1d4a4d16"
+    },
+    {
+      "path": "lib/synchronization.lua",
+      "size": 3463,
+      "sha256": "5e2e5ad3bfba848b20b8035f1b7a0ad997c958b924f231931c5a95b619a34ac7"
+    },
+    {
+      "path": "lib/tabler_icons.lua",
+      "size": 2234425,
+      "sha256": "645f479cb200d40326df7e2fb903fafb481cf409dcd65bd16f1efe0d5af730f7"
+    },
+    {
+      "path": "lib/Trebucbd.ttf",
+      "size": 123096,
+      "sha256": "73150ef5306b3651eac743ad570bc956c2ca41f5564e8700c8ae83928827441e"
+    },
+    {
+      "path": "lib/TTNorms-Bold.ttf",
+      "size": 69460,
+      "sha256": "52696d29f6124243af3124123400749dbad71a0304afedacc67be51025f2857c"
+    },
+    {
+      "path": "lib/utf8.lua",
+      "size": 12213,
+      "sha256": "2e7cff7896fc3eaf9ec5061d427fb612c7e14af490e656b66519e76f6a1abb33"
+    },
+    {
+      "path": "lib/utf8data.lua",
+      "size": 31622,
+      "sha256": "0c1c8c4c294c661c385c620666f4488e3cdbca40de70eedc931814b82c5f7cb8"
+    },
+    {
+      "path": "lib/util.lua",
+      "size": 3065,
+      "sha256": "2077cf101ba62d9cbbe99e6bbabef1fcc4debd2997e28354ee425cf16597d0b3"
+    },
+    {
+      "path": "lib/vector2d.lua",
+      "size": 1186,
+      "sha256": "2a96277c0ed006efaa634915d642ad2509369b8de8852c1e8a385f5673676cf7"
+    },
+    {
+      "path": "lib/vector3d.lua",
+      "size": 1770,
+      "sha256": "53ef9eedad5994e05320dcb5c14b504dd6c09e6a70111d76eb60a52d6c4a68af"
+    },
+    {
+      "path": "lib/vkeys.lua",
+      "size": 9814,
+      "sha256": "a74b3f76666e8c8b9fa078e239bcfd3123762ee064c242f9349fdda9a449718b"
+    },
+    {
+      "path": "lib/webcore.lua",
+      "size": 6604,
+      "sha256": "3b35e2e71ac35d02d512bd2e2540fce0a9303849ae32d22f13496fec2b0befbe"
+    },
+    {
+      "path": "lib/websocket.lua",
+      "size": 274,
+      "sha256": "a96f417d4654f3397b17f613f82bf1d709419c5a879fc501188ea827051d5c40"
+    },
+    {
+      "path": "lib/websocketsamp.dll",
+      "size": 568320,
+      "sha256": "dca2f9f89b8002fd226d3f382880bc4dae9b5015010472a7c8beeb58bc933e67"
+    },
+    {
+      "path": "lib/xml2lua.lua",
+      "size": 8058,
+      "sha256": "a8e0894e19450c54290072009ddcfbf6ffc63d9e644e932cec9d3b42f8bfc3aa"
+    },
+    {
+      "path": "lib/XmlParser.lua",
+      "size": 13869,
+      "sha256": "7c9325be5d8b70b3aadad2c61ebe37edcee15a0ca472022ebdf81b41eab97682"
+    },
+    {
+      "path": "lib/ziplib.dll",
+      "size": 134787,
+      "sha256": "12f5043c0f651b996c1a605de3b09796e5aa060cede6ec29d52c14b0cbb98da7"
+    },
+    {
+      "path": "lib/zlib.dll",
+      "size": 59904,
+      "sha256": "277a51ee85b38b5f27a550e9ea41b0dd70f88d1c99e716231d5f0629c5eea7a8"
+    },
+    {
+      "path": "lib/zlib1.dll",
+      "size": 77312,
+      "sha256": "643bfeba7afcd3c4ee94d862ac972489c5a87cbf9a54582d2bbaa1454b2b8b76"
+    },
+    {
+      "path": "lib/aeslua/aes.lua",
+      "size": 17825,
+      "sha256": "c141206d045bafe99eac40bbc374d8eac6b17fd1e050c5cc6c4249310ed36c34"
+    },
+    {
+      "path": "lib/aeslua/buffer.lua",
+      "size": 454,
+      "sha256": "02364f1e8d68fadeeee8cff9aead42514240def869c3404b40f398cc8e98f5fe"
+    },
+    {
+      "path": "lib/aeslua/ciphermode.lua",
+      "size": 3600,
+      "sha256": "5c65873d17eac620d3f76513afef41e392bbf58dc12495ba458b24c2d4f1454a"
+    },
+    {
+      "path": "lib/aeslua/gf.lua",
+      "size": 2289,
+      "sha256": "b5af38abfbfe0749ae27b28a80b0cd5571792d0d2b03267edf18c91d44f9eddc"
+    },
+    {
+      "path": "lib/aeslua/util.lua",
+      "size": 3703,
+      "sha256": "9d1fc9e03612bc3bd0298060de237fca5afb96d18db566728a3051be1fb99333"
+    },
+    {
+      "path": "lib/cjson/cjson.dll",
+      "size": 136704,
+      "sha256": "7d402147fb093813d20432aa3c6211cd9cde3848ab8f4be3ed977c67dbddfced"
+    },
+    {
+      "path": "lib/cjson/util.lua",
+      "size": 6837,
+      "sha256": "0f9c82e5ba2779ecf5c4016e944213524549e8ea0c91fd7f00b2c6bb0441ee4a"
+    },
+    {
+      "path": "lib/cjson/cjson/util.lua",
+      "size": 6837,
+      "sha256": "0f9c82e5ba2779ecf5c4016e944213524549e8ea0c91fd7f00b2c6bb0441ee4a"
+    },
+    {
+      "path": "lib/copas/ftp.lua",
+      "size": 2795,
+      "sha256": "43ffda7edb84cea54b465fb7195a55373df4288f2b89c9e58de47b642e22a572"
+    },
+    {
+      "path": "lib/copas/ftp.lua~",
+      "size": 2795,
+      "sha256": "43ffda7edb84cea54b465fb7195a55373df4288f2b89c9e58de47b642e22a572"
+    },
+    {
+      "path": "lib/copas/http.lua",
+      "size": 14645,
+      "sha256": "466c3122263bf0791b6a363e5b29bf46f74882419207e2648706f5d536d581b9"
+    },
+    {
+      "path": "lib/copas/http.lua~",
+      "size": 14645,
+      "sha256": "466c3122263bf0791b6a363e5b29bf46f74882419207e2648706f5d536d581b9"
+    },
+    {
+      "path": "lib/copas/limit.lua",
+      "size": 3508,
+      "sha256": "8089cafe7e409ac16f9d10c79fe3d1393f987d3ca483d72a0c318a26d39e8c21"
+    },
+    {
+      "path": "lib/copas/limit.lua~",
+      "size": 3508,
+      "sha256": "8089cafe7e409ac16f9d10c79fe3d1393f987d3ca483d72a0c318a26d39e8c21"
+    },
+    {
+      "path": "lib/copas/smtp.lua",
+      "size": 988,
+      "sha256": "6e57a4c0dbd2cce7336cabc6338e7d33d6784c31795f6a120f529cd2cfc9ef2b"
+    },
+    {
+      "path": "lib/copas/smtp.lua~",
+      "size": 988,
+      "sha256": "6e57a4c0dbd2cce7336cabc6338e7d33d6784c31795f6a120f529cd2cfc9ef2b"
+    },
+    {
+      "path": "lib/events/bitstream_io.lua",
+      "size": 6145,
+      "sha256": "00e85ade0fc4ea4c868bb42b27c3b93cc12f5c8feee7c2528454c5ea87e03dfa"
+    },
+    {
+      "path": "lib/events/core.lua",
+      "size": 3817,
+      "sha256": "2f5e563aed6f558fa94134b83a36868abe6a68b8270bf5d975eecbe146adb615"
+    },
+    {
+      "path": "lib/events/extra_types.lua",
+      "size": 2114,
+      "sha256": "431b95a4bc9c51f15178418e6c302c9450380530fe82eb31fbe2f24983dc2228"
+    },
+    {
+      "path": "lib/events/handlers.lua",
+      "size": 16882,
+      "sha256": "30b14884dc2cf357fc6a8a18ab3dc87cfedf3dde23348e1d4d699c123e24192c"
+    },
+    {
+      "path": "lib/events/utils.lua",
+      "size": 1550,
+      "sha256": "a2398822d9a10fc6bd5cf459b6b3b9e0f42721b9629b22b74ae16c2e1932cebb"
+    },
+    {
+      "path": "lib/game/globals.lua",
+      "size": 28363,
+      "sha256": "f8b12223b5bc4909b90d7b4774c43668f123d094ade3d0d379cb0514e7815c39"
+    },
+    {
+      "path": "lib/game/keys.lua",
+      "size": 1062,
+      "sha256": "10bfe26a67586eabf07823077ab5ba6acd78ebda7666179eaea91fcf2a6a5836"
+    },
+    {
+      "path": "lib/game/models.lua",
+      "size": 12767,
+      "sha256": "ba4dcac97bdd11de9daee4ce771ba34cc9e87ed24298201ea74661ae7b7d2475"
+    },
+    {
+      "path": "lib/game/weapons.lua",
+      "size": 2443,
+      "sha256": "ab044731f71a30a426e2d1aac1936169d4b558a5f6fe11d81c5c290ad0ae1e98"
+    },
+    {
+      "path": "lib/htmlparser/ElementNode.lua",
+      "size": 7919,
+      "sha256": "c268d10dd018d4cd6a10f3aa311cc0dcfd6f78fe978bdfe68cee1c08ddef0c13"
+    },
+    {
+      "path": "lib/htmlparser/htmlparser.lua",
+      "size": 2280,
+      "sha256": "aeae37cc5993b45d6671a57bd146eccf88238c8da06607b0d5f919b7afcd56a8"
+    },
+    {
+      "path": "lib/htmlparser/voidelements.lua",
+      "size": 258,
+      "sha256": "22cd0ea154ae80b2a9bea18276de2a033a91232a0eb1b02338a05bb02f85b7cc"
+    },
+    {
+      "path": "lib/htmlparser/htmlparser/ElementNode.lua",
+      "size": 6804,
+      "sha256": "6ae908b95f37f7be1e834f0e44d36b1830020e850ae9ae4ea8cd3b05c27a99a1"
+    },
+    {
+      "path": "lib/htmlparser/htmlparser/voidelements.lua",
+      "size": 272,
+      "sha256": "c52a5941d70d7ea3d31030ba16ff53ae72bace1e968a22cd741818671e68f227"
+    },
+    {
+      "path": "lib/htmlparser/Set/init.lua",
+      "size": 1799,
+      "sha256": "5094c460c2d46288453fc81a7dd4213acc7eeb98cee45cde2abd12d093960fb4"
+    },
+    {
+      "path": "lib/iconv/COPYING-libiconv",
+      "size": 25291,
+      "sha256": "56bdea73b6145ef6ac5259b3da390b981d840c24cb03b8e1cbc678de7ecfa18d"
+    },
+    {
+      "path": "lib/iconv/README-libiconv",
+      "size": 5801,
+      "sha256": "b4f5932ef35fe4a66ae9e8eecf1bac0702fe2a75ece40861baf3ebbc0ee9ed02"
+    },
+    {
+      "path": "lib/iconv/README-lua-iconv",
+      "size": 4755,
+      "sha256": "7aebae7bea8fb38be3aa18b6e2e6298f9370bfe0b3415ac19fe4d04ba5fca58a"
+    },
+    {
+      "path": "lib/imcustom/hotkey.lua",
+      "size": 4140,
+      "sha256": "504fce4f94c3cbff1f22336acd8debc4cf7255a9e3a41541e5f6d69a33a140b7"
+    },
+    {
+      "path": "lib/imcustom/piemenu.lua",
+      "size": 13889,
+      "sha256": "ba18a7009799fc6d5525114876d4be8db6ed92777ac61c03bc378cf3c26a8a96"
+    },
+    {
+      "path": "lib/inspect/inspect.lua",
+      "size": 9749,
+      "sha256": "cbe437fe32d0cb895bd0123f07b866aac433e32c874adda441c9896e1f6ad7e7"
+    },
+    {
+      "path": "lib/lanes/core.dll",
+      "size": 174592,
+      "sha256": "aaf492a38689d1b2c24dbc966b3c23727e6d1d961ddd513a5b4942283fd95559"
+    },
+    {
+      "path": "lib/lanes/lanes.lua",
+      "size": 24777,
+      "sha256": "697bca772fcbcdb05abdf57eb4777dd2d5122dd3d5abdc6e3be6111c85265ebe"
+    },
+    {
+      "path": "lib/lanes/lanes/core.dll",
+      "size": 174592,
+      "sha256": "aaf492a38689d1b2c24dbc966b3c23727e6d1d961ddd513a5b4942283fd95559"
+    },
+    {
+      "path": "lib/libtcc/init.lua",
+      "size": 7880,
+      "sha256": "87ce06726221be4b365063c69956068339bc8651dcb75b8fd2d03b952d36063e"
+    },
+    {
+      "path": "lib/libtcc/libtcc.dll",
+      "size": 411136,
+      "sha256": "6f4b97f10760664f99ffc70e1b0ca1a9b5c60282874b334e7d6bced988a8a944"
+    },
+    {
+      "path": "lib/libtcc/d3d9/d3d9.def",
+      "size": 363,
+      "sha256": "3e12b3c24fecb498a2a5ddd9b987b68815c5553d4deae8d11494f86786122fa8"
+    },
+    {
+      "path": "lib/libtcc/d3d9/d3d9.h",
+      "size": 135488,
+      "sha256": "51aa160b9575f9a31a42d7cec800e486a6037a082ea897e82ca2ffaf7eb8ec1c"
+    },
+    {
+      "path": "lib/libtcc/d3d9/d3d9caps.h",
+      "size": 15990,
+      "sha256": "223d7b0ef03def123169f4bbab75f2b8d8084f714be2b4c6ac090dea1aeb3169"
+    },
+    {
+      "path": "lib/libtcc/d3d9/d3d9types.h",
+      "size": 57240,
+      "sha256": "a378d35e2c6ad11a61fe20fdb070bbb8ea1e23f9e0131c66dce7997fc72a6193"
+    },
+    {
+      "path": "lib/libtcc/dcimgui/dcimgui.def",
+      "size": 16332,
+      "sha256": "baa22cda678d4be130f71bb7a036ca9c1cccb8019f5fabb730aa19e524a7062a"
+    },
+    {
+      "path": "lib/libtcc/dcimgui/dcimgui.dll",
+      "size": 828416,
+      "sha256": "f74cf6ef89ea14ddf191f541b8c81c6e7e0639342fdb86f0c31b7deca05f94ad"
+    },
+    {
+      "path": "lib/libtcc/dcimgui/dcimgui.h",
+      "size": 398104,
+      "sha256": "d466a9ecc59b228a721889745434149fcf5eaaa247c32907d375c4e1f1bc2507"
+    },
+    {
+      "path": "lib/libtcc/dcimgui/dcimgui_helper.h",
+      "size": 3736,
+      "sha256": "ef0321c4477a1c04b3c2787bc047b9cb937b4d485065dbada20f37e56be9f02b"
+    },
+    {
+      "path": "lib/libtcc/dcimgui/dcimgui_impl_dx9.h",
+      "size": 2041,
+      "sha256": "a8f6a67982983c0a9e23d6a3c9b4d6f4c7370cb96018902805e4a512aabb76e6"
+    },
+    {
+      "path": "lib/libtcc/dcimgui/dcimgui_impl_win32.h",
+      "size": 4230,
+      "sha256": "677da14364534e54eaadeadf847ebeabc2b61c67add7e029327bd55a6482d690"
+    },
+    {
+      "path": "lib/libtcc/dcimgui/imconfig.h",
+      "size": 11805,
+      "sha256": "b198e51703a5b08bcf3763ba114f98a460edc172b6ba88efcbb3bbb8ac843f38"
+    },
+    {
+      "path": "lib/libtcc/include/assert.h",
+      "size": 1703,
+      "sha256": "a59e0bab4881a9003ae15de1f3c140fe245c8852a07360e499941af912d57015"
+    },
+    {
+      "path": "lib/libtcc/include/conio.h",
+      "size": 11539,
+      "sha256": "0923df5256d5579ed8a729038087e19e1fa7b6287d7c1459a03961ba6cb362bf"
+    },
+    {
+      "path": "lib/libtcc/include/ctype.h",
+      "size": 10036,
+      "sha256": "d3a8edf3cdd6ebd9e2c763628364e5ab8a587c4cf5a87fbd847b89655a5a04f8"
+    },
+    {
+      "path": "lib/libtcc/include/dir.h",
+      "size": 983,
+      "sha256": "1ff339f49035a0b166b3b204e026593bbe5adc06866ab87de00e8087e7a64b79"
+    },
+    {
+      "path": "lib/libtcc/include/direct.h",
+      "size": 2047,
+      "sha256": "a453af969c3e8a6b496ea177192a2ae1bd15de54db73064a0be8ad8c1bcccd8f"
+    },
+    {
+      "path": "lib/libtcc/include/dirent.h",
+      "size": 3474,
+      "sha256": "4e35d7d3f599b3de455726055a51397cdf0853da6f42ee61ce4a866c4b8e9278"
+    },
+    {
+      "path": "lib/libtcc/include/dos.h",
+      "size": 1145,
+      "sha256": "6e25a8704c529b2b9ff32af858e795993e1b0c4b10e2cbcebdcb4151c5079387"
+    },
+    {
+      "path": "lib/libtcc/include/errno.h",
+      "size": 1478,
+      "sha256": "728c2dafc6422da477fd140d99b11a6dbca20c436fe581cb506d5dff40025116"
+    },
+    {
+      "path": "lib/libtcc/include/excpt.h",
+      "size": 3919,
+      "sha256": "db582d2fa144715591141fb5a4ce1a821d23609f6ee9f50552686df076d4397e"
+    },
+    {
+      "path": "lib/libtcc/include/fcntl.h",
+      "size": 1321,
+      "sha256": "1d868d335afd1100cccee7b2583b868a67bbd77928d8344d3e5571a9d392c078"
+    },
+    {
+      "path": "lib/libtcc/include/fenv.h",
+      "size": 3254,
+      "sha256": "1ddaf9372cd8614b5f29527119ae3024dad54726c8388d89de3e94831deffef4"
+    },
+    {
+      "path": "lib/libtcc/include/float.h",
+      "size": 2005,
+      "sha256": "507ecd2dd9d26df6b084d6a1dd4a5867310fdb4edae9a3bc005338dfddba813c"
+    },
+    {
+      "path": "lib/libtcc/include/inttypes.h",
+      "size": 6369,
+      "sha256": "a940ba8c1a0e875253faaa0f697d1a6d2b88617c541f7041ee21c7ab6df77dbf"
+    },
+    {
+      "path": "lib/libtcc/include/io.h",
+      "size": 13485,
+      "sha256": "3628692e1776cd0d6760790fe2ca7c5e9a50dfd5af2b3087e63e4f6501a92ff1"
+    },
+    {
+      "path": "lib/libtcc/include/iso646.h",
+      "size": 584,
+      "sha256": "26959e641653ed31705165e48f99966d9f8e2e73e745a611e583ac7ca5c805ea"
+    },
+    {
+      "path": "lib/libtcc/include/limits.h",
+      "size": 2887,
+      "sha256": "05cd5399dc74c85270efda6b16d1ec7c1cbaa8566c66847391e97ab161a4dacd"
+    },
+    {
+      "path": "lib/libtcc/include/locale.h",
+      "size": 2226,
+      "sha256": "742f08c92f7bb20d1ea34f895fe3f6a7573acfa343df11cf7b039648cc9d5f48"
+    },
+    {
+      "path": "lib/libtcc/include/malloc.h",
+      "size": 5389,
+      "sha256": "cdcd02fc11af728f1650f7715d55c52c34dcfcb902e8dfce6452d23b9b378832"
+    },
+    {
+      "path": "lib/libtcc/include/math.h",
+      "size": 15782,
+      "sha256": "2f628216584813405aab65de00155e746f1e701e589bb6408cee2a70a95416a0"
+    },
+    {
+      "path": "lib/libtcc/include/mem.h",
+      "size": 358,
+      "sha256": "515965f209bbbadbc1d192f343fc8817f398754e49d7fe850e30a60fa7a0361a"
+    },
+    {
+      "path": "lib/libtcc/include/memory.h",
+      "size": 1273,
+      "sha256": "52258814c05e0ed887a7c4aba73977d04828c34817403aae92402b6c2bb1d9f6"
+    },
+    {
+      "path": "lib/libtcc/include/process.h",
+      "size": 9267,
+      "sha256": "564c9a233456817a375690519551969ae75b65b01774043ea6ca3ee7f65ace4d"
+    },
+    {
+      "path": "lib/libtcc/include/setjmp.h",
+      "size": 4027,
+      "sha256": "b69351120c299cea9837a9fffe6109f941f47f73d30b9bbd77a356e14f20940f"
+    },
+    {
+      "path": "lib/libtcc/include/share.h",
+      "size": 667,
+      "sha256": "b4162007eedbcb47633d03870e3c2d4da270f14bb7f82117983c2caa64ef1077"
+    },
+    {
+      "path": "lib/libtcc/include/signal.h",
+      "size": 1646,
+      "sha256": "2708a2b3fa2922b894bc5bd0b719d0f4e3621b661210831bda271be2594f7336"
+    },
+    {
+      "path": "lib/libtcc/include/stdalign.h",
+      "size": 370,
+      "sha256": "1fa970a0f0b45f9469952b1960532a9a4927b27cb00c952f7fd0eb472df4b40b"
+    },
+    {
+      "path": "lib/libtcc/include/stdarg.h",
+      "size": 349,
+      "sha256": "834e661dc7b7811be628ec0f75d6d7c36b2aa492e98bf37f4fdf1a5f9f712fb2"
+    },
+    {
+      "path": "lib/libtcc/include/stdatomic.h",
+      "size": 7779,
+      "sha256": "ff282d26a9dfec7b4785dd46ad1b9f3b68b7e0264ed5013826a55fc6ee6f8cdd"
+    },
+    {
+      "path": "lib/libtcc/include/stdbool.h",
+      "size": 187,
+      "sha256": "10d9d6fa8e43f8f95475584d41ff7c049e0b3017b234cd828b9814c33be5ae98"
+    },
+    {
+      "path": "lib/libtcc/include/stddef.h",
+      "size": 1161,
+      "sha256": "947d4895848f482d8112d0be744792caaf51f4c8ef6eff0ee824602141981729"
+    },
+    {
+      "path": "lib/libtcc/include/stdint.h",
+      "size": 6545,
+      "sha256": "e89101b34f5d6d65fc666d4c2dc5565646d9dac2319e1d439e9e2633c13b17e4"
+    },
+    {
+      "path": "lib/libtcc/include/stdio.h",
+      "size": 15332,
+      "sha256": "9a38e4c23c93494b37d68782397c626cac05c4b877ee743fca2f14e965e80723"
+    },
+    {
+      "path": "lib/libtcc/include/stdlib.h",
+      "size": 21100,
+      "sha256": "391047ab610a858f220543d38365696ee4687a00687e0b073889241b0cb7381e"
+    },
+    {
+      "path": "lib/libtcc/include/stdnoreturn.h",
+      "size": 132,
+      "sha256": "a96966389d7b47748cfba0c2b6bf9522fcc31343e2f3647ba28fb2b9a83f352d"
+    },
+    {
+      "path": "lib/libtcc/include/string.h",
+      "size": 8754,
+      "sha256": "989bea635d42ac071e4edc0bda35959763dfbcfd148b597879452d9f76e954d3"
+    },
+    {
+      "path": "lib/libtcc/include/tccdefs.h",
+      "size": 11781,
+      "sha256": "fcb52ff8db8ccf56033b4fcbb55867e7caee62bf5e3e529ee246449968289460"
+    },
+    {
+      "path": "lib/libtcc/include/tcclib.h",
+      "size": 2691,
+      "sha256": "2918f859a4f4fc1762d1f360ee7296c9defe8f7ba9d2638c28a5fdbf008b375e"
+    },
+    {
+      "path": "lib/libtcc/include/tchar.h",
+      "size": 32466,
+      "sha256": "e6d8ce6871c54630c8de72294f0b0774e1357ecd8a05ebbbde59aa5308cbc96e"
+    },
+    {
+      "path": "lib/libtcc/include/tgmath.h",
+      "size": 4043,
+      "sha256": "0766abfc1515852fca929d13ee1ae75f2da665f9718e78a045427de2c1391bde"
+    },
+    {
+      "path": "lib/libtcc/include/time.h",
+      "size": 8692,
+      "sha256": "02a0a0b29376f3d61ce629b093d5a9f36ba29c5aee3ffb4e4497c258160b944a"
+    },
+    {
+      "path": "lib/libtcc/include/uchar.h",
+      "size": 987,
+      "sha256": "7395cfe8030581418d93304103aaf1114c2e9073671740ad49866109c020a6e3"
+    },
+    {
+      "path": "lib/libtcc/include/unistd.h",
+      "size": 25,
+      "sha256": "267611fe544013f568bc85f9119eb1ed06287d45b2d5e3cd2db38b9c9e5a39ef"
+    },
+    {
+      "path": "lib/libtcc/include/vadefs.h",
+      "size": 315,
+      "sha256": "b075b5ab9f08e5a2d62293222f74b3310765c68c8026df8625e2cec3aa41cc98"
+    },
+    {
+      "path": "lib/libtcc/include/values.h",
+      "size": 130,
+      "sha256": "a61b378c212d62c03e8c80b51b37ae49fde3493d90d7f23cf684d5e91107f348"
+    },
+    {
+      "path": "lib/libtcc/include/varargs.h",
+      "size": 367,
+      "sha256": "eabde10c768ae692f12a1737dcc21b2fae4fa07c849c9d88a94c5d2cd097e059"
+    },
+    {
+      "path": "lib/libtcc/include/wchar.h",
+      "size": 35005,
+      "sha256": "be5b9ca56a01d7445627d38bd973b2ba258b2f7a91146e154b98243a4146444b"
+    },
+    {
+      "path": "lib/libtcc/include/wctype.h",
+      "size": 4954,
+      "sha256": "ce1d8d17842c31b0a3f5714d82b0dcf6097d5b09a2cc81198acf9f23422a7a4b"
+    },
+    {
+      "path": "lib/libtcc/include/_mingw.h",
+      "size": 4069,
+      "sha256": "ef0762ca9a5ce9274d49b73af39bb8bf8e020bb43f64a176679bce4a79dc3742"
+    },
+    {
+      "path": "lib/libtcc/include/sec_api/conio_s.h",
+      "size": 1577,
+      "sha256": "015d2986bc5bc7fa86f807c53bd4425b60514a798da7fc4374850dc99a94838a"
+    },
+    {
+      "path": "lib/libtcc/include/sec_api/crtdbg_s.h",
+      "size": 480,
+      "sha256": "2011bfda8a57b3802f16b3eee14124f6e16fc49cf66d623466dd4cdcd205bd4f"
+    },
+    {
+      "path": "lib/libtcc/include/sec_api/io_s.h",
+      "size": 914,
+      "sha256": "4b4df25b8cf35cb2c83f0b569a53859f8184c98485f81aea869f2daa0ae4ace8"
+    },
+    {
+      "path": "lib/libtcc/include/sec_api/mbstring_s.h",
+      "size": 3667,
+      "sha256": "ce6642894698c81e83e01b77f22e52178822af03e89a8894d6306b751a21841f"
+    },
+    {
+      "path": "lib/libtcc/include/sec_api/search_s.h",
+      "size": 821,
+      "sha256": "02ba91ab7c1dc736adaa3c151edd544e6b5427c8dfa81363c49afb9f13006b40"
+    },
+    {
+      "path": "lib/libtcc/include/sec_api/stdio_s.h",
+      "size": 11653,
+      "sha256": "a7d8ea42001d3cbc2870207a7c5b3bb4ca6c5b470260a5b82c0795ddc3db6adf"
+    },
+    {
+      "path": "lib/libtcc/include/sec_api/stdlib_s.h",
+      "size": 4180,
+      "sha256": "9aa3d572b6acb49313b07bdbbb64cc882fc047a8ab660e328265c802ef31423d"
+    },
+    {
+      "path": "lib/libtcc/include/sec_api/stralign_s.h",
+      "size": 854,
+      "sha256": "057f5dc11c7617f7a6d695ef7461997b10d8af77416927406d694cea664d2333"
+    },
+    {
+      "path": "lib/libtcc/include/sec_api/string_s.h",
+      "size": 1828,
+      "sha256": "68e2605c4e96c51f100c583fc64366cc9894d0a0920bc31522b06662aed2e219"
+    },
+    {
+      "path": "lib/libtcc/include/sec_api/tchar_s.h",
+      "size": 8594,
+      "sha256": "4e8130143e11c8f8c72b74de78bed1de42beb57291a04c7c94625a00e34a1f44"
+    },
+    {
+      "path": "lib/libtcc/include/sec_api/time_s.h",
+      "size": 2392,
+      "sha256": "233c4a62037a004e95a8ad877ca29e9e4dc2788ee8d6ab5eecc9fc15e6975d86"
+    },
+    {
+      "path": "lib/libtcc/include/sec_api/wchar_s.h",
+      "size": 7620,
+      "sha256": "9d339133a0001c67522192f986b8cf3f028647838cdf98aef7c91a6ce8879ba5"
+    },
+    {
+      "path": "lib/libtcc/include/sec_api/sys/timeb_s.h",
+      "size": 687,
+      "sha256": "a09cd647aac26e2681c4d8be73ed74645384317354857ccd871a44196fdd1f4b"
+    },
+    {
+      "path": "lib/libtcc/include/sys/fcntl.h",
+      "size": 372,
+      "sha256": "f4ae64090b7754d4ea9215fe5e065edad840848bc27019965688d22622760458"
+    },
+    {
+      "path": "lib/libtcc/include/sys/file.h",
+      "size": 381,
+      "sha256": "7195530abe06063434e68b966d0c68a558fec1d97deda69753ff5e8aa2acc86f"
+    },
+    {
+      "path": "lib/libtcc/include/sys/locking.h",
+      "size": 678,
+      "sha256": "40cdd12ff83f65e5ab723583dc8acd8b2325d80f350e4e2f1310b8083634f604"
+    },
+    {
+      "path": "lib/libtcc/include/sys/stat.h",
+      "size": 7165,
+      "sha256": "69d21ec7381c5a3259a9de05708ff37b70d45c6b79ce9929f4869baa696798ad"
+    },
+    {
+      "path": "lib/libtcc/include/sys/time.h",
+      "size": 1786,
+      "sha256": "3265cfa6fba4f6b59b8cb9a437a5e1f74a6a251b1d0a625ada23813fdd36d5d9"
+    },
+    {
+      "path": "lib/libtcc/include/sys/timeb.h",
+      "size": 2578,
+      "sha256": "7a19f966f583a75929a77e6ef53e837484972792a0de70bff12e5b2344021aaa"
+    },
+    {
+      "path": "lib/libtcc/include/sys/types.h",
+      "size": 2372,
+      "sha256": "f28ceeeaabf5439d4da8fe3ac92e35b402b0ef9844157cf73ac4c56abd1269e8"
+    },
+    {
+      "path": "lib/libtcc/include/sys/unistd.h",
+      "size": 365,
+      "sha256": "4b1f8530bfab7c74608d666e9bbac056deccec8360cd58d7f82a77e324ad7c86"
+    },
+    {
+      "path": "lib/libtcc/include/sys/utime.h",
+      "size": 3575,
+      "sha256": "d578f572565b7ef829effb0962f225fab9cd4be13a13b2dde39bd9dbd65142bb"
+    },
+    {
+      "path": "lib/libtcc/include/tcc/tcc_libm.h",
+      "size": 19377,
+      "sha256": "1d793b787187a75100d7c4950c8c594997e440816099aca820b96574357f5506"
+    },
+    {
+      "path": "lib/libtcc/include/winapi/basetsd.h",
+      "size": 5763,
+      "sha256": "57a5e7d720ecf2582edce21cb4096bd8bd617e549e1cdbfc9942c8f2d5f39cae"
+    },
+    {
+      "path": "lib/libtcc/include/winapi/basetyps.h",
+      "size": 2498,
+      "sha256": "3604850035bd6bf5cda57bc1c9c1363c03918a1a2750795c88338b15d107a359"
+    },
+    {
+      "path": "lib/libtcc/include/winapi/guiddef.h",
+      "size": 4321,
+      "sha256": "09e29431aaacc0d17af07fdeb8299320b80efb080ad32d2743b00862765a70ea"
+    },
+    {
+      "path": "lib/libtcc/include/winapi/poppack.h",
+      "size": 290,
+      "sha256": "6c16c8f8539b29728bf26c3004c17539073d4118a57f729620cc7cc8376fe628"
+    },
+    {
+      "path": "lib/libtcc/include/winapi/pshpack1.h",
+      "size": 293,
+      "sha256": "e3673d5d790d4e0e6e6d362d422b720b73a57d926edc821e352a88fa861c34a3"
+    },
+    {
+      "path": "lib/libtcc/include/winapi/pshpack2.h",
+      "size": 293,
+      "sha256": "03c6c57014d050deaefe1913c9f46677f7d87af8a44049593f0c07f9406da22e"
+    },
+    {
+      "path": "lib/libtcc/include/winapi/pshpack4.h",
+      "size": 293,
+      "sha256": "08dfd6b387dfbbf36a877747a1ba49220808717338d493772cc16b87f92997d7"
+    },
+    {
+      "path": "lib/libtcc/include/winapi/pshpack8.h",
+      "size": 293,
+      "sha256": "ae5b1be720998b44df31899faf563949a84649855191b6a9a230e6ba763810fb"
+    },
+    {
+      "path": "lib/libtcc/include/winapi/qos.h",
+      "size": 2127,
+      "sha256": "3a6b2da2845c8c02496b28f2f71f93f917df731216f331482b3a39194eedf2b2"
+    },
+    {
+      "path": "lib/libtcc/include/winapi/shellapi.h",
+      "size": 1708,
+      "sha256": "4f7e4d7d9845b69d1353fd94156ec000248a16df5b25bc01d1b93db2e654f84c"
+    },
+    {
+      "path": "lib/libtcc/include/winapi/winbase.h",
+      "size": 162891,
+      "sha256": "facf40f7bd41f937f04bc1db687c16d59353d78e54a82bf2f360b3777f83080c"
+    },
+    {
+      "path": "lib/libtcc/include/winapi/wincon.h",
+      "size": 15090,
+      "sha256": "a773fe5f01b8839ea44b7e82550d8ba350fbdf5ecb30d457106eed8ad68ed596"
+    },
+    {
+      "path": "lib/libtcc/include/winapi/windef.h",
+      "size": 5967,
+      "sha256": "15be4c0539d31c82e395ba2c01dc69ba58206332dfcf8f19dd56c8186c1650ea"
+    },
+    {
+      "path": "lib/libtcc/include/winapi/windows.h",
+      "size": 2295,
+      "sha256": "00deeaf7486644a7caeebced61ec0863b2479174d0a53f64a4a74834dbbfd0e0"
+    },
+    {
+      "path": "lib/libtcc/include/winapi/winerror.h",
+      "size": 153678,
+      "sha256": "6fa2371856eca200f70f9522e56affbe8effe90779273504e2cc8f2079c568ae"
+    },
+    {
+      "path": "lib/libtcc/include/winapi/wingdi.h",
+      "size": 125381,
+      "sha256": "229e5f2ed72ab303a434b4b78ce7112245a5e9a5e66f9cc0cddb70a11a1e1f2d"
+    },
+    {
+      "path": "lib/libtcc/include/winapi/winnls.h",
+      "size": 30179,
+      "sha256": "c7af0b527af2e588f202dbb8f7080d1bbf230840c2ed11c85094326438f320c8"
+    },
+    {
+      "path": "lib/libtcc/include/winapi/winnt.h",
+      "size": 198662,
+      "sha256": "d9d2999ba3300289e91f6129c569063852c082fa98b599cdf1365e1162f147da"
+    },
+    {
+      "path": "lib/libtcc/include/winapi/winreg.h",
+      "size": 14235,
+      "sha256": "b29d6247de2859262db30be0d8a8fdec62cd27e76d81d6cadde18e248a92773a"
+    },
+    {
+      "path": "lib/libtcc/include/winapi/winsock2.h",
+      "size": 58606,
+      "sha256": "7771a95c3ad6ab372256175e95198247dbd7d319987cb71f9ce1f3d48ce0f95b"
+    },
+    {
+      "path": "lib/libtcc/include/winapi/winuser.h",
+      "size": 185329,
+      "sha256": "a4dac7f588af4f60189a54ee853b70d3ea106110a251756a1d19bd5add7133e6"
+    },
+    {
+      "path": "lib/libtcc/include/winapi/winver.h",
+      "size": 5541,
+      "sha256": "ea40a25fd1fc8d26b5f606984e1f5682f54941f91549891d1df91a1c247f5e5c"
+    },
+    {
+      "path": "lib/libtcc/include/winapi/ws2ipdef.h",
+      "size": 353,
+      "sha256": "8754b8d83bbae5128dd1055ff17007b5ab4b021b14732d2c00e8a85de722bb17"
+    },
+    {
+      "path": "lib/libtcc/include/winapi/ws2tcpip.h",
+      "size": 12834,
+      "sha256": "ede24b03bb18e3f4e4df667d367feabbbde60a0c2c54ddc6fcb48ebc512d7bec"
+    },
+    {
+      "path": "lib/libtcc/lib/bcheck.o",
+      "size": 78617,
+      "sha256": "38c0b7dcaeec5510e00857ab0b718e43b7d119fb6e082ee7e77ef686dc239ac7"
+    },
+    {
+      "path": "lib/libtcc/lib/bt-dll.o",
+      "size": 3293,
+      "sha256": "42663fb59ae670277aad7274806e9514801571a56501b0cb74399db05fccf4ae"
+    },
+    {
+      "path": "lib/libtcc/lib/bt-exe.o",
+      "size": 13725,
+      "sha256": "9a06e624c4b444d7be4c164fe0267d8e1de3df37834f6c2b4576d7d585939fa8"
+    },
+    {
+      "path": "lib/libtcc/lib/bt-log.o",
+      "size": 1149,
+      "sha256": "a6f356fc936f3480980bec380e2bff95c73ec2d95b77c206c8a8f9a25e870c52"
+    },
+    {
+      "path": "lib/libtcc/lib/chkstk.S",
+      "size": 1793,
+      "sha256": "7819a6e5f73d3b7f9560d8ba8ab895e512c0badd30983a5de6ccbf3dd1a9a05b"
+    },
+    {
+      "path": "lib/libtcc/lib/crt1.c",
+      "size": 2774,
+      "sha256": "7cbad5c1343495aa6233097d6f49cab2a80ec305518316cabdba4fc5d4e54cd4"
+    },
+    {
+      "path": "lib/libtcc/lib/crt1w.c",
+      "size": 58,
+      "sha256": "56b8a0fc569a2465a28add837fa5dcbfe33237a34d8d7f46987f2460c1e4f47e"
+    },
+    {
+      "path": "lib/libtcc/lib/crtinit.c",
+      "size": 771,
+      "sha256": "43437ef3641e08dd83ba9a32e12a3c076048409c07774f2d46888d0ce76bcc55"
+    },
+    {
+      "path": "lib/libtcc/lib/dllcrt1.c",
+      "size": 584,
+      "sha256": "784ccd4afe52881fee0323fbaa5897a8047a8326209c699ca9ff8d5b130b0cef"
+    },
+    {
+      "path": "lib/libtcc/lib/dllmain.c",
+      "size": 202,
+      "sha256": "980ef2857919dba56d175d772bca5852c97d7d8be1f3de328fdd062a268f4a78"
+    },
+    {
+      "path": "lib/libtcc/lib/gdi32.def",
+      "size": 5389,
+      "sha256": "7e8c4b1dcdc4dd5907a69a940f21c9726d61c73359961bcd91fc7acc04b194fc"
+    },
+    {
+      "path": "lib/libtcc/lib/kernel32.def",
+      "size": 13770,
+      "sha256": "a152bc89e9eb81f9ff72765ef56993dc622c605b78d7d61b0d4eb0348ab2fb5d"
+    },
+    {
+      "path": "lib/libtcc/lib/libtcc1.a",
+      "size": 31416,
+      "sha256": "04ca4cfbec2abe55c5cbf6e1989252a51426d6488cd56c63c00f8b93241232e5"
+    },
+    {
+      "path": "lib/libtcc/lib/msvcrt.def",
+      "size": 16014,
+      "sha256": "7ced55355dfd873de2e4c5f7ac9ea183985ef2e5b4dafd9f83708213e2afad1e"
+    },
+    {
+      "path": "lib/libtcc/lib/runmain.o",
+      "size": 1309,
+      "sha256": "f676bc58fb670f183df987ff9d7015da5280a55bd5fe5b31a2fcf3126ec1b37c"
+    },
+    {
+      "path": "lib/libtcc/lib/user32.def",
+      "size": 11097,
+      "sha256": "9b195e4bdccf4c64d4a933f022791aa36e5ae069c639b737ef3a62c936a55726"
+    },
+    {
+      "path": "lib/libtcc/lib/wincrt1.c",
+      "size": 2378,
+      "sha256": "99624d44b9722d40d7f95b1af65287f3dde16eb971fe22011bae6985851374dc"
+    },
+    {
+      "path": "lib/libtcc/lib/wincrt1w.c",
+      "size": 61,
+      "sha256": "5d8d0253091e7d319bb855668f338b46bb1a7ff4b3495afb7f82fe4e7b95b08e"
+    },
+    {
+      "path": "lib/libtcc/lib/ws2_32.def",
+      "size": 3746,
+      "sha256": "f16b8009693b08789c0eb676e62d1fc42e6da184ab83f37b79746a084c974804"
+    },
+    {
+      "path": "lib/libtcc/libtcc/libtcc.def",
+      "size": 616,
+      "sha256": "8a64b63844b9a1b44816496ead9c144dafd17e1a4c60b92b854a46ca7915a843"
+    },
+    {
+      "path": "lib/libtcc/libtcc/libtcc.h",
+      "size": 4326,
+      "sha256": "e65ec9c409debff8bf69aa74df03465bce624d7e037b275f6f3dc1097c703cc8"
+    },
+    {
+      "path": "lib/libtcc/lua/lauxlib.h",
+      "size": 6189,
+      "sha256": "bd8649d24bea582aa5bafeed66dc6f60d3196deca5d9ab017f5ba2f768437575"
+    },
+    {
+      "path": "lib/libtcc/lua/lua.h",
+      "size": 12726,
+      "sha256": "b3992febdcd6e2e108915667706cf9b0f288830d0624c271cd1e6911a3d2a702"
+    },
+    {
+      "path": "lib/libtcc/lua/lua51.def",
+      "size": 2072,
+      "sha256": "cd470bb610fe46543707ac2ba400e8e5fed1b81a0bd7b84f83b3b27a9299354d"
+    },
+    {
+      "path": "lib/libtcc/lua/luaconf.h",
+      "size": 4534,
+      "sha256": "e52fe8697e4cfe3029c2017a92b392daf2df441c57b062d88b1ab6631920f35a"
+    },
+    {
+      "path": "lib/libtcc/lua/luajit.h",
+      "size": 3064,
+      "sha256": "caaa7e4009c93b9b544f4e60d4ec8c3f48171c5891f549f2bc27b213c6afd75d"
+    },
+    {
+      "path": "lib/libtcc/lua/lualib.h",
+      "size": 1209,
+      "sha256": "59c044efbf21034cf413f35932b01fe831baa6167aef6c0c4ee3802e52792998"
+    },
+    {
+      "path": "lib/libtcc/minhook/MinHook.h",
+      "size": 7715,
+      "sha256": "c3608e584bd9659aebdbb4c8c82585605989193623f240552d35c43311b3d31a"
+    },
+    {
+      "path": "lib/libtcc/minhook/MinHook.x86.def",
+      "size": 228,
+      "sha256": "d63ee9ee70058d8ba0dfdbb2f1c5267e035ecc5e461c02b0c6374b1aa2571807"
+    },
+    {
+      "path": "lib/libtcc/minhook/MinHook.x86.dll",
+      "size": 12800,
+      "sha256": "2d58b580611a20b6d094591b86929a30efefd321aa16f9bc56e1f08e31c5a108"
+    },
+    {
+      "path": "lib/lockbox/init.lua",
+      "size": 513,
+      "sha256": "b4288fb07c8f21f277d813b61204caf9b7be3f97648116e41d34e3d6cb1d7333"
+    },
+    {
+      "path": "lib/lockbox/cipher/aes128.lua",
+      "size": 15290,
+      "sha256": "9916291c379e2f2d5a9e3b3b7d7684d161c5ad1ac8fccd08d05553b6aae0b358"
+    },
+    {
+      "path": "lib/lockbox/cipher/aes192.lua",
+      "size": 16779,
+      "sha256": "3becd6a5ed18cba05face72ac0f51ac6d90215dcbccaa7b394454e089fb21674"
+    },
+    {
+      "path": "lib/lockbox/cipher/aes256.lua",
+      "size": 17780,
+      "sha256": "f348aab3da77b69ca7db28a07112096e83291bac935e85c021b7934207938007"
+    },
+    {
+      "path": "lib/lockbox/cipher/des.lua",
+      "size": 15071,
+      "sha256": "269274466039177513b12149483050f33ba894c5c380f0fd51cfa001379f9011"
+    },
+    {
+      "path": "lib/lockbox/cipher/des3.lua",
+      "size": 1262,
+      "sha256": "ed8c02e22455246783551150513143d0b4c32f9b6668a8a327a4dd627e8c024c"
+    },
+    {
+      "path": "lib/lockbox/cipher/tea.lua",
+      "size": 2819,
+      "sha256": "24b77fc6c95e14464469f215b49d164913e29db755ea9df711f61607b9419911"
+    },
+    {
+      "path": "lib/lockbox/cipher/xtea.lua",
+      "size": 2914,
+      "sha256": "a11b4d6e44203c1e5832c30222bf3226a3492bb25725317092e25b01ceeb0a5d"
+    },
+    {
+      "path": "lib/lockbox/cipher/mode/cbc.lua",
+      "size": 3089,
+      "sha256": "3197bee22b048a3a2b0df05ff10c59c5ef5ba9c1eeb582fd56a6f247b0b78734"
+    },
+    {
+      "path": "lib/lockbox/cipher/mode/cfb.lua",
+      "size": 3103,
+      "sha256": "a753efa0c2f6662ea4a1fb150ac69922dbe7b097c9d2ec0d8c02a673810be5a5"
+    },
+    {
+      "path": "lib/lockbox/cipher/mode/ctr.lua",
+      "size": 5262,
+      "sha256": "a8f681d7af6c4d1be41c578c05cfb682bd5a14a7fa727ede33a74a21e2847438"
+    },
+    {
+      "path": "lib/lockbox/cipher/mode/ecb.lua",
+      "size": 2846,
+      "sha256": "92d95b812e09f644eafe311add7ea365e755aba2de1e87828218e456559c7bd9"
+    },
+    {
+      "path": "lib/lockbox/cipher/mode/ige.lua",
+      "size": 3352,
+      "sha256": "79aa63230d9aaae8fb7996d82cad7f2493e859ee79401dadd41b78ccdfaa3f66"
+    },
+    {
+      "path": "lib/lockbox/cipher/mode/ofb.lua",
+      "size": 3102,
+      "sha256": "41cb32ae09bb4c8989a947e8bf66b9f5aa2c875df297e400f11bb1b9d1e48585"
+    },
+    {
+      "path": "lib/lockbox/cipher/mode/pcbc.lua",
+      "size": 3140,
+      "sha256": "44888d7eee62663b55fc548e32a4f4d4b512bcea0fa750c3580a43625b1a5582"
+    },
+    {
+      "path": "lib/lockbox/digest/md2.lua",
+      "size": 3807,
+      "sha256": "4cfb0a691e1f0e0ed95ed67974f16471406308ffaed3c40679f08e8d6a5ba49d"
+    },
+    {
+      "path": "lib/lockbox/digest/md4.lua",
+      "size": 5826,
+      "sha256": "501dd894e82d87ba16606971694e79e70a0eaf60e1e05832765ad0a54ef1ca33"
+    },
+    {
+      "path": "lib/lockbox/digest/md5.lua",
+      "size": 4845,
+      "sha256": "58b7ac5e3e96b30e715da6c4590c385e0d08356f2ccc64b47493a99fb232f7a3"
+    },
+    {
+      "path": "lib/lockbox/digest/ripemd128.lua",
+      "size": 9597,
+      "sha256": "5ccc016ab29b96b4c742213174ad0a1daaa2f9277415a3be218e901dbe8c6a5d"
+    },
+    {
+      "path": "lib/lockbox/digest/ripemd160.lua",
+      "size": 15117,
+      "sha256": "899895c3d7bd43d9ded03aec60e5acda574b6d373efdd30b6d2ff80e2bc9c337"
+    },
+    {
+      "path": "lib/lockbox/digest/sha1.lua",
+      "size": 4051,
+      "sha256": "b76e8af4f4686cbf82a21ede4c3e782088b141ae4a6b923aaa217f5111db11f4"
+    },
+    {
+      "path": "lib/lockbox/digest/sha2_224.lua",
+      "size": 5277,
+      "sha256": "c53bbf3252b478bb1c9b03c145fc8e56cf929c7674438ae87c95647083a6ff2c"
+    },
+    {
+      "path": "lib/lockbox/digest/sha2_256.lua",
+      "size": 5410,
+      "sha256": "a327c2dce4b83f5e429e18f539b45dae4948b1f8aa3532eba239b5ce703b7ce1"
+    },
+    {
+      "path": "lib/lockbox/kdf/hkdf.lua",
+      "size": 2804,
+      "sha256": "f5343bc483861527510d7e56544f71db7ee6d37e6360840c37a71358cd2aae26"
+    },
+    {
+      "path": "lib/lockbox/kdf/pbkdf2.lua",
+      "size": 2614,
+      "sha256": "602ca5a33e215c1af7f13c08d81c049675e5a2bc867263f6166038c71eede76f"
+    },
+    {
+      "path": "lib/lockbox/mac/hmac.lua",
+      "size": 1606,
+      "sha256": "8d32920ea93ef74736de787848e4d475ac712a4903cb4dd625b03f1a55b4cb0b"
+    },
+    {
+      "path": "lib/lockbox/padding/ansix923.lua",
+      "size": 455,
+      "sha256": "3b6be9dfe9d719431360faae36238c1492f8cb7828cc81d269bdf0b11536fd66"
+    },
+    {
+      "path": "lib/lockbox/padding/isoiec7816.lua",
+      "size": 464,
+      "sha256": "436e41f49b0ef6532f5943b574fca061b19e4dc51e8914f94e4b0a45c845e5a7"
+    },
+    {
+      "path": "lib/lockbox/padding/pkcs7.lua",
+      "size": 383,
+      "sha256": "82b97690628f110c17141723ae59b4eeef971daf0570a32cfe13dcef3cd6ae91"
+    },
+    {
+      "path": "lib/lockbox/padding/zero.lua",
+      "size": 374,
+      "sha256": "23f58ef7fa04ac78018a73294b9ff0ecd67e84876198befb12b0589700e7cccf"
+    },
+    {
+      "path": "lib/lockbox/util/array.lua",
+      "size": 2914,
+      "sha256": "35ae9d9c96e883e4be6872a5d61c3b1c1080f438ab9ff5d0a1b610ab500e5717"
+    },
+    {
+      "path": "lib/lockbox/util/base64.lua",
+      "size": 3464,
+      "sha256": "21dadf4a2b00eb0bcc0e45ca118561704c7df6cc822c9bd07d7f1f461d9b63ef"
+    },
+    {
+      "path": "lib/lockbox/util/bit.lua",
+      "size": 559,
+      "sha256": "31feb876e084bb35e06e73cc4dc319089847a8083a9db182e0c9de7b073fee52"
+    },
+    {
+      "path": "lib/lockbox/util/queue.lua",
+      "size": 613,
+      "sha256": "39ca120ee5e4fcc630dd1a8408426336c7fa8748121ec17e20cfa326d3526c1a"
+    },
+    {
+      "path": "lib/lockbox/util/stream.lua",
+      "size": 1512,
+      "sha256": "fdf62afbfdbca8c81529adbe972e0cdb330f2fcbd01c671a7f16887693402c53"
+    },
+    {
+      "path": "lib/lpeg/lpeg.dll",
+      "size": 99840,
+      "sha256": "87bcfe68afb683fe6a08a5c0bea10d5c9be3c7a237bc1603f2e9625aa6cf61c9"
+    },
+    {
+      "path": "lib/lpeg/re.lua",
+      "size": 6286,
+      "sha256": "1464385e0906cd481135e2b63a7864afc9de6abecf4f6c1cf0d29f57941743bc"
+    },
+    {
+      "path": "lib/lrexlib-pcre/rex_pcre.dll",
+      "size": 241152,
+      "sha256": "510474059fea185afd35005933c1203947d223598e5bf3934183a9d75f51e37a"
+    },
+    {
+      "path": "lib/luafilesystem/lfs.dll",
+      "size": 126976,
+      "sha256": "0558ab68940463dedb10b7daf0f807dc45be3aeba45a9d375b6cf86356fa7d57"
+    },
+    {
+      "path": "lib/luasocket/ltn12.lua",
+      "size": 8331,
+      "sha256": "3bf0000f86d25da94089d47de3bbb204fd5be491edbe275730e73f68c710ea42"
+    },
+    {
+      "path": "lib/luasocket/mime.lua",
+      "size": 2487,
+      "sha256": "a548fc214ac1e935afa683df9bdbeded0ca60cf353dfcc16f6db0187b9fc512d"
+    },
+    {
+      "path": "lib/luasocket/socket.lua",
+      "size": 4451,
+      "sha256": "332871e3beeaccf8bff18cde1509e81c2bd16beb511b1fe586c12862dc7667b2"
+    },
+    {
+      "path": "lib/luasocket/mime/core.dll",
+      "size": 77824,
+      "sha256": "b4737e1d1d687dbcb865eae69cf8113be6b3e9441d45c3ffc895b4bc3c41cb9c"
+    },
+    {
+      "path": "lib/luasocket/socket/core.dll",
+      "size": 142848,
+      "sha256": "913bf007a9a58cca37e4a16fa5cd909d152d1461a339162a55ca4ae6032d74cc"
+    },
+    {
+      "path": "lib/luasocket/socket/ftp.lua",
+      "size": 9243,
+      "sha256": "05eae0f1477cc17a580cb88e11a62107b1b6cde37a1c76fced6f91b390d98ed5"
+    },
+    {
+      "path": "lib/luasocket/socket/headers.lua",
+      "size": 3698,
+      "sha256": "aecff8c2d99d77a6473269367d5b085ad0db189d9699c2f47dcb97ae5ad348df"
+    },
+    {
+      "path": "lib/luasocket/socket/http.lua",
+      "size": 12330,
+      "sha256": "9bdf0c2b37f1941e4a65c31697187ee976b43d0a4a8865b96260222f85c0fdb8"
+    },
+    {
+      "path": "lib/luasocket/socket/smtp.lua",
+      "size": 8074,
+      "sha256": "55bdeff392dffc381b1487b6e9493a7aadb52f851f78ec29316decf50d88df58"
+    },
+    {
+      "path": "lib/luasocket/socket/tp.lua",
+      "size": 3612,
+      "sha256": "9faacdfcde3167ab426054625ccf0ca8255a24dc7752f58543edbc93216b53b1"
+    },
+    {
+      "path": "lib/luasocket/socket/url.lua",
+      "size": 11036,
+      "sha256": "7290952cba25a671e0434a01b5693855cb5d19ba777adb302779b050d8b0d3c7"
+    },
+    {
+      "path": "lib/luasql/myqql.lua",
+      "size": 542,
+      "sha256": "a05a790ecceea815360b02ec171ca762e1e08ebc8db8b841647037686cc7af7c"
+    },
+    {
+      "path": "lib/luasql/mysql.dll",
+      "size": 3886592,
+      "sha256": "61d0a19f3cd0f0985726540d5ad06f72e808500f72d9ff27cc400a98c60efc95"
+    },
+    {
+      "path": "lib/luasql-mysql/luasql/mysql.dll",
+      "size": 3886592,
+      "sha256": "61d0a19f3cd0f0985726540d5ad06f72e808500f72d9ff27cc400a98c60efc95"
+    },
+    {
+      "path": "lib/luasql-sqlite/luasql/sqlite3.dll",
+      "size": 654336,
+      "sha256": "ac2aa49ff7cde55563cb0e13920b018a4ad039dca3ab3bfb9ee0ac361fcf6605"
+    },
+    {
+      "path": "lib/lub/Autoload.lua",
+      "size": 2877,
+      "sha256": "0c6f85b09079a01359b1073e7870aec9f325b9aabfa41f8ff557152437ef0318"
+    },
+    {
+      "path": "lib/lub/Dir.lua",
+      "size": 2813,
+      "sha256": "3adacf1cd484fdb3587def9ff9176e44cd02d72ee804e60442ac4b5ab333735b"
+    },
+    {
+      "path": "lib/lub/init.lua",
+      "size": 20988,
+      "sha256": "b9a5335d638ff9776679a677e8df5f41a90f8a94b91f41b371273371047c806e"
+    },
+    {
+      "path": "lib/lub/Param.lua",
+      "size": 9094,
+      "sha256": "7f2eda637349e6e4231e559e3fe691ac7b3518186aaf6a6508e6679c7a83b877"
+    },
+    {
+      "path": "lib/lub/Template.lua",
+      "size": 4556,
+      "sha256": "8ca1ff31f526668907f38e349fccc2578b62895c4a215c086ef6d18e1c57de65"
+    },
+    {
+      "path": "lib/lume/lume.lua",
+      "size": 15091,
+      "sha256": "a746a3fe0e9def853e90e4d14891e9a284f0b1e2eb91416a975b1e5889e1b63b"
+    },
+    {
+      "path": "lib/lustache/lustache.lua",
+      "size": 745,
+      "sha256": "cb2cf51a795ac3297d555fc6fc686d9253aa6d78dbf160b2c1450ae12582c90e"
+    },
+    {
+      "path": "lib/lustache/lustache/context.lua",
+      "size": 1262,
+      "sha256": "e6c60553691180c14b99b506e1cffdb029ab118668d831d14be08d1d6a93dd94"
+    },
+    {
+      "path": "lib/lustache/lustache/renderer.lua",
+      "size": 10460,
+      "sha256": "6900b782652edc2dba1c060b3ce15b656ccb57c3d84fb16082313861049a6f19"
+    },
+    {
+      "path": "lib/lustache/lustache/scanner.lua",
+      "size": 1384,
+      "sha256": "8ed86e2a7df57b59352e1e6ae4956100d3b764506ac7e27eeec150f7bc3514d8"
+    },
+    {
+      "path": "lib/md5/core.dll",
+      "size": 75776,
+      "sha256": "cba9525d93957d6b442ef019557cf6c47bde0aad07652c897900475335e281e0"
+    },
+    {
+      "path": "lib/mime/core.dll",
+      "size": 77824,
+      "sha256": "e845e535e70086ab72f18d53d00cf80d15300089ab78db3eff383b5854e8667f"
+    },
+    {
+      "path": "lib/mimgui/cdefs.lua",
+      "size": 118018,
+      "sha256": "8e5d3488f23c446a6a8a61b6b0ecc25cc38f326257b14801023bfad3bf650a7e"
+    },
+    {
+      "path": "lib/mimgui/cimguidx9.dll",
+      "size": 543744,
+      "sha256": "1a7a059974c33095edc2f2da880d7c79c99d7e3b3c189e2f51036bb7e519d88b"
+    },
+    {
+      "path": "lib/mimgui/dx9.lua",
+      "size": 6905,
+      "sha256": "32904fdf0d1c8ecf6842df2c6feac94545cdf1c98631e174f0ccd50f37185f38"
+    },
+    {
+      "path": "lib/mimgui/imgui.lua",
+      "size": 103788,
+      "sha256": "dac0e8cad50f766f8284a6bfeccb9ce275aa809d842e90ce81de52991cd87e9a"
+    },
+    {
+      "path": "lib/mimgui/init.lua",
+      "size": 12042,
+      "sha256": "9df73262d77abce0970d409f599e1bd02cecbeb8bd1629027796d74454ed3efd"
+    },
+    {
+      "path": "lib/mimgui/win32.lua",
+      "size": 2276,
+      "sha256": "90a3e731b1df60d2022c6935631553b2424aa28ae45b84797c62d5119df95bee"
+    },
+    {
+      "path": "lib/mimgui_blur/init.lua",
+      "size": 3988,
+      "sha256": "639f985d77ce8b4c263f9565af15325c0f0304eea93b666961d89dac03673f2c"
+    },
+    {
+      "path": "lib/mimgui_blur/mimgui_blur_lib.dll",
+      "size": 11776,
+      "sha256": "721de5d137733f639154a5cf09982fbff8c1d3d262efb17b59cba0f49191f20b"
+    },
+    {
+      "path": "lib/MoonMonet/init.lua",
+      "size": 1246,
+      "sha256": "e7565ad6aace7ada124f6df8cd5c217536234c278ee18644ea01176e27668f78"
+    },
+    {
+      "path": "lib/MoonMonet/moonmonet_rs.dll",
+      "size": 146432,
+      "sha256": "524e087a1d13f205c9e3cea79fb881d4da6b5f981f965f6aa5f4c06938b3bee8"
+    },
+    {
+      "path": "lib/path/findfile.lua",
+      "size": 2396,
+      "sha256": "734b9d88b8354273a6118899505df56eeef11fa62cc9915e920edc153a26e166"
+    },
+    {
+      "path": "lib/path/fs.lua",
+      "size": 997,
+      "sha256": "5f7b9b904a4aaa39c85c3bf429e3346a7131b035130e5bde0dd400e779c1954a"
+    },
+    {
+      "path": "lib/path/module.lua",
+      "size": 524,
+      "sha256": "04ccd013076537c259461b3b574fae36a1173b5ee96de7a0439379548c87877c"
+    },
+    {
+      "path": "lib/path/lfs/fs.lua",
+      "size": 446,
+      "sha256": "efd297e2489e6aecefaacad3cbdf60dad878ee22a8e9790453f1ab28020b3549"
+    },
+    {
+      "path": "lib/path/lfs/impl/fs.lua",
+      "size": 9996,
+      "sha256": "0b7552ad1ec3fa785a8728c5cb748eed89c7659a405e40cc9f338aa750a9eed8"
+    },
+    {
+      "path": "lib/path/syscall/fs.lua",
+      "size": 454,
+      "sha256": "8e5b1da8ed753972907d90af0e82f85ce7a67d188534c53a7d2742f7c94d4548"
+    },
+    {
+      "path": "lib/path/win32/fs.lua",
+      "size": 36080,
+      "sha256": "8a684221da0b42b5b363797d8abb9c4079e9737b0514777ec5363efed9e7cbe0"
+    },
+    {
+      "path": "lib/path/win32/wcs.lua",
+      "size": 2136,
+      "sha256": "a2940f65596e7c63feba9ddc2bdcc5c6af15deb2fe27da3bab4a4c9126d6a4d9"
+    },
+    {
+      "path": "lib/path/win32/alien/fs.lua",
+      "size": 14764,
+      "sha256": "f8e8b96c6417ecec875e96ecd0884b9393a064ab7bdc298a3e861a617b239bbe"
+    },
+    {
+      "path": "lib/path/win32/alien/types.lua",
+      "size": 3393,
+      "sha256": "f073c4eaf38eb34b28c933c69f8a051f215786fb2398f091af4389312acfef36"
+    },
+    {
+      "path": "lib/path/win32/alien/utils.lua",
+      "size": 4216,
+      "sha256": "3024c0292e529aea784b88908c1c141ff822c3aad39e75ee503cebeed5e6870c"
+    },
+    {
+      "path": "lib/path/win32/alien/wcs.lua",
+      "size": 3603,
+      "sha256": "d3eeb7128c4b83d873c30579c8147c342473d1076e2f021f00dc2b44561c4b25"
+    },
+    {
+      "path": "lib/path/win32/ffi/fs.lua",
+      "size": 13383,
+      "sha256": "178f7b6503a51955fce4b255067f2092ea7756a321a86d455e61fa9b2c9d5ecd"
+    },
+    {
+      "path": "lib/path/win32/ffi/types.lua",
+      "size": 4449,
+      "sha256": "fc63a77cf3363200d2b8a4da25956860dddba42a26310faa3ff911be3052e172"
+    },
+    {
+      "path": "lib/path/win32/ffi/wcs.lua",
+      "size": 3512,
+      "sha256": "201328cc3a45f941fc769371c621acc65b010dc31746c875b14db3e6460646d5"
+    },
+    {
+      "path": "lib/penlight/pl/app.lua",
+      "size": 5722,
+      "sha256": "a5c19f4b96466bc73768a9ab27934f0986e99ca21cc13463bc07fd1251ba9cd8"
+    },
+    {
+      "path": "lib/penlight/pl/array2d.lua",
+      "size": 13371,
+      "sha256": "c5e7f27b9ebc64e9fd890f3aa669d5f077d757c6b4f21a88f791c962dc1aca6f"
+    },
+    {
+      "path": "lib/penlight/pl/class.lua",
+      "size": 8115,
+      "sha256": "c815fde840edb2d02a78fcbf1db23f3f3b33cad4532b67321d864aaad2ebfa0a"
+    },
+    {
+      "path": "lib/penlight/pl/compat.lua",
+      "size": 4402,
+      "sha256": "2dcc632340b0aaba251f796b4de10c2d2c4522e522a99c48f3e492d830370699"
+    },
+    {
+      "path": "lib/penlight/pl/comprehension.lua",
+      "size": 9077,
+      "sha256": "56b1fc2faf49e7f90202a4947fdcc6ea8754d03fafe8b3c05b4d2d58aef48947"
+    },
+    {
+      "path": "lib/penlight/pl/config.lua",
+      "size": 6749,
+      "sha256": "7bccc4b42653dd7a0a2386161d7621eef84e59faddec73515066a57dd2b0d4c1"
+    },
+    {
+      "path": "lib/penlight/pl/data.lua",
+      "size": 20443,
+      "sha256": "73584534954cfbaf699058c91e4049b58862f737fd7eabe28a55b8fd3bcacc94"
+    },
+    {
+      "path": "lib/penlight/pl/Date.lua",
+      "size": 18173,
+      "sha256": "3190552429f15c723dd0568a46880741e1ba5c4e904873966fc18044922ee88e"
+    },
+    {
+      "path": "lib/penlight/pl/dir.lua",
+      "size": 15980,
+      "sha256": "6a146e83b93169ad0e38b035745c0c2653d79b407c28e3cc0934c8bce975c03d"
+    },
+    {
+      "path": "lib/penlight/pl/file.lua",
+      "size": 1585,
+      "sha256": "7fc06f6e6e5f7cb5cfbf25eb3d1ba3a3a52fe2b33a38b10ee1a00b502ab33357"
+    },
+    {
+      "path": "lib/penlight/pl/func.lua",
+      "size": 10456,
+      "sha256": "53713649d53e7bea37a610e0c6eb193f94557a0d7d386248cbebf457ebdf4fc4"
+    },
+    {
+      "path": "lib/penlight/pl/import_into.lua",
+      "size": 2702,
+      "sha256": "6324edbfa627bd22d8f2bd4f0e151c1feedb8b6b305c8824f566a635421279d9"
+    },
+    {
+      "path": "lib/penlight/pl/init.lua",
+      "size": 432,
+      "sha256": "ee21a521059baed3df1365a56979f0878d0c8bd863fd2fd951dd3aa6f8e8e7ff"
+    },
+    {
+      "path": "lib/penlight/pl/input.lua",
+      "size": 5192,
+      "sha256": "d218a7d78ba83d9f59d302dd18b8773049d33effbead914c9ac9530f59aefa2f"
+    },
+    {
+      "path": "lib/penlight/pl/lapp.lua",
+      "size": 14382,
+      "sha256": "e76daffe26137f43ea6bbcd03983d899423d06b4ba76520df94c0619ad5acde8"
+    },
+    {
+      "path": "lib/penlight/pl/lexer.lua",
+      "size": 15019,
+      "sha256": "0afa6171cab0cdcd53d446817eecb75fbb029ca9af6a4310f08fc0a7fc411164"
+    },
+    {
+      "path": "lib/penlight/pl/List.lua",
+      "size": 15803,
+      "sha256": "cd3e58b6985a3446b96425947d9da73043308aa4ec82025ef877dfd4c7eb1551"
+    },
+    {
+      "path": "lib/penlight/pl/luabalanced.lua",
+      "size": 8024,
+      "sha256": "c90d35d55c8a59c6a8c05c6dab658c38c6061851e8bd2034f29ead38c9edde2b"
+    },
+    {
+      "path": "lib/penlight/pl/Map.lua",
+      "size": 2761,
+      "sha256": "01fec70b8e015ba19040d3ccf5a1ab54e7eaee25466eeea5877695d11770094e"
+    },
+    {
+      "path": "lib/penlight/pl/MultiMap.lua",
+      "size": 1458,
+      "sha256": "3966dd5945ea1dd1530746ef29416ef82147bf2e55b57bbc72a90a003ec2e7ce"
+    },
+    {
+      "path": "lib/penlight/pl/operator.lua",
+      "size": 4310,
+      "sha256": "b2575b8c10026c83312f665118f7ddb3f55b1895c643d49fb025a7b424ae1186"
+    },
+    {
+      "path": "lib/penlight/pl/OrderedMap.lua",
+      "size": 4495,
+      "sha256": "44d9c560b6fa99ed87e3e176fd8f0ac497ab79a392a744fec27c57cf53fcd2e6"
+    },
+    {
+      "path": "lib/penlight/pl/path.lua",
+      "size": 11785,
+      "sha256": "4831bf473a6d202f31e8accc13922514c958a51ae5eb8cc8559ee60205405f9c"
+    },
+    {
+      "path": "lib/penlight/pl/permute.lua",
+      "size": 1574,
+      "sha256": "709e8f7cfc93029668220d3b2f688e236a71846946d1526558975f90f0455fbf"
+    },
+    {
+      "path": "lib/penlight/pl/pretty.lua",
+      "size": 10090,
+      "sha256": "239fb4b2f01f895d546c3d22e9e3451135ac4a150d327518a61e995d17e30a6b"
+    },
+    {
+      "path": "lib/penlight/pl/seq.lua",
+      "size": 14626,
+      "sha256": "4e45401d305da559c38f7c0323d36d4530ed691ce5f9109e70c2f2ff15e2f596"
+    },
+    {
+      "path": "lib/penlight/pl/Set.lua",
+      "size": 5441,
+      "sha256": "d987d737b2b965220a5d66ca559bf7e528265df5d5fcc78375d75319ab747d61"
+    },
+    {
+      "path": "lib/penlight/pl/sip.lua",
+      "size": 10296,
+      "sha256": "504f583d57ce40dd871228e663b20c8b18a2e4b388462462f70875e677d63f03"
+    },
+    {
+      "path": "lib/penlight/pl/strict.lua",
+      "size": 3839,
+      "sha256": "7baec80e7485830a9bd7f0e8516f4097002c21c5b20d2a6589512556f1830d57"
+    },
+    {
+      "path": "lib/penlight/pl/stringio.lua",
+      "size": 3821,
+      "sha256": "0663e3bf8104a0599e81d7139c4cbf2fb41bdc0908100bdc1717e6f0c89ad480"
+    },
+    {
+      "path": "lib/penlight/pl/stringx.lua",
+      "size": 14802,
+      "sha256": "a5fb7dd4ddfd726832ec837d5452227a21859bc2be13173f8a818f72ed64fb48"
+    },
+    {
+      "path": "lib/penlight/pl/tablex.lua",
+      "size": 27308,
+      "sha256": "b1686642dd29a1b777e8128548126f108d60d7e285dbe0ed79bf3e5b558dbeab"
+    },
+    {
+      "path": "lib/penlight/pl/template.lua",
+      "size": 3560,
+      "sha256": "8fe4e9b485a1d0af4aae819bdd60c6317703668667c1891158b649a29138d1b3"
+    },
+    {
+      "path": "lib/penlight/pl/test.lua",
+      "size": 5169,
+      "sha256": "412882f5504e07e1f8d3fad05c39ced98e488705b953e786a11fa6a4ab3b23c4"
+    },
+    {
+      "path": "lib/penlight/pl/text.lua",
+      "size": 7279,
+      "sha256": "3553e0f0a476d449f5a649a5f3c98d5a2e789f78700ee0321f05260d94fb1e8c"
+    },
+    {
+      "path": "lib/penlight/pl/types.lua",
+      "size": 4693,
+      "sha256": "b325f578f5259b1754354eea7e35ec2a55fb90240f16c6cd70f38006e0720a10"
+    },
+    {
+      "path": "lib/penlight/pl/url.lua",
+      "size": 1054,
+      "sha256": "1dc85c7ee27760305c1122b1cc438a23b73c78d44066018f240c119a6123dbeb"
+    },
+    {
+      "path": "lib/penlight/pl/utils.lua",
+      "size": 16579,
+      "sha256": "e68ae150b876923c316303b9142d9bedba0c7feff3f8918470d0b735303f8903"
+    },
+    {
+      "path": "lib/penlight/pl/xml.lua",
+      "size": 25405,
+      "sha256": "f15acdd013ea44e8dc9e582183b61334453c484e36147c707cfe1b7509e4794a"
+    },
+    {
+      "path": "lib/plc/aead_chacha_poly.lua",
+      "size": 2875,
+      "sha256": "79db4dc92c6997734ef3c9d44d32db38a7790a1a3b9dc53eddf053fad7652481"
+    },
+    {
+      "path": "lib/plc/base58.lua",
+      "size": 4224,
+      "sha256": "4652db3efa331c41862b3c03db5d23cfa4646522c376ce662a5271b46d468d29"
+    },
+    {
+      "path": "lib/plc/base64.lua",
+      "size": 3268,
+      "sha256": "9d95fca6dc5d18d88275c870b506571e39ae2025190ce77ac738f6e3f4d9a790"
+    },
+    {
+      "path": "lib/plc/base85.lua",
+      "size": 2750,
+      "sha256": "0c0f6cc3d6c6b083423dd58eb3b40a1352a9ecfd5a2564b088dc911989bf2a3e"
+    },
+    {
+      "path": "lib/plc/bin.lua",
+      "size": 4457,
+      "sha256": "999e79f6942c84e8f7b11c8f6cd7cac4836ee99780c6df22ab7e0be76dabea72"
+    },
+    {
+      "path": "lib/plc/blake2b.lua",
+      "size": 6496,
+      "sha256": "3c2905c3bd4c36ab67b87329f85e015a38f08aaafd0a13bf4f7e45c30da93d8f"
+    },
+    {
+      "path": "lib/plc/box.lua",
+      "size": 2457,
+      "sha256": "c4a88f044b1e239179e316e1fd81efb2f65bbeec045eac9ace6b509c7aad0065"
+    },
+    {
+      "path": "lib/plc/chacha20.lua",
+      "size": 6973,
+      "sha256": "693d2dff1fc576f0b9d5ae8cb3cb962aaec2dd25fc8fc0d44b3f87639b35d0df"
+    },
+    {
+      "path": "lib/plc/checksum.lua",
+      "size": 2134,
+      "sha256": "82219317042694e47be5fd8839d5e8dbe1a5fdaf847b412962ed348ff64c1d9b"
+    },
+    {
+      "path": "lib/plc/ec25519.lua",
+      "size": 7531,
+      "sha256": "cdd496f579aa33189b2f9c8118c1c7f56546adec1fb7118919176508712133a9"
+    },
+    {
+      "path": "lib/plc/gimli.lua",
+      "size": 6368,
+      "sha256": "e74a1afd272b7bec8b56370f326f18cac670dbb7b978224e00655b4c2b0f4fdb"
+    },
+    {
+      "path": "lib/plc/md5.lua",
+      "size": 6173,
+      "sha256": "6da81805be0b8d775cdc504bbdc8f0ffff08ca6422d0405011efd9043a9a2d60"
+    },
+    {
+      "path": "lib/plc/morus.lua",
+      "size": 14892,
+      "sha256": "32024c992bb74bc9a3c7ffd56827e4613bf62016810bee2b4d382459ab0ffb70"
+    },
+    {
+      "path": "lib/plc/norx.lua",
+      "size": 12439,
+      "sha256": "415e8a02c89be212d30add70d411f5d76895b1a3bf5bd6f706eba3484b2cd1e8"
+    },
+    {
+      "path": "lib/plc/norx32.lua",
+      "size": 12777,
+      "sha256": "39b073da422b64c1c0a2eb373f420e4892258e320e4f3fdad3f6c60880aba925"
+    },
+    {
+      "path": "lib/plc/poly1305.lua",
+      "size": 7095,
+      "sha256": "e441f834418c2cabf60507be5d0b7e6a398837b984c932e5096f8d4e150e7e85"
+    },
+    {
+      "path": "lib/plc/rabbit.lua",
+      "size": 7151,
+      "sha256": "1e303e20e683ff59449784b7eefad14cf59c53a70a3799904b11590e17c7fe86"
+    },
+    {
+      "path": "lib/plc/rc4.lua",
+      "size": 2064,
+      "sha256": "44157b6594669f2628c5f2e6f220eba5eba3f4080acc753df9f7f37ae56e62ab"
+    },
+    {
+      "path": "lib/plc/salsa20.lua",
+      "size": 6446,
+      "sha256": "7f13cbe8b5484778b0654ff9ac7f35a6aca5b0d7b907e3a510248bcdcf42e856"
+    },
+    {
+      "path": "lib/plc/sha2.lua",
+      "size": 7532,
+      "sha256": "37b1d69ff177921357b5ce97f0d487e45cf10e5309098f6799297c0c3368ff2d"
+    },
+    {
+      "path": "lib/plc/sha3.lua",
+      "size": 6178,
+      "sha256": "363058ed2dc06a430e6280bc80fba6a98f662a311cd84447f44068f4d564828a"
+    },
+    {
+      "path": "lib/plc/siphash.lua",
+      "size": 4401,
+      "sha256": "84ae58df46ad2c54d7e3e6bd8714559d8bdaa409c9e2271009b954161a8bf898"
+    },
+    {
+      "path": "lib/plc/xtea.lua",
+      "size": 5520,
+      "sha256": "00d8c929f194c65fb9931f26e7ff4e8a38c15d0c7ecc0eca8216ae924c93f737"
+    },
+    {
+      "path": "lib/SA-MP API/init.lua",
+      "size": 8899,
+      "sha256": "82af10a7ce796e7ea03ffcc19b3611d29d12fa1c83c5082a198be6a9ef2a6732"
+    },
+    {
+      "path": "lib/SA-MP API/kernel.lua",
+      "size": 404,
+      "sha256": "600fda29595684183303194d51172d19d1613f9d2f4693d08fa71a495a20dee6"
+    },
+    {
+      "path": "lib/SA-MP API/samp/definitions.lua",
+      "size": 3157,
+      "sha256": "5cc3d032035eec371b6d73424f8c8f7049fbec2ee93088b827321f37364293e0"
+    },
+    {
+      "path": "lib/SA-MP API/samp/0_3_7-R1/enums.lua",
+      "size": 1502,
+      "sha256": "80d4a2e85a42b880fa446a4b40916b26c50a17dcb05316c47de91a9b230bfab3"
+    },
+    {
+      "path": "lib/SA-MP API/samp/0_3_7-R1/stActorPool.lua",
+      "size": 528,
+      "sha256": "f34bdbe0e80bfc89a4b7b89cbdf7701e3c7f20b94d6add34ebe5f8a5d4d69695"
+    },
+    {
+      "path": "lib/SA-MP API/samp/0_3_7-R1/stChatEntry.lua",
+      "size": 500,
+      "sha256": "940db0e7384869c64f2146c207b2595399521b7234e4d0aa7789d5ab7a558a57"
+    },
+    {
+      "path": "lib/SA-MP API/samp/0_3_7-R1/stChatInfo.lua",
+      "size": 1259,
+      "sha256": "c472062a643ffc2c1403870ede3bcb891f582494057e15e19d5d0b420cc7c45a"
+    },
+    {
+      "path": "lib/SA-MP API/samp/0_3_7-R1/stDialogInfo.lua",
+      "size": 710,
+      "sha256": "7225e0a4026cf97fd781d0d0c1952d1342d724cb2effca00bf151f8ea8bcbb90"
+    },
+    {
+      "path": "lib/SA-MP API/samp/0_3_7-R1/stFontRenderer.lua",
+      "size": 518,
+      "sha256": "7259c3fc9261c8898521e6e180106fec7a76b9369c7e6c201683b83928cbbf8d"
+    },
+    {
+      "path": "lib/SA-MP API/samp/0_3_7-R1/stGameInfo.lua",
+      "size": 1284,
+      "sha256": "5fa736ab2085c86c703cffa0b290e8670e5e5575491e27dee9425a60206092ae"
+    },
+    {
+      "path": "lib/SA-MP API/samp/0_3_7-R1/stGangzone.lua",
+      "size": 394,
+      "sha256": "8b3ac1d23db00222ae08d689f9de29de7a2aac1e830b9dc43b230483356a1616"
+    },
+    {
+      "path": "lib/SA-MP API/samp/0_3_7-R1/stGangzonePool.lua",
+      "size": 439,
+      "sha256": "50bacad26e5ba8ca588579778982b303b6cae5a5f28d8005251f18997a87a440"
+    },
+    {
+      "path": "lib/SA-MP API/samp/0_3_7-R1/stInputInfo.lua",
+      "size": 1122,
+      "sha256": "ad6db3482261bd31ac6d5b74d1d530617cde8527d24b61a0a067bc5de6a5b984"
+    },
+    {
+      "path": "lib/SA-MP API/samp/0_3_7-R1/stKillEntry.lua",
+      "size": 462,
+      "sha256": "883abe6696dbe5f8f3ab8238ad0d68af08f34303890663383e345a7770d07b19"
+    },
+    {
+      "path": "lib/SA-MP API/samp/0_3_7-R1/stKillInfo.lua",
+      "size": 680,
+      "sha256": "39e898e7c359e842520698dd0d2430811f7126f9d8248ec7438c4087120924b1"
+    },
+    {
+      "path": "lib/SA-MP API/samp/0_3_7-R1/stLocalPlayer.lua",
+      "size": 2394,
+      "sha256": "74c927b46f775dfe0c74cc7c4ed80916ec1349327c2c02f6cc5dc64e0550612b"
+    },
+    {
+      "path": "lib/SA-MP API/samp/0_3_7-R1/stObject.lua",
+      "size": 610,
+      "sha256": "d729fe4ca495767f1539062db810d5f5502bf72bbbe9956cd6b5c47ff4f029d7"
+    },
+    {
+      "path": "lib/SA-MP API/samp/0_3_7-R1/stObjectPool.lua",
+      "size": 456,
+      "sha256": "af1fbe33793569211985bd64f75bc331ad0b7bfeec0c8c65b942ff598c1dc84d"
+    },
+    {
+      "path": "lib/SA-MP API/samp/0_3_7-R1/stPickup.lua",
+      "size": 370,
+      "sha256": "cbdc25817d5330e0145f98b95854e630c209a54491054ee71d739ff05adff040"
+    },
+    {
+      "path": "lib/SA-MP API/samp/0_3_7-R1/stPickupPool.lua",
+      "size": 561,
+      "sha256": "d17f9740fe9ba5df6145b06146d5146dd198c16b41f544fefa0569b8396c7da7"
+    },
+    {
+      "path": "lib/SA-MP API/samp/0_3_7-R1/stPlayerPool.lua",
+      "size": 794,
+      "sha256": "485890e7604f656dfe34e482ee5cb218e5ba9e1531355f6822da67913a06acec"
+    },
+    {
+      "path": "lib/SA-MP API/samp/0_3_7-R1/stRemotePlayer.lua",
+      "size": 1832,
+      "sha256": "266ec5f95ad994ea84e5a1e0a43c8a0967b7992b1e6ca5a8b9ba462f887d6930"
+    },
+    {
+      "path": "lib/SA-MP API/samp/0_3_7-R1/stSAMP.lua",
+      "size": 921,
+      "sha256": "8ba030f129f102f6a4a32e95624526ca65120c3bb3be15f818c32d771f81b2e2"
+    },
+    {
+      "path": "lib/SA-MP API/samp/0_3_7-R1/stSAMPEntity.lua",
+      "size": 425,
+      "sha256": "c4a7cb5ab7717e6be38d964666809866efc4409a4c2c0b5f2322cfd3eaecb830"
+    },
+    {
+      "path": "lib/SA-MP API/samp/0_3_7-R1/stSAMPPed.lua",
+      "size": 847,
+      "sha256": "f2a323b24007025e0ed286215372241cc27af92d1530ccbad0204c9de9002c12"
+    },
+    {
+      "path": "lib/SA-MP API/samp/0_3_7-R1/stSAMPPools.lua",
+      "size": 1061,
+      "sha256": "ee68049ade444951ba4740661848c362e827f98ec25e5782418e724616c605fc"
+    },
+    {
+      "path": "lib/SA-MP API/samp/0_3_7-R1/stSAMPVehicle.lua",
+      "size": 707,
+      "sha256": "ca665320f4fdd68c667e473b1939fd21e9c0ff0d0c851c1dfd51649c474222b2"
+    },
+    {
+      "path": "lib/SA-MP API/samp/0_3_7-R1/stScoreboardInfo.lua",
+      "size": 575,
+      "sha256": "6872d2d2554637f3ca6990a3833a83aa35418d47e3ac10cd6ebeec5c13e1d771"
+    },
+    {
+      "path": "lib/SA-MP API/samp/0_3_7-R1/stServerInfo.lua",
+      "size": 373,
+      "sha256": "28be60d41410cb1b859122657ddfd009807282ab1663b9b02aa61cc68f7480dd"
+    },
+    {
+      "path": "lib/SA-MP API/samp/0_3_7-R1/stServerPresets.lua",
+      "size": 1011,
+      "sha256": "6b60f9a41c3ee2adf648cec87bf89a9800967afc221e0584f671faadd1e6e96f"
+    },
+    {
+      "path": "lib/SA-MP API/samp/0_3_7-R1/stTextdraw.lua",
+      "size": 1343,
+      "sha256": "6779aba2266e9a524531c1d82a9a54e037d1129e15c942b058b889ff1c647dd3"
+    },
+    {
+      "path": "lib/SA-MP API/samp/0_3_7-R1/stTextdrawPool.lua",
+      "size": 508,
+      "sha256": "ca73c86d5133a1c31c3e933c9aef29f969d94217d6e8c457ce977042f8eedfcb"
+    },
+    {
+      "path": "lib/SA-MP API/samp/0_3_7-R1/stTextLabel.lua",
+      "size": 537,
+      "sha256": "1c0c13380bb781cdb45707cbdd5d3f9ea93833829372ee50281892eb6c0c1665"
+    },
+    {
+      "path": "lib/SA-MP API/samp/0_3_7-R1/stTextLabelPool.lua",
+      "size": 441,
+      "sha256": "5326113f0bc8f5102909be680876f0f57388c8e4dc4e2a87a781e65dec6e1e4b"
+    },
+    {
+      "path": "lib/SA-MP API/samp/0_3_7-R1/stVehiclePool.lua",
+      "size": 786,
+      "sha256": "a66bf02b177c1f70bcd62b48a04d52a6321f85e0a8e3c97aa82e85ef74f488dc"
+    },
+    {
+      "path": "lib/SA-MP API/samp/0_3_7-R1/sync.lua",
+      "size": 4264,
+      "sha256": "c5d01fb380d6bc93a481ad7e656ec2198741fa8d0d34d5c3e60b3b525e07c0be"
+    },
+    {
+      "path": "lib/SA-MP API/samp/0_3_DL-R1/enums.lua",
+      "size": 1502,
+      "sha256": "23212743356ca7db8b6d12bfd0406dda54810827dcf41fa1cc5e30bd994c0091"
+    },
+    {
+      "path": "lib/SA-MP API/samp/0_3_DL-R1/stActorPool.lua",
+      "size": 502,
+      "sha256": "7a75f5488782de4d703b5386fe715be211bb806dff0a71ab9f69e71d2d047318"
+    },
+    {
+      "path": "lib/SA-MP API/samp/0_3_DL-R1/stChatEntry.lua",
+      "size": 510,
+      "sha256": "21b36b9c5e5eeb922ae7570902a226de2f8b8a37461cfe70335edc22241245be"
+    },
+    {
+      "path": "lib/SA-MP API/samp/0_3_DL-R1/stChatInfo.lua",
+      "size": 1344,
+      "sha256": "6866a35e00863680ff635be0c6c1773cb91cf0015f094dca9b23d18eae6d23f9"
+    },
+    {
+      "path": "lib/SA-MP API/samp/0_3_DL-R1/stDialogInfo.lua",
+      "size": 742,
+      "sha256": "7da68c394d7d4e51b1d05272db8a738900a1c8cb20f639b7919fac3ac98a0927"
+    },
+    {
+      "path": "lib/SA-MP API/samp/0_3_DL-R1/stFontRenderer.lua",
+      "size": 525,
+      "sha256": "c878a8aee9c957177917e886d1081be0ca103c29b7f85b6f4d1772f29dc3841a"
+    },
+    {
+      "path": "lib/SA-MP API/samp/0_3_DL-R1/stGameInfo.lua",
+      "size": 1312,
+      "sha256": "6afa4a17ccca168b5f7bbdc9840547b0631b3735700479e6499621eb3786b830"
+    },
+    {
+      "path": "lib/SA-MP API/samp/0_3_DL-R1/stGangzone.lua",
+      "size": 394,
+      "sha256": "8b3ac1d23db00222ae08d689f9de29de7a2aac1e830b9dc43b230483356a1616"
+    },
+    {
+      "path": "lib/SA-MP API/samp/0_3_DL-R1/stGangzonePool.lua",
+      "size": 440,
+      "sha256": "c7816722ef79ed7218d14675ba897f44cab33c281860082ba4ca78d5d8f48ac2"
+    },
+    {
+      "path": "lib/SA-MP API/samp/0_3_DL-R1/stInputInfo.lua",
+      "size": 1171,
+      "sha256": "d3a93db3c02d0464fd3d0f51a2a4aa8431433a0ce4621411123565ea6be59d38"
+    },
+    {
+      "path": "lib/SA-MP API/samp/0_3_DL-R1/stKillEntry.lua",
+      "size": 455,
+      "sha256": "373a9ad77c6b699b6d2e4c5b9af4957c4f3ac1cd7a3c6714c41fe03bd7766f6d"
+    },
+    {
+      "path": "lib/SA-MP API/samp/0_3_DL-R1/stKillInfo.lua",
+      "size": 694,
+      "sha256": "f9d0ce6cc3a78e22b4c8a516e8cf91bb44c9bc4ef76d5ff7f41bc98052b84b4d"
+    },
+    {
+      "path": "lib/SA-MP API/samp/0_3_DL-R1/stLocalPlayer.lua",
+      "size": 2206,
+      "sha256": "6c819de28593cc93a96e3219e95fe24fb3993c09a97fe376b9ce0d98842f597e"
+    },
+    {
+      "path": "lib/SA-MP API/samp/0_3_DL-R1/stObject.lua",
+      "size": 607,
+      "sha256": "495a6f8d2a45b1010d597182b34006a045dbb4ff2f43d1c58891e072dcaff262"
+    },
+    {
+      "path": "lib/SA-MP API/samp/0_3_DL-R1/stObjectPool.lua",
+      "size": 458,
+      "sha256": "a52b0b5257053acf553a0409abbd496ab866780f6d96483a30583c8c1a949cf3"
+    },
+    {
+      "path": "lib/SA-MP API/samp/0_3_DL-R1/stPickup.lua",
+      "size": 370,
+      "sha256": "cbdc25817d5330e0145f98b95854e630c209a54491054ee71d739ff05adff040"
+    },
+    {
+      "path": "lib/SA-MP API/samp/0_3_DL-R1/stPickupPool.lua",
+      "size": 559,
+      "sha256": "8582d1cfdcf41036c8ff730a1e1754d86adb9e0401c51f4e6247e34e91b98ce7"
+    },
+    {
+      "path": "lib/SA-MP API/samp/0_3_DL-R1/stPlayerPool.lua",
+      "size": 800,
+      "sha256": "6c94e206721567d279d3e0a8e463ae4deb643aef6cec906adb508fd33830c437"
+    },
+    {
+      "path": "lib/SA-MP API/samp/0_3_DL-R1/stRemotePlayer.lua",
+      "size": 1957,
+      "sha256": "a15a3df316f4fdd3e8f978321bca7a328d40c0dd60eb9ede95b09e0ea8def97f"
+    },
+    {
+      "path": "lib/SA-MP API/samp/0_3_DL-R1/stSAMP.lua",
+      "size": 1144,
+      "sha256": "82a246ce8158f3c7e4d7f471e5ab7df8ce1f195b94147e33c3e73aef72362c3f"
+    },
+    {
+      "path": "lib/SA-MP API/samp/0_3_DL-R1/stSAMPEntity.lua",
+      "size": 432,
+      "sha256": "eeb469f28c87b93c809daa93d8ee0c5c6f30b5ae07817f1eecae30970ca91ff0"
+    },
+    {
+      "path": "lib/SA-MP API/samp/0_3_DL-R1/stSAMPPed.lua",
+      "size": 816,
+      "sha256": "f5d683dc85ad60a8695055757aa163563e0ee5e7b414d6eac8dfa864c7fad0c3"
+    },
+    {
+      "path": "lib/SA-MP API/samp/0_3_DL-R1/stSAMPPools.lua",
+      "size": 1136,
+      "sha256": "578893213ae1e42e6e3734b3af9abb7eb6668cade4e1adef130acf4ac5437d08"
+    },
+    {
+      "path": "lib/SA-MP API/samp/0_3_DL-R1/stSAMPVehicle.lua",
+      "size": 707,
+      "sha256": "be8fa32aab6a400c36ef8433c3cdbe1c450acce36a7f8dcc51d81f0808794097"
+    },
+    {
+      "path": "lib/SA-MP API/samp/0_3_DL-R1/stScoreboardInfo.lua",
+      "size": 574,
+      "sha256": "39194c863a949f9fc8cd1ed47917a8cde982c5dd7dfc59114eb2953c62231cd6"
+    },
+    {
+      "path": "lib/SA-MP API/samp/0_3_DL-R1/stServerInfo.lua",
+      "size": 371,
+      "sha256": "a6d1a627f9eae2633c4e26033f018bbd319ab95bbb4d72e6c5415ba0eda01770"
+    },
+    {
+      "path": "lib/SA-MP API/samp/0_3_DL-R1/stServerPresets.lua",
+      "size": 1006,
+      "sha256": "08a369d5e3da75623299c0f8468d9a7475c087aa63109f1eadb3ddf8761e1958"
+    },
+    {
+      "path": "lib/SA-MP API/samp/0_3_DL-R1/stSpawnInfo.lua",
+      "size": 477,
+      "sha256": "cfc06e0717342914b98821bcee7ef06670b26be3a5a552a65c18d1627c22b6a5"
+    },
+    {
+      "path": "lib/SA-MP API/samp/0_3_DL-R1/stTargetInfo.lua",
+      "size": 429,
+      "sha256": "c54d20594252eb4ea78412ccc96f9318af06883203f0eade43d43eca83b8a148"
+    },
+    {
+      "path": "lib/SA-MP API/samp/0_3_DL-R1/stTextdraw.lua",
+      "size": 1294,
+      "sha256": "d37ca284d8f1dc5edd6f36edcc95ab16ceb35e8cca05482cc3f52fa0b5896234"
+    },
+    {
+      "path": "lib/SA-MP API/samp/0_3_DL-R1/stTextdrawPool.lua",
+      "size": 509,
+      "sha256": "af341d5e10e403d3b53e7bdee2ccb63478d14911db49a60b93553ccf16eb999f"
+    },
+    {
+      "path": "lib/SA-MP API/samp/0_3_DL-R1/stTextLabel.lua",
+      "size": 537,
+      "sha256": "1c0c13380bb781cdb45707cbdd5d3f9ea93833829372ee50281892eb6c0c1665"
+    },
+    {
+      "path": "lib/SA-MP API/samp/0_3_DL-R1/stTextLabelPool.lua",
+      "size": 442,
+      "sha256": "f43f707229965501a1a9c569e04df8b2de6003db001651ef9b70893fe09ba744"
+    },
+    {
+      "path": "lib/SA-MP API/samp/0_3_DL-R1/stVehiclePool.lua",
+      "size": 789,
+      "sha256": "d7e2bdfec5789761c1ae997eeb45bb8df1ce9f31d27c4337359593f494816531"
+    },
+    {
+      "path": "lib/SA-MP API/samp/0_3_DL-R1/sync.lua",
+      "size": 4003,
+      "sha256": "68ac35972d98210e66b69e150969733c070f436f89bda051fe127624a375694a"
+    },
+    {
+      "path": "lib/SAMemory/init.lua",
+      "size": 1382,
+      "sha256": "fea742bcdc3a4330b33a30d68262761dac44fe073d7a28d005b3700308279731"
+    },
+    {
+      "path": "lib/SAMemory/Kernel.lua",
+      "size": 902,
+      "sha256": "7df1e5a0256520e504a6b1d60c076ce538113b6c02000d462e7dd67f0a5b17c3"
+    },
+    {
+      "path": "lib/SAMemory/metatype.lua",
+      "size": 1947,
+      "sha256": "b13a4f7032f132b57f621999fb82587d6f46b6879cc2d91902c575d3336f1801"
+    },
+    {
+      "path": "lib/SAMemory/shared.lua",
+      "size": 902,
+      "sha256": "7df1e5a0256520e504a6b1d60c076ce538113b6c02000d462e7dd67f0a5b17c3"
+    },
+    {
+      "path": "lib/SAMemory/game/AnimBlendFrameData.lua",
+      "size": 481,
+      "sha256": "4554df821ad54d0b05ac1a5fe1698062ba699a6f9977b7ee5c92c3730f7b2981"
+    },
+    {
+      "path": "lib/SAMemory/game/C2dEffect.lua",
+      "size": 2811,
+      "sha256": "1e1345c54aa50ce8bc294c363870eed690ec6303e30958c4396fcf6d25dbf03b"
+    },
+    {
+      "path": "lib/SAMemory/game/CAEAudioEntity.lua",
+      "size": 457,
+      "sha256": "1cb2ba5e917d22872abb9a131f25b28301354c578ab7717ca5f354364111fb2f"
+    },
+    {
+      "path": "lib/SAMemory/game/CAEPedAudioEntity.lua",
+      "size": 869,
+      "sha256": "4e71422d454e1606c34f796de7c264161dfb2bdb2ea6c6c7b8f97168c8593ced"
+    },
+    {
+      "path": "lib/SAMemory/game/CAEPedSpeechAudioEntity.lua",
+      "size": 1075,
+      "sha256": "361b2c419bda50dfcc13c52701da0aea65521018d3a4c1de7b5153001bcb0f2f"
+    },
+    {
+      "path": "lib/SAMemory/game/CAEPoliceScannerAudioEntity.lua",
+      "size": 429,
+      "sha256": "38858115c7fca1e778e89fa9d6f8a407c1a184d824b1ad3eae6963c974951cc6"
+    },
+    {
+      "path": "lib/SAMemory/game/CAESound.lua",
+      "size": 2506,
+      "sha256": "9ddbd5d9fa806e470577a5755486f496ee095bb6060871a630e626d1a43fc7a7"
+    },
+    {
+      "path": "lib/SAMemory/game/CAETwinLoopSoundEntity.lua",
+      "size": 925,
+      "sha256": "afc64ea4370d538998261c8123e4969ad0c623422cb6ca618c8f6e5abd7a00c4"
+    },
+    {
+      "path": "lib/SAMemory/game/CAEVehicleAudioEntity.lua",
+      "size": 3364,
+      "sha256": "eb02f0886c6a953cf0a82ddb64049d3f9f10e174752940ee02ff42493d809c24"
+    },
+    {
+      "path": "lib/SAMemory/game/CAEWeaponAudioEntity.lua",
+      "size": 870,
+      "sha256": "36d5a77e2283cbbc59fc63cf4862fc407602886729999fe56b77bc2dac7c41c8"
+    },
+    {
+      "path": "lib/SAMemory/game/CAttractorScanner.lua",
+      "size": 568,
+      "sha256": "6d7fee0b8e43416fbadb872f5b0f85b9957ebf9282d94e3d42b76304bcdcedbc"
+    },
+    {
+      "path": "lib/SAMemory/game/CAutomobile.lua",
+      "size": 3311,
+      "sha256": "736cffb9cf8d10b402f8be23594faedc5cacc5d4f2ff08831dad076e6097ea12"
+    },
+    {
+      "path": "lib/SAMemory/game/CAutoPilot.lua",
+      "size": 2062,
+      "sha256": "83313071252c53b82c21ed659d4f0fd21f3a5e7dc8efd9d868f835f75f4b2f3c"
+    },
+    {
+      "path": "lib/SAMemory/game/CBike.lua",
+      "size": 2295,
+      "sha256": "6ebe538dd4fef70e0eb93ad3e60fc006d8325dc715f63a5da65e7a403f127bb9"
+    },
+    {
+      "path": "lib/SAMemory/game/CBmx.lua",
+      "size": 586,
+      "sha256": "86793d8a4480423de113e82bc7b5ee1c112fdf73f9a8b104df0e792364f8c8d0"
+    },
+    {
+      "path": "lib/SAMemory/game/CBoat.lua",
+      "size": 1880,
+      "sha256": "a8c39f2568b4eed0021eed00db3e2f46960ba3f83f7bb22af3f141cd66c33431"
+    },
+    {
+      "path": "lib/SAMemory/game/CBouncingPanel.lua",
+      "size": 505,
+      "sha256": "c3672dd85ea97987e059e5d0ee4e31632117f1a7ede387fbf0f8d7ab339f32a9"
+    },
+    {
+      "path": "lib/SAMemory/game/CCam.lua",
+      "size": 4312,
+      "sha256": "6567cfa8b0d772de16f36327be79ad0f75d3497d56ca49b1dd9235d89c056994"
+    },
+    {
+      "path": "lib/SAMemory/game/CCamera.lua",
+      "size": 10415,
+      "sha256": "e481662a5f8e883fde7312948884d994b5bc3c3b24f813d2a6b4bcdd876e042d"
+    },
+    {
+      "path": "lib/SAMemory/game/CCamPathSplines.lua",
+      "size": 361,
+      "sha256": "d9544d34c4c54b68f10a3bfafd77291683b4e05538eb13144f5b6ce712bdfa52"
+    },
+    {
+      "path": "lib/SAMemory/game/CColBox.lua",
+      "size": 283,
+      "sha256": "a9c8202f9164c91ffaeb52ced6fda486bbbb8506e8241ec37d738a99462dae3a"
+    },
+    {
+      "path": "lib/SAMemory/game/CColDisk.lua",
+      "size": 533,
+      "sha256": "f31bba4eb2208ded8b8bbd22022f7c16f410960416ca7e4f9d49dbc77fa94dd2"
+    },
+    {
+      "path": "lib/SAMemory/game/CColLine.lua",
+      "size": 433,
+      "sha256": "4f160abd991dbfbc49a3aa25f010bcdbcfb6aff17d85ea6b45f74297410584f3"
+    },
+    {
+      "path": "lib/SAMemory/game/CCollisionData.lua",
+      "size": 1380,
+      "sha256": "8bf12ddcfa2b02a513e2f31fe3babaf33abd8f58f36d6618d82df016a70fd2ad"
+    },
+    {
+      "path": "lib/SAMemory/game/CColModel.lua",
+      "size": 484,
+      "sha256": "0862b055b83dfe15098dce8540f82eb913b1c1fedb56f058f0ebd47c3bd777fa"
+    },
+    {
+      "path": "lib/SAMemory/game/CColourSet.lua",
+      "size": 2127,
+      "sha256": "2de2cd20d3410ec0aa55fecf0a1c1b89a72c08d8e21ca15d6f6f6a54481b1b5c"
+    },
+    {
+      "path": "lib/SAMemory/game/CColPoint.lua",
+      "size": 816,
+      "sha256": "62349a8dbe1b84cff6afa60f6c5fdfc365930ba9204bfe3c05b881bf2ef35d05"
+    },
+    {
+      "path": "lib/SAMemory/game/CColSphere.lua",
+      "size": 491,
+      "sha256": "105b5860d7a4e0f93e947992aba0d396d2c2b2c00466094cac0b503434d8db18"
+    },
+    {
+      "path": "lib/SAMemory/game/CColTriangle.lua",
+      "size": 460,
+      "sha256": "829aee89319594c7c785af48f6e8b07963b5522e2338c4869a8f0caa7821c833"
+    },
+    {
+      "path": "lib/SAMemory/game/CColTrianglePlane.lua",
+      "size": 467,
+      "sha256": "4256588696832a644218e328251dc722cab6b26ac2c0a599a1878919d135f717"
+    },
+    {
+      "path": "lib/SAMemory/game/CCopPed.lua",
+      "size": 701,
+      "sha256": "026d0312a078db66bf7ea9c12210ba6ac68a1347a4f20791af7df64eda00911f"
+    },
+    {
+      "path": "lib/SAMemory/game/CCrimeBeingQd.lua",
+      "size": 567,
+      "sha256": "c054528b905a422db0d153ab9f94bce76821f2fe3b7ce26dd1f5ca9bc392d9ce"
+    },
+    {
+      "path": "lib/SAMemory/game/CCutsceneObject.lua",
+      "size": 671,
+      "sha256": "bea8076b6446246eedad5648fceca2701ec2364bc4e07cd870425e4b0f10a523"
+    },
+    {
+      "path": "lib/SAMemory/game/CDamageManager.lua",
+      "size": 2619,
+      "sha256": "69e36567da0a8aa13a27247766e32978e0da870907ff99234f7a294a1145afb3"
+    },
+    {
+      "path": "lib/SAMemory/game/CDoor.lua",
+      "size": 537,
+      "sha256": "3f90b4fde775cb4d0939d101225dddbe043ed1a83d6cc1ed7c652151e51ea9e8"
+    },
+    {
+      "path": "lib/SAMemory/game/CDummy.lua",
+      "size": 385,
+      "sha256": "5cc657da3346baf77f27c6ed0ae919617124fda62909485a19632589d43df190"
+    },
+    {
+      "path": "lib/SAMemory/game/CEntity.lua",
+      "size": 2114,
+      "sha256": "5a8f0543fdf84825d52b7b707a1851d56cfc6b0667217f392809992568c0f97e"
+    },
+    {
+      "path": "lib/SAMemory/game/CEntityScanner.lua",
+      "size": 469,
+      "sha256": "e3e697282570d4b785664c1bac4c7f13f7726e4acdd35b7c97d8c74db12e885a"
+    },
+    {
+      "path": "lib/SAMemory/game/CEventGroup.lua",
+      "size": 460,
+      "sha256": "98588b569e2d2d49c20a8dc739618016f1675349fb6459e25cd4d9c97b203575"
+    },
+    {
+      "path": "lib/SAMemory/game/CEventHandler.lua",
+      "size": 616,
+      "sha256": "8e03be5b6d69add7be69a4aadfb13880c8b145f197518c43518eb8bfb54f4a25"
+    },
+    {
+      "path": "lib/SAMemory/game/CEventScanner.lua",
+      "size": 651,
+      "sha256": "b8fe828fb2303e7f265ca9eb8dadc9e44dce2a3e3e0f74e70e6cedff7f9b5a3b"
+    },
+    {
+      "path": "lib/SAMemory/game/CFire.lua",
+      "size": 900,
+      "sha256": "1714fa63ca69333e9d38e4ec39bb58c06d3bcce5c1e86c8ac8b090eec6b2974b"
+    },
+    {
+      "path": "lib/SAMemory/game/CHeli.lua",
+      "size": 1380,
+      "sha256": "011b9311f86cdd11670c586665348c8903a10009e14dd85f3abbe9261e5cd63a"
+    },
+    {
+      "path": "lib/SAMemory/game/CMatrix.lua",
+      "size": 587,
+      "sha256": "b071e3bb1c86bfdf81fd5608abc8dff6f550719122f6a65b9388687610f946d8"
+    },
+    {
+      "path": "lib/SAMemory/game/CMatrixLink.lua",
+      "size": 565,
+      "sha256": "75f7e2303900f94634baac4dfb47dfaff0d1cdffe7f4b072190c4a7e4dd28ae0"
+    },
+    {
+      "path": "lib/SAMemory/game/CObject.lua",
+      "size": 2551,
+      "sha256": "3f0093f902b9963709499805c73250532c4fc1a2467b66e5e50845401eade15e"
+    },
+    {
+      "path": "lib/SAMemory/game/CObjectInfo.lua",
+      "size": 1036,
+      "sha256": "b552456b4890a770e448d5bcf20c70e3d1b14088cdf98b0eacd2ad2e45baa7f5"
+    },
+    {
+      "path": "lib/SAMemory/game/CompressedVector.lua",
+      "size": 394,
+      "sha256": "c71c790c3812dd8550e2a9b337cc6c8e48c9aa7a90dea6bc4cf0ea031b301434"
+    },
+    {
+      "path": "lib/SAMemory/game/CPed.lua",
+      "size": 8560,
+      "sha256": "4c993349e4cbcd6549cec1a54c5c50d2c0ed6b287f8d26132dd6ea47af014cf0"
+    },
+    {
+      "path": "lib/SAMemory/game/CPedAcquaintance.lua",
+      "size": 463,
+      "sha256": "07a7aa12f93e8f6b0fc58a7bebf0371becaf3784dd3a5658cfedbc0985b71fd5"
+    },
+    {
+      "path": "lib/SAMemory/game/CPedClothesDesc.lua",
+      "size": 447,
+      "sha256": "cb6b06ba0cff84cf9651ead1fc19400dfbfae842dc15f1bce654857b553681ba"
+    },
+    {
+      "path": "lib/SAMemory/game/CPedIK.lua",
+      "size": 515,
+      "sha256": "27fdbb7fa82ce90c088ce7971d0217eb3172347c94b44337a91adfdfffd9a774"
+    },
+    {
+      "path": "lib/SAMemory/game/CPedIntelligence.lua",
+      "size": 1429,
+      "sha256": "39fb0acef3807182a7c40129e704cee08aa10de3a82b9b72891167cbbcabbfbd"
+    },
+    {
+      "path": "lib/SAMemory/game/CPhysical.lua",
+      "size": 2934,
+      "sha256": "16061335f10fffa820da9f39f4c0e33dddadc0ba286ac00cdda1a6f926925df8"
+    },
+    {
+      "path": "lib/SAMemory/game/CPlaceable.lua",
+      "size": 471,
+      "sha256": "f749961fe56690eafde838c2a315b6d2ea999c47f5de82998532c25af4b5b2aa"
+    },
+    {
+      "path": "lib/SAMemory/game/CPlane.lua",
+      "size": 1092,
+      "sha256": "0031347db2ef11f6302e7454d9f677311e61f4fe3256255c04c05318b806a9b1"
+    },
+    {
+      "path": "lib/SAMemory/game/CPlayerData.lua",
+      "size": 2603,
+      "sha256": "5a023d765c92a161e46ffd6c8274bc2038399f52de20732f4720869eaf387476"
+    },
+    {
+      "path": "lib/SAMemory/game/CPlayerInfo.lua",
+      "size": 2817,
+      "sha256": "310d170326086e49cd109e78d380b7ebd3d2522b8d71d51488a4782ed1130842"
+    },
+    {
+      "path": "lib/SAMemory/game/CPlayerPed.lua",
+      "size": 423,
+      "sha256": "37d7d2772e19d70f3025afa28312c718f2fc00f1f89eb90756837d82fd643319"
+    },
+    {
+      "path": "lib/SAMemory/game/CPool.lua",
+      "size": 800,
+      "sha256": "42375ef89ead8810154103fe7d204baac1692a70c53bde3517330780da8e0859"
+    },
+    {
+      "path": "lib/SAMemory/game/CQueuedMode.lua",
+      "size": 435,
+      "sha256": "3ae218651fe63067400ceb2b96ba4a6666ed5013f68a9324b6c6ee3d6f138751"
+    },
+    {
+      "path": "lib/SAMemory/game/CRealTimeShadow.lua",
+      "size": 755,
+      "sha256": "43ca32fdbb18f4a87243334620b862fab6b5ed094139448a5dd169aa8935d91d"
+    },
+    {
+      "path": "lib/SAMemory/game/CReference.lua",
+      "size": 401,
+      "sha256": "78d3c4348cd7761480e892678c712fcc23b0192dbdba35c02f86627cf871c7db"
+    },
+    {
+      "path": "lib/SAMemory/game/CReferences.lua",
+      "size": 381,
+      "sha256": "df71b82fad6bf169085fd50034f0cc1c6bdb401ae2aedf1a13c5f41f56143fde"
+    },
+    {
+      "path": "lib/SAMemory/game/CRideAnimData.lua",
+      "size": 509,
+      "sha256": "1e18d82b1a9aabe98b44eb2495b4e857e8fac4b43e56634541937a8889f2a10e"
+    },
+    {
+      "path": "lib/SAMemory/game/CShadowCamera.lua",
+      "size": 424,
+      "sha256": "6d4d03635f4d2f9bd521c9d5d973d91690eda4e81e4a6de9f1fd138bb1635391"
+    },
+    {
+      "path": "lib/SAMemory/game/CSimpleTransform.lua",
+      "size": 409,
+      "sha256": "2598f75b880d975cd7661ec5cd03e7285bb1f9cdbf274adc1697490d28a2ecad"
+    },
+    {
+      "path": "lib/SAMemory/game/CStoredCollPoly.lua",
+      "size": 458,
+      "sha256": "551ec916a6b8f64ac76a157d92df6a192a0580105fb5f87203756462c1b3e8a7"
+    },
+    {
+      "path": "lib/SAMemory/game/CTask.lua",
+      "size": 363,
+      "sha256": "42f1dce664590c8ba74175e87aac8ce3dae8866a58f12f440f20047100fdd3cc"
+    },
+    {
+      "path": "lib/SAMemory/game/CTaskManager.lua",
+      "size": 461,
+      "sha256": "f7d6ed62948d54111885023e8c8a41897599220616e5d34375185404a25ea7f7"
+    },
+    {
+      "path": "lib/SAMemory/game/CTaskTimer.lua",
+      "size": 427,
+      "sha256": "a7b17009346c6da1976d81b802d35d999ae6ca0cff2f9cc1c30667e8ee431c69"
+    },
+    {
+      "path": "lib/SAMemory/game/CTrain.lua",
+      "size": 2521,
+      "sha256": "6cc10e4eeae486c399b31841368cb42295c495b380c1b9d7323e1c2cf848efee"
+    },
+    {
+      "path": "lib/SAMemory/game/CTransmission.lua",
+      "size": 738,
+      "sha256": "84cd478b8f991130e571bd5e5f2c2553c00c34c727c1c6896871862209472cdc"
+    },
+    {
+      "path": "lib/SAMemory/game/CVehicle.lua",
+      "size": 8730,
+      "sha256": "6c3f603ffd3f9c7c99a398e21d91c254014cc105e54626cf5c32953690b1d283"
+    },
+    {
+      "path": "lib/SAMemory/game/CWanted.lua",
+      "size": 1477,
+      "sha256": "9f2d07ef1963343d05af254c6670b77df619ab3a3fd4c1f7ffa610a15f96758c"
+    },
+    {
+      "path": "lib/SAMemory/game/CWeapon.lua",
+      "size": 763,
+      "sha256": "34904df673aab9e1a32af9448dd3de26915239e7f249fb8b97433354b9d7d582"
+    },
+    {
+      "path": "lib/SAMemory/game/CWeaponEffects.lua",
+      "size": 605,
+      "sha256": "93c089688e8ae1ffef18ffd37e0d42465284f3201b6773b7a91aec59d191031e"
+    },
+    {
+      "path": "lib/SAMemory/game/CWeaponInfo.lua",
+      "size": 1958,
+      "sha256": "d0decdda0d940cca6decc6d119c8d213b7b80dcfa2aff0dff244688660b2702c"
+    },
+    {
+      "path": "lib/SAMemory/game/definitions.lua",
+      "size": 6937,
+      "sha256": "dfaf59a27fb1c667ae2b909ff81732238ed1a62c30646b65edb07715f2d58352"
+    },
+    {
+      "path": "lib/SAMemory/game/eCamMode.lua",
+      "size": 2245,
+      "sha256": "a846c1163f03fd3327ce6413c0659e477e7589937fac7d8d80771396637a02a3"
+    },
+    {
+      "path": "lib/SAMemory/game/ePedState.lua",
+      "size": 1789,
+      "sha256": "800058b3a3d6807409ff20ca0a82f49d829e1e7e371202daca433ad39d0d2c48"
+    },
+    {
+      "path": "lib/SAMemory/game/ePedType.lua",
+      "size": 948,
+      "sha256": "4fe3c0a641184c4c02bd3def35cee3f00f8b161da617ae45e4fbc3f8cf3044ac"
+    },
+    {
+      "path": "lib/SAMemory/game/eVehicleHandlingFlags.lua",
+      "size": 1539,
+      "sha256": "de385ca337523535b7b072b3fb2e08e298fde121462141319b7baf255b35e1b7"
+    },
+    {
+      "path": "lib/SAMemory/game/eVehicleHandlingModelFlags.lua",
+      "size": 1872,
+      "sha256": "16f1d049248b5948593debf47ae774019314c718c134ea6cf1f81cacb0466120"
+    },
+    {
+      "path": "lib/SAMemory/game/eWeaponType.lua",
+      "size": 1582,
+      "sha256": "f2c876ebf116790eed409b6f562eda00a47a3c5f90a056c7f886a670546aff9e"
+    },
+    {
+      "path": "lib/SAMemory/game/FxSystem_c.lua",
+      "size": 1186,
+      "sha256": "42f0962e51658e7d72d4bace8ce17ca7d54d118c132de0196d9648c6dc5f6c12"
+    },
+    {
+      "path": "lib/SAMemory/game/matrix.lua",
+      "size": 2112,
+      "sha256": "198d4e1e0aa59c0407d079e84d375d8e83b636a7921e87ed7ed28d62911b9ffb"
+    },
+    {
+      "path": "lib/SAMemory/game/quaternion.lua",
+      "size": 1437,
+      "sha256": "3510837e046429c1c76530101c072de6b44be9de03a7fe48c0bca4ccc9e2ec9c"
+    },
+    {
+      "path": "lib/SAMemory/game/RenderWare.lua",
+      "size": 8550,
+      "sha256": "9e3a75d5ea3eb2dd2769ca5ec2f99a3a7736b0df2909ff7c8975b7d44ffc69f2"
+    },
+    {
+      "path": "lib/SAMemory/game/rkeys.lua",
+      "size": 16588,
+      "sha256": "8df03f4f26a750da32b27da8e045094bcacd239edbc33c0e8a26c7c8c71141d7"
+    },
+    {
+      "path": "lib/SAMemory/game/tBoatHandlingData.lua",
+      "size": 626,
+      "sha256": "4aa3e9e1e97b7d009961db256b1921fdf84de14eace7307af43bf76e39785afb"
+    },
+    {
+      "path": "lib/SAMemory/game/tFlyingHandlingData.lua",
+      "size": 732,
+      "sha256": "3903d1fe0f224f3038f55a61290a3d2dc659dcada150e50698fa547f605c7771"
+    },
+    {
+      "path": "lib/SAMemory/game/tHandlingData.lua",
+      "size": 4115,
+      "sha256": "bc0f7a550daf1980817375c10da8700f88fcbe5345bbb02d4e638dfaea974c81"
+    },
+    {
+      "path": "lib/SAMemory/game/tTransmissionGear.lua",
+      "size": 422,
+      "sha256": "9669555d43ea9b53bb8a599b9b770b7f4ba196d7e34e200199b6891b31660c34"
+    },
+    {
+      "path": "lib/SAMemory/game/vector2d.lua",
+      "size": 1186,
+      "sha256": "2a96277c0ed006efaa634915d642ad2509369b8de8852c1e8a385f5673676cf7"
+    },
+    {
+      "path": "lib/SAMemory/game/vector3d.lua",
+      "size": 2224,
+      "sha256": "9ba5fe9cd86138ba7eab72577ca819d68b387a67c724826e362bd41c3ecf6d75"
+    },
+    {
+      "path": "lib/samp/bitstream_io.lua",
+      "size": 6888,
+      "sha256": "bdc86d8ce69a6b6fd456f0d242224030ba6c91def98919d49ae06423600da689"
+    },
+    {
+      "path": "lib/samp/core.lua",
+      "size": 3739,
+      "sha256": "dc93cf932b15a44c295cfb69fa6bf3651a6ad04c1ec30924eac9f7c363854a1a"
+    },
+    {
+      "path": "lib/samp/events.lua",
+      "size": 26562,
+      "sha256": "b0d052dd38aa8584c0de376558232e8947aae6a63e50a36182613a157c19c882"
+    },
+    {
+      "path": "lib/samp/events_core.lua",
+      "size": 5644,
+      "sha256": "e446ff32d3d1a8526a9e78bf7fed3fb70e9716ad4b78298d2c817aa367612c98"
+    },
+    {
+      "path": "lib/samp/extra_types.lua",
+      "size": 1528,
+      "sha256": "a61653de6e370ab6913d8f563d505c01fd74f811602ca80f33164ec3723bb701"
+    },
+    {
+      "path": "lib/samp/handlers.lua",
+      "size": 16879,
+      "sha256": "22b5bbbc1590fbc10dafffb7007b8398b84f0463ba53add468633df73c0b8d6a"
+    },
+    {
+      "path": "lib/samp/raknet.lua",
+      "size": 11945,
+      "sha256": "f114023602a6799cd9041347f9ba65d3a27a576af5e9c2a621d59d91e2215920"
+    },
+    {
+      "path": "lib/samp/synchronization.lua",
+      "size": 4097,
+      "sha256": "9a41d729323efd63e298020d12b7b7cfbd447b6e7113592fa6eb6d0e88797344"
+    },
+    {
+      "path": "lib/samp/utils.lua",
+      "size": 1340,
+      "sha256": "9b210c87ccfc3981200e71f9893bdf89861bbd38eb069a32ed2efc897fd77356"
+    },
+    {
+      "path": "lib/samp/events/bitstream_io.lua",
+      "size": 6888,
+      "sha256": "bdc86d8ce69a6b6fd456f0d242224030ba6c91def98919d49ae06423600da689"
+    },
+    {
+      "path": "lib/samp/events/core.lua",
+      "size": 3739,
+      "sha256": "dc93cf932b15a44c295cfb69fa6bf3651a6ad04c1ec30924eac9f7c363854a1a"
+    },
+    {
+      "path": "lib/samp/events/extra_types.lua",
+      "size": 1528,
+      "sha256": "a61653de6e370ab6913d8f563d505c01fd74f811602ca80f33164ec3723bb701"
+    },
+    {
+      "path": "lib/samp/events/handlers.lua",
+      "size": 16879,
+      "sha256": "22b5bbbc1590fbc10dafffb7007b8398b84f0463ba53add468633df73c0b8d6a"
+    },
+    {
+      "path": "lib/samp/events/utils.lua",
+      "size": 1340,
+      "sha256": "9b210c87ccfc3981200e71f9893bdf89861bbd38eb069a32ed2efc897fd77356"
+    },
+    {
+      "path": "lib/sampapi/CMatrix.lua",
+      "size": 661,
+      "sha256": "5aa54147ef5dfa7f55699cad8a51f415591abc89429e9f39a89170c4ffdbdd10"
+    },
+    {
+      "path": "lib/sampapi/CPoint.lua",
+      "size": 499,
+      "sha256": "ae99bc77e5f2ea125534900b02c3f49cd360f25092d9e55731413718b55dac99"
+    },
+    {
+      "path": "lib/sampapi/CRect.lua",
+      "size": 551,
+      "sha256": "c01dbe5a2ae330d49898ad64c932951ae6fe247db36641b99f5f5d093f1ce4c1"
+    },
+    {
+      "path": "lib/sampapi/CVector.lua",
+      "size": 532,
+      "sha256": "ea160a03ca33be0cb9633a6a1eb7e90e4c6610b065e896c97f3aa78d5f96ecd0"
+    },
+    {
+      "path": "lib/sampapi/init.lua",
+      "size": 3436,
+      "sha256": "4a282d9edbb41646cbd1c82b4268cc6335698f301efa609437172b6ed423f507"
+    },
+    {
+      "path": "lib/sampapi/metatype.lua",
+      "size": 1851,
+      "sha256": "141a7b0af6df0c20d6dc7d8de58d631bc874164db850a7d8cb9e8e3fdb339b5d"
+    },
+    {
+      "path": "lib/sampapi/shared.lua",
+      "size": 1462,
+      "sha256": "6a3321e65d948d4e6f6d5545fc9a5d91c40455335ffa5fd1f00041467b4a9de0"
+    },
+    {
+      "path": "lib/sampapi/v037r1/AimStuff.lua",
+      "size": 4382,
+      "sha256": "b9f38d1a1d01fad0b6fa0cd397bd7b97e43a5c5664a48f7db38ba4ddec308956"
+    },
+    {
+      "path": "lib/sampapi/v037r1/Animation.lua",
+      "size": 976,
+      "sha256": "1827672ce8a50dbb528a3b9186b4587145033d4891b196623760b242ef3ec333"
+    },
+    {
+      "path": "lib/sampapi/v037r1/CActor.lua",
+      "size": 2393,
+      "sha256": "46cffb06f4d789ecc3b2afa07bd6b581f713b01e86c8f3e0a1ddd088e19e146e"
+    },
+    {
+      "path": "lib/sampapi/v037r1/CActorPool.lua",
+      "size": 2256,
+      "sha256": "0b1c241f76a4b4f125d4eb4f9a46b903a7a78fff05936930df9ba88b31f1e3a3"
+    },
+    {
+      "path": "lib/sampapi/v037r1/CAudio.lua",
+      "size": 1058,
+      "sha256": "61ac6fd0687f3350f30d8b4635a6261744e9df944d8544d517ad4a4a721e733f"
+    },
+    {
+      "path": "lib/sampapi/v037r1/CAudioStream.lua",
+      "size": 3012,
+      "sha256": "fe9fc453bf1b3391ec1b598dad872c65f35e724e3ba967c7e7d90840a89b215e"
+    },
+    {
+      "path": "lib/sampapi/v037r1/CCamera.lua",
+      "size": 2407,
+      "sha256": "c30ad457a4b0969d85e03031f8ba2962b6a7df13c0f7e6b457ff8e00872e5375"
+    },
+    {
+      "path": "lib/sampapi/v037r1/CChat.lua",
+      "size": 4821,
+      "sha256": "98d1b04b39763c5004ea9b28562a9b9153c37cf5eaca75a83943334e0166a4b4"
+    },
+    {
+      "path": "lib/sampapi/v037r1/CChatBubble.lua",
+      "size": 1673,
+      "sha256": "b92fcb6fd46b1b5eff5db9f6dacad3463f35be35b47cb1ff64d84ab513f84a23"
+    },
+    {
+      "path": "lib/sampapi/v037r1/CConfig.lua",
+      "size": 3525,
+      "sha256": "b3d6b8a565d9a037fbd8c76b6cc89344869724a8e7ab3a010d02afba270fa468"
+    },
+    {
+      "path": "lib/sampapi/v037r1/CDeathWindow.lua",
+      "size": 3030,
+      "sha256": "f5c41d9efda9ec80f6420a796ad7a837549f6ae1c18236d11d22254e46c9d9b1"
+    },
+    {
+      "path": "lib/sampapi/v037r1/CDialog.lua",
+      "size": 2535,
+      "sha256": "17f7ef97a708ba90d017417c71e3ddbae3f5e4d3129c9f600929012b0845d1f5"
+    },
+    {
+      "path": "lib/sampapi/v037r1/CEntity.lua",
+      "size": 4259,
+      "sha256": "96fa3b2682fb302746996d1b61a2beb90ce011483101b92eb80f8152fcafcb6e"
+    },
+    {
+      "path": "lib/sampapi/v037r1/CFonts.lua",
+      "size": 2434,
+      "sha256": "d88fc8663ab5ab2bda9f73bf58f66a05699ea0f99561d0c673955fb18b30366e"
+    },
+    {
+      "path": "lib/sampapi/v037r1/CGame.lua",
+      "size": 9556,
+      "sha256": "a6c9b18fe39334393180779e731aa258a323a140bb8b4fda9c665d95bac44e39"
+    },
+    {
+      "path": "lib/sampapi/v037r1/CGangZonePool.lua",
+      "size": 2060,
+      "sha256": "c67fb5085bd32671c680c6f72f8093bda43fca6bab2a324371d2f4583c05c451"
+    },
+    {
+      "path": "lib/sampapi/v037r1/CHelpDialog.lua",
+      "size": 1274,
+      "sha256": "7b545777bc459ade8f2e4617619d9b180bdec12a9d812ad1645c3e12d5e1ac11"
+    },
+    {
+      "path": "lib/sampapi/v037r1/CHttpClient.lua",
+      "size": 3309,
+      "sha256": "64644815ca35a2eb56c012c685a0094891442525e6fec60bb21c356e87e1ca2e"
+    },
+    {
+      "path": "lib/sampapi/v037r1/CInput.lua",
+      "size": 2991,
+      "sha256": "a0dca76ca413053f4cfabfac21082ec5cd1fc6aea5e592fff048f954e205c121"
+    },
+    {
+      "path": "lib/sampapi/v037r1/CLabel.lua",
+      "size": 1835,
+      "sha256": "260798c5029a9a018de79f8100a1547be3a71520591bcc947be6c1a96db043eb"
+    },
+    {
+      "path": "lib/sampapi/v037r1/CLabelPool.lua",
+      "size": 1861,
+      "sha256": "fcfc4d2ef8e242a22a8a4e53af05085de7b3f36c24f6d750bbd025890db7fe96"
+    },
+    {
+      "path": "lib/sampapi/v037r1/CLicensePlate.lua",
+      "size": 1984,
+      "sha256": "12a7c540c6b618a42048fe9fd7e57bc56c08c21d3845888b72a801ee3b046024"
+    },
+    {
+      "path": "lib/sampapi/v037r1/CLocalPlayer.lua",
+      "size": 10921,
+      "sha256": "a73d4a5766672f6f7e47b5bcae2705dfc84e502b3c00b20587a1f00db8a0afbd"
+    },
+    {
+      "path": "lib/sampapi/v037r1/CMenu.lua",
+      "size": 2358,
+      "sha256": "238ec2bc156defc47ee462a9b709d5c50b686cd410afbf8ddc63e3df9d671cc8"
+    },
+    {
+      "path": "lib/sampapi/v037r1/CMenuPool.lua",
+      "size": 1880,
+      "sha256": "2923184bc22a7971dd424c4feee32884bf153f07d25780f2d4dbb85cf219adaa"
+    },
+    {
+      "path": "lib/sampapi/v037r1/CNetGame.lua",
+      "size": 9720,
+      "sha256": "0b354fde4638251b77fc5bc7f5a758274ce62f88d460e3187603fdde030fc76a"
+    },
+    {
+      "path": "lib/sampapi/v037r1/CNetStats.lua",
+      "size": 1449,
+      "sha256": "b72ded487795d9339cf103ef47ce908c062997e8373d790592e6c411ac505840"
+    },
+    {
+      "path": "lib/sampapi/v037r1/CObject.lua",
+      "size": 5222,
+      "sha256": "1a18498ffc0c7949898c43ffe3071b607d655814a119045ae2224f015e186674"
+    },
+    {
+      "path": "lib/sampapi/v037r1/CObjectEdit.lua",
+      "size": 4928,
+      "sha256": "aeb5b2a173005821bb801d837a16c564ebc9159a6006b13015fd6fe97bb686f8"
+    },
+    {
+      "path": "lib/sampapi/v037r1/CObjectMaterialText.lua",
+      "size": 1949,
+      "sha256": "44efa37a92bb37376ddf717b7e86582b9345b2cb836dfd53b3b01b06ee11cc8c"
+    },
+    {
+      "path": "lib/sampapi/v037r1/CObjectPool.lua",
+      "size": 2666,
+      "sha256": "93dfa6655c56d08efa112cc28609680fa38a093244ad7949c4a5958a55496817"
+    },
+    {
+      "path": "lib/sampapi/v037r1/CObjectSelection.lua",
+      "size": 1857,
+      "sha256": "b0d300fd287bc4bba89a6a9fbb19fdb9ad3d6c3db82906c038861b7c38cb81f0"
+    },
+    {
+      "path": "lib/sampapi/v037r1/Commands.lua",
+      "size": 3085,
+      "sha256": "1aaeccbf710d55e4927aa94469f98acbe18fad24f76f07dd61987395c1947357"
+    },
+    {
+      "path": "lib/sampapi/v037r1/ControllerState.lua",
+      "size": 1491,
+      "sha256": "c80137217bbc1bf039243b52e7723fa7e60745b37eca055c2629026dddb4fd2a"
+    },
+    {
+      "path": "lib/sampapi/v037r1/CPed.lua",
+      "size": 12200,
+      "sha256": "cd5caf3ea3f516f3c94ba84e62c3b5db64c6474ab00b0c0160cae89565387b3a"
+    },
+    {
+      "path": "lib/sampapi/v037r1/CPickupPool.lua",
+      "size": 2427,
+      "sha256": "91c2384f22b51368f0f4c4870fce756abc2b03fbbfe8ecb21b6be422516344b9"
+    },
+    {
+      "path": "lib/sampapi/v037r1/CPlayerInfo.lua",
+      "size": 1655,
+      "sha256": "d9d8e0d7b9e7ed5f1beb28bb4e5cc18e3d4bd6d3603a984cd233c9d3fed44eba"
+    },
+    {
+      "path": "lib/sampapi/v037r1/CPlayerPool.lua",
+      "size": 4519,
+      "sha256": "40233be546c34f5283cf4d69953bed49af1f979a1f412b96ddf89ba6e0954e9f"
+    },
+    {
+      "path": "lib/sampapi/v037r1/CPlayerTags.lua",
+      "size": 2241,
+      "sha256": "3c56db1f4ed3a5493212cee8cce23d999d7e6f971662fe9ae698a481c6dbc478"
+    },
+    {
+      "path": "lib/sampapi/v037r1/CRemotePlayer.lua",
+      "size": 7387,
+      "sha256": "b411b30c6881c1a1fb78e29baefac6a4f275f14ea010670435d9caa409268cc5"
+    },
+    {
+      "path": "lib/sampapi/v037r1/CScoreboard.lua",
+      "size": 2223,
+      "sha256": "2c50fba7fab9130edbd8b63bc42cd3b08a60d8500db0f25b7181424daefed59f"
+    },
+    {
+      "path": "lib/sampapi/v037r1/CSpawnScreen.lua",
+      "size": 1997,
+      "sha256": "296dbd2bdbce1dfdd0e209a248b35077936f5f3ff4844428e56be551f2ec7e6a"
+    },
+    {
+      "path": "lib/sampapi/v037r1/CSrvNetStats.lua",
+      "size": 1527,
+      "sha256": "f9e52803c8589380214c7e92da9d636a8da1ebf5bc35ae5a079c0cdf599f8b5e"
+    },
+    {
+      "path": "lib/sampapi/v037r1/CTextDraw.lua",
+      "size": 3390,
+      "sha256": "0d5f2519e92bcda76b110d8d4764f8f88e5096ee954dc5ae661029ac3b355ca1"
+    },
+    {
+      "path": "lib/sampapi/v037r1/CTextDrawPool.lua",
+      "size": 1643,
+      "sha256": "0199da2c2744f6da72192fba8e226962c4d1bf3dfe3d886a95dac79c02e608a1"
+    },
+    {
+      "path": "lib/sampapi/v037r1/CTextDrawSelection.lua",
+      "size": 1736,
+      "sha256": "fa8fc2385c955a35c9a654db3461a5da3c9c06a423fbeeea4e571047539a06a2"
+    },
+    {
+      "path": "lib/sampapi/v037r1/CVehicle.lua",
+      "size": 7229,
+      "sha256": "1c8717b2ef03c42b10fa1bdba9e73559eee2ccbba2d3e224150021361c32f00a"
+    },
+    {
+      "path": "lib/sampapi/v037r1/CVehiclePool.lua",
+      "size": 4074,
+      "sha256": "3d0e6f63907b819668a255acabf6e4cd60e13f9bd451a18a8c6e291508614d8f"
+    },
+    {
+      "path": "lib/sampapi/v037r1/Debug.lua",
+      "size": 1137,
+      "sha256": "4d825aefe74e398cf6f3d2250c661bc3e1bad5a786ea3af63332907f732eae35"
+    },
+    {
+      "path": "lib/sampapi/v037r1/DebugScript.lua",
+      "size": 1637,
+      "sha256": "0edb4e3428e205ca518dad82c9790673d32bc69f09770f9f7912cd6c70408bf1"
+    },
+    {
+      "path": "lib/sampapi/v037r1/Exception.lua",
+      "size": 1569,
+      "sha256": "a5adf5810d62a80b124f4ce222c03ee7d2a3fc09a72cedd5b1b9bc88b06a81b9"
+    },
+    {
+      "path": "lib/sampapi/v037r1/GUI.lua",
+      "size": 2456,
+      "sha256": "f88569da1c0d09ae5c112cab4abd380c9b8bf3aa2a1d276859ae04037737e332"
+    },
+    {
+      "path": "lib/sampapi/v037r1/InputHandler.lua",
+      "size": 1481,
+      "sha256": "714e5d5ae957fc2eb55cb16e370ab6cf9c81e1aae4103461e49f46ebb5e0639e"
+    },
+    {
+      "path": "lib/sampapi/v037r1/KeyStuff.lua",
+      "size": 2576,
+      "sha256": "d0518a14a0da5457d45089dc6b0cf1b79d2d95e7cf3e3743d2c72bc2ad3272b7"
+    },
+    {
+      "path": "lib/sampapi/v037r1/RPC.lua",
+      "size": 3810,
+      "sha256": "f8b90c6e6aca69ceda0b669a2c2c01fd1167b37667df38bbf74962b3bca0e7ea"
+    },
+    {
+      "path": "lib/sampapi/v037r1/Scripting.lua",
+      "size": 1786,
+      "sha256": "a5c038c22393fdeaad5ba17ad5eea5073e0bb3face4d1e944e7efa12f0a08903"
+    },
+    {
+      "path": "lib/sampapi/v037r1/Settings.lua",
+      "size": 1387,
+      "sha256": "dc06e656d429b1c9dbf34c80d0a2b813754060b3b77454aa57718f34f05f0dd9"
+    },
+    {
+      "path": "lib/sampapi/v037r1/SpecialAction.lua",
+      "size": 1223,
+      "sha256": "9d5a3b5c918a486b6c823d82f6a30d843a370981fb12c9cd755c3c9ade442b27"
+    },
+    {
+      "path": "lib/sampapi/v037r1/Synchronization.lua",
+      "size": 3994,
+      "sha256": "be63865173da594fb7a7e4aa9a98ef5f075345f686a7645569fecdb2f0cfb0dd"
+    },
+    {
+      "path": "lib/sampapi/v037r1/v037r1.zip",
+      "size": 55658,
+      "sha256": "603e169b72b7c34574a3408f3fd8bba099403959fbfb5c442707d5eed233975b"
+    },
+    {
+      "path": "lib/sampapi/v037r1/VehicleSelection.lua",
+      "size": 1539,
+      "sha256": "0446ae515970902028d50ca16870b2c330b29e5d8060a516c7a9c152aa0a3529"
+    },
+    {
+      "path": "lib/sampapi/v037r3/AimStuff.lua",
+      "size": 4413,
+      "sha256": "1445e51409f28fc976f91d69a681749c6b29debb3502a82afcf45a4af9e0b35f"
+    },
+    {
+      "path": "lib/sampapi/v037r3/Animation.lua",
+      "size": 976,
+      "sha256": "1827672ce8a50dbb528a3b9186b4587145033d4891b196623760b242ef3ec333"
+    },
+    {
+      "path": "lib/sampapi/v037r3/CActor.lua",
+      "size": 1780,
+      "sha256": "d982da0f211884211334574da6adf6a0a7bf3ed0ba680be0711ae3b9cb834fb5"
+    },
+    {
+      "path": "lib/sampapi/v037r3/CActorPool.lua",
+      "size": 2250,
+      "sha256": "20136d08b320407ffa1f4ef8aef5cfdf11c11d155db516ef9e2e6a34ccb768e7"
+    },
+    {
+      "path": "lib/sampapi/v037r3/CAudio.lua",
+      "size": 1667,
+      "sha256": "ca0afb44f4942f58d79a83d9149c2cc73167ab7d9743341b7c4b15b235533e92"
+    },
+    {
+      "path": "lib/sampapi/v037r3/CAudioStream.lua",
+      "size": 3014,
+      "sha256": "10faa4f9f1f1187eac0b45cf5960f2bcaab8540f2a2ddb9dd0822e4a43e76007"
+    },
+    {
+      "path": "lib/sampapi/v037r3/CCamera.lua",
+      "size": 2494,
+      "sha256": "2b068b437594fe892f25fdb3fa1e37307dfb0fe9d86f76f6194360c1f24d484c"
+    },
+    {
+      "path": "lib/sampapi/v037r3/CChat.lua",
+      "size": 4795,
+      "sha256": "8841bfe12e79af9a6944066a99ab4bf7a275d81e97b11fe4bd46da4f9da7a2f3"
+    },
+    {
+      "path": "lib/sampapi/v037r3/CChatBubble.lua",
+      "size": 1673,
+      "sha256": "f9cff3603bcc0869981dd9ef2f8012df764bfe3c54d74d36050f56ab5d1aaf80"
+    },
+    {
+      "path": "lib/sampapi/v037r3/CConfig.lua",
+      "size": 3519,
+      "sha256": "1195b6ec1d292cb82fa27bd246323181567140e5f57e01b33c9162bd996968cb"
+    },
+    {
+      "path": "lib/sampapi/v037r3/CDeathWindow.lua",
+      "size": 3026,
+      "sha256": "eb7a55f49b61700acfa140ee0248289a083a5463d1be8455ca4c4253a0e4966c"
+    },
+    {
+      "path": "lib/sampapi/v037r3/CDialog.lua",
+      "size": 2489,
+      "sha256": "9c3dd506edeb2fad4252e095dde232eb36d76121048dc6f1a4831db30b473ce7"
+    },
+    {
+      "path": "lib/sampapi/v037r3/CEntity.lua",
+      "size": 3954,
+      "sha256": "616d441e569351892c7c550e6024bd60dcfa1685655a73afa0215000a827e911"
+    },
+    {
+      "path": "lib/sampapi/v037r3/CFont.lua",
+      "size": 888,
+      "sha256": "9ac793f36ed61f7f8cec9ec37d3be024b88ed7ae360a079b74d46cbe5471bc16"
+    },
+    {
+      "path": "lib/sampapi/v037r3/CFonts.lua",
+      "size": 2449,
+      "sha256": "24f81df2530d46c23d6316df855a26a54797a31848152c4a09b3589a3c90c090"
+    },
+    {
+      "path": "lib/sampapi/v037r3/CGame.lua",
+      "size": 9590,
+      "sha256": "4db54b1498f07bbeb6e7e836685808c07849dd5e1fa3171f1f2c88bf843e4a2f"
+    },
+    {
+      "path": "lib/sampapi/v037r3/CGangZonePool.lua",
+      "size": 2060,
+      "sha256": "17588fe1e29f2f7cd8f6fc20a3249198b2635c0c8a4cb581ee2083abdedcff8d"
+    },
+    {
+      "path": "lib/sampapi/v037r3/CHelpDialog.lua",
+      "size": 1274,
+      "sha256": "177e80f7c9574df7a474317cd791e705235f6b7f3d55a9e3cfe65fc3a97c1bb2"
+    },
+    {
+      "path": "lib/sampapi/v037r3/CHttpClient.lua",
+      "size": 3309,
+      "sha256": "28e009c9de7ce3df3df0b6f04b94282b9424eb2aebdce9d5f5dfbaaceae4fdb3"
+    },
+    {
+      "path": "lib/sampapi/v037r3/CInput.lua",
+      "size": 2992,
+      "sha256": "5ab0abf9a38b6c7572d0991fb65e1227df51bc34be0df2c2d950afdda49d9866"
+    },
+    {
+      "path": "lib/sampapi/v037r3/CLabel.lua",
+      "size": 1835,
+      "sha256": "8e6f8a3313aa5417f1b311a9d5cbb381531549cf492dbf253dd3b7b93a6573ab"
+    },
+    {
+      "path": "lib/sampapi/v037r3/CLabelPool.lua",
+      "size": 1861,
+      "sha256": "fcfc4d2ef8e242a22a8a4e53af05085de7b3f36c24f6d750bbd025890db7fe96"
+    },
+    {
+      "path": "lib/sampapi/v037r3/CLicensePlate.lua",
+      "size": 1984,
+      "sha256": "aba460e20cae569c0d1dbb1102fc997ef1486462d3f31ce0933b5566031e2948"
+    },
+    {
+      "path": "lib/sampapi/v037r3/CLocalPlayer.lua",
+      "size": 10454,
+      "sha256": "af1a5e06cdf7265abcc3c7b4bd0df147d61f1ecc4d51ffe7b3429ed941a6d92a"
+    },
+    {
+      "path": "lib/sampapi/v037r3/CMenu.lua",
+      "size": 2364,
+      "sha256": "057053d9350ede7f97a3033d79f3976c3435045fa7dd7a2bdd9085d9403c4522"
+    },
+    {
+      "path": "lib/sampapi/v037r3/CMenuPool.lua",
+      "size": 1873,
+      "sha256": "53c6680762dd7c76c38d45fd7c90f8cbb0af6db0b239f5e2f59f7f8026190f90"
+    },
+    {
+      "path": "lib/sampapi/v037r3/CNetGame.lua",
+      "size": 9911,
+      "sha256": "02161ee131afacb60bd4e2098b58e2a9cf548a540c7587901764938f805194eb"
+    },
+    {
+      "path": "lib/sampapi/v037r3/CNetStats.lua",
+      "size": 1449,
+      "sha256": "d7590e93bdc8495cae8b98563011f39b11e5644788df2d25b68fca09d22ff3de"
+    },
+    {
+      "path": "lib/sampapi/v037r3/CObject.lua",
+      "size": 5246,
+      "sha256": "4e3fe2c413e5bda0bc671d7cbde1e2a0c9024cdea69f77583177360bec8b6128"
+    },
+    {
+      "path": "lib/sampapi/v037r3/CObjectEdit.lua",
+      "size": 4813,
+      "sha256": "7cd96d2152464f07291e008174b19ef5bddff6e2621967a759b36edefd233a01"
+    },
+    {
+      "path": "lib/sampapi/v037r3/CObjectMaterialText.lua",
+      "size": 1949,
+      "sha256": "24aef011afc53e73c4437da109a805f2d8414a9fb70a82df7b97578f739144f5"
+    },
+    {
+      "path": "lib/sampapi/v037r3/CObjectPool.lua",
+      "size": 2516,
+      "sha256": "d39f49a1a7608156c13c5a8531b5a682cd5e84971dfb61ce2e7ab974bdd7df3d"
+    },
+    {
+      "path": "lib/sampapi/v037r3/CObjectSelection.lua",
+      "size": 1857,
+      "sha256": "c2776cc488eb8d5486ddd4c9fb18bf4e93515a12e6a6a0f47b54671898235666"
+    },
+    {
+      "path": "lib/sampapi/v037r3/Commands.lua",
+      "size": 3321,
+      "sha256": "da85eb355f7c95a777784d4f5a850c1c41c3ff8c2090627b1beaf5caa671acdb"
+    },
+    {
+      "path": "lib/sampapi/v037r3/ControllerState.lua",
+      "size": 1491,
+      "sha256": "c80137217bbc1bf039243b52e7723fa7e60745b37eca055c2629026dddb4fd2a"
+    },
+    {
+      "path": "lib/sampapi/v037r3/CPed.lua",
+      "size": 12293,
+      "sha256": "5909594f72c1d0dda0a318058c72fde8ca7c3661f3c6604f78716156a7520017"
+    },
+    {
+      "path": "lib/sampapi/v037r3/CPickupPool.lua",
+      "size": 2434,
+      "sha256": "3b6f6265d7d440cbe4eca8f7f920e19c19d992639beb7af1494dd80829c677c4"
+    },
+    {
+      "path": "lib/sampapi/v037r3/CPlayerInfo.lua",
+      "size": 1599,
+      "sha256": "323ee6f19ee632d466a6c15e5072ec06620b1171592a4eeee5ebdf2f34dbb8e1"
+    },
+    {
+      "path": "lib/sampapi/v037r3/CPlayerPool.lua",
+      "size": 4166,
+      "sha256": "e954d1614f6fe48dad6c1a4142a91ea4d7302c2dd79185af5191f3c5c7fcb14a"
+    },
+    {
+      "path": "lib/sampapi/v037r3/CPlayerTags.lua",
+      "size": 2241,
+      "sha256": "70216a003cd5302364168db72fb6186925591e2f9c3261f96a40b72131caa370"
+    },
+    {
+      "path": "lib/sampapi/v037r3/CRemotePlayer.lua",
+      "size": 7377,
+      "sha256": "c9580a27463ff46d7e9d3dd5c7f716dbaa6da6b5db147539049447835feb6f68"
+    },
+    {
+      "path": "lib/sampapi/v037r3/CScoreboard.lua",
+      "size": 2224,
+      "sha256": "102c15bd48931e63b7e3a4921e442a0edf8362b3a5a7f44120a1e3de05673ffe"
+    },
+    {
+      "path": "lib/sampapi/v037r3/CSpawnScreen.lua",
+      "size": 2041,
+      "sha256": "4858be8de9429d68b62a85ba5170b8b838c94fde2bfd16fc1eca965eb2156236"
+    },
+    {
+      "path": "lib/sampapi/v037r3/CSrvNetStats.lua",
+      "size": 1527,
+      "sha256": "d2850387f74f4985f6e874a7c60e1092705cb662706bdd40d78e69d8c9fb7ae8"
+    },
+    {
+      "path": "lib/sampapi/v037r3/CTextDraw.lua",
+      "size": 3390,
+      "sha256": "c16ad63436031028c1948cb1fb065082cdbad4112ec58b3bcbae08bf7d796fd0"
+    },
+    {
+      "path": "lib/sampapi/v037r3/CTextDrawPool.lua",
+      "size": 1643,
+      "sha256": "e878b4de5f06bcfbc0dfd8516e37575295250042ad97982e3ce7b411b4c60e3e"
+    },
+    {
+      "path": "lib/sampapi/v037r3/CTextDrawSelection.lua",
+      "size": 1736,
+      "sha256": "a4e1a888efbd022f31c9a9817917faaad64ae67298f0e4d569857cf7bc044243"
+    },
+    {
+      "path": "lib/sampapi/v037r3/CVehicle.lua",
+      "size": 7229,
+      "sha256": "e6c72df723dd8f468d12a71211033e0ed7880219190f48ccf7c708527468ded9"
+    },
+    {
+      "path": "lib/sampapi/v037r3/CVehiclePool.lua",
+      "size": 4086,
+      "sha256": "9c2c29409a21fbd312d7a4799ea70ba8d9ad2ae1c8c5698d00ad8e749e32f921"
+    },
+    {
+      "path": "lib/sampapi/v037r3/DebugScript.lua",
+      "size": 1666,
+      "sha256": "c3492478477af721888c080cd3efb0f00815255b06a410325cb49527e7596868"
+    },
+    {
+      "path": "lib/sampapi/v037r3/Exception.lua",
+      "size": 1569,
+      "sha256": "a2013f1a3dc8499f7becc2286bb077a1aa53c29ad34b0503446e88416670625d"
+    },
+    {
+      "path": "lib/sampapi/v037r3/GUI.lua",
+      "size": 2459,
+      "sha256": "d5216a8d3989ddfc12fc0f4d9691c734a9a43a598b1d2af2ae4206168e63c4bb"
+    },
+    {
+      "path": "lib/sampapi/v037r3/InputHandler.lua",
+      "size": 1481,
+      "sha256": "a9eee795f9d12aa32ec0370c83f5bb8004656592c4c7b3f1ae0b874366859a10"
+    },
+    {
+      "path": "lib/sampapi/v037r3/KeyStuff.lua",
+      "size": 2570,
+      "sha256": "9a2242787a42370f2de80057f89833edb50bcc81590b5d51e27883cbc372aad4"
+    },
+    {
+      "path": "lib/sampapi/v037r3/RPCHandlers.lua",
+      "size": 19010,
+      "sha256": "fa7d16de5d8749003ee45b564138b3e85b76f8e5de1ddcdcba21c7a9aea2838e"
+    },
+    {
+      "path": "lib/sampapi/v037r3/Scripting.lua",
+      "size": 1786,
+      "sha256": "7d8e7dba6e1c036deac8e87fb63fbdb80d21dd5e6e63f3ac64b19d11b3e533b0"
+    },
+    {
+      "path": "lib/sampapi/v037r3/Settings.lua",
+      "size": 1387,
+      "sha256": "574de8c4f495bc1254b0412310edb1f307d0c0f9a3d66e7460faed4af57e4fdb"
+    },
+    {
+      "path": "lib/sampapi/v037r3/SpecialAction.lua",
+      "size": 1223,
+      "sha256": "9d5a3b5c918a486b6c823d82f6a30d843a370981fb12c9cd755c3c9ade442b27"
+    },
+    {
+      "path": "lib/sampapi/v037r3/Synchronization.lua",
+      "size": 3994,
+      "sha256": "61d688170733a6dd44234cb4b87634074c27cf00e131a5364551279098b17a81"
+    },
+    {
+      "path": "lib/sampapi/v037r5/AimStuff.lua",
+      "size": 4413,
+      "sha256": "aeb6d91cee5f2fb642fa37a08e774b265fd0b639724f670feb9cc54db6b3e81e"
+    },
+    {
+      "path": "lib/sampapi/v037r5/Animation.lua",
+      "size": 976,
+      "sha256": "1827672ce8a50dbb528a3b9186b4587145033d4891b196623760b242ef3ec333"
+    },
+    {
+      "path": "lib/sampapi/v037r5/CActor.lua",
+      "size": 1780,
+      "sha256": "238ae3d66493a5a92d80e74b854b7674e7f937e17640ad5467949ef204962e9c"
+    },
+    {
+      "path": "lib/sampapi/v037r5/CActorPool.lua",
+      "size": 2250,
+      "sha256": "30f7c6493ba9fbc4dfa006f3c06156ed2a3d28c05912fbccb9941261697a0714"
+    },
+    {
+      "path": "lib/sampapi/v037r5/CAudio.lua",
+      "size": 1667,
+      "sha256": "e3bcc684c12b6e8232868c23ff5ad39b11714d986d7a43baf740bbf5075a61e9"
+    },
+    {
+      "path": "lib/sampapi/v037r5/CAudioStream.lua",
+      "size": 3014,
+      "sha256": "27dc723f02a6aaee0f672b4ba2ed38a368270d3e0471d11289585669705d275f"
+    },
+    {
+      "path": "lib/sampapi/v037r5/CCamera.lua",
+      "size": 2494,
+      "sha256": "0adf0c6820bd52fc816fe5ffbfc844e9134e1286a2172a9251c5fe09e9790e38"
+    },
+    {
+      "path": "lib/sampapi/v037r5/CChat.lua",
+      "size": 4795,
+      "sha256": "71c2de92ae3ef1f975daca530f9aaee786b3dec4e33a41f00d756730193d5fd7"
+    },
+    {
+      "path": "lib/sampapi/v037r5/CChatBubble.lua",
+      "size": 1673,
+      "sha256": "f9265ccbcad5403a0f3565302ad2a8da8ec5785119ce4c0857845196c90d667f"
+    },
+    {
+      "path": "lib/sampapi/v037r5/CConfig.lua",
+      "size": 3519,
+      "sha256": "88310d7681340c0d2ac466864c207d7b8a76d9a0c5db4774e1cd0f92fd233dcf"
+    },
+    {
+      "path": "lib/sampapi/v037r5/CDeathWindow.lua",
+      "size": 3026,
+      "sha256": "a1413bc6db3beff9097de5536b2974184c5eb58922602341ef837db29fd4b084"
+    },
+    {
+      "path": "lib/sampapi/v037r5/CDialog.lua",
+      "size": 2489,
+      "sha256": "55aece29c077521378a1112c35dbbf4095f104d9489529d7819d3f8b9e0e1768"
+    },
+    {
+      "path": "lib/sampapi/v037r5/CEntity.lua",
+      "size": 3954,
+      "sha256": "34eeb5b723c63d6b731efc6ace7b26ca7971b562f03b39e31c53b199f1509d41"
+    },
+    {
+      "path": "lib/sampapi/v037r5/CFont.lua",
+      "size": 888,
+      "sha256": "7ba409f773996d0552d31d609a72a0b9885f8cffc726e454d474e48e1b74723e"
+    },
+    {
+      "path": "lib/sampapi/v037r5/CFonts.lua",
+      "size": 2449,
+      "sha256": "52f28e6256c34ceb25ce6efc6e03289a63a0c7ccea628e9d5ea44096f32b467f"
+    },
+    {
+      "path": "lib/sampapi/v037r5/CGame.lua",
+      "size": 9590,
+      "sha256": "75861b0ec9070884d10cc54f3bd4ec7eac637ca969169543042c8cd241136680"
+    },
+    {
+      "path": "lib/sampapi/v037r5/CGangZonePool.lua",
+      "size": 2060,
+      "sha256": "8af0d35389ad74e7bf765bab46484a3e253eefb4a6fff901a5eab0191d88201c"
+    },
+    {
+      "path": "lib/sampapi/v037r5/CHelpDialog.lua",
+      "size": 1273,
+      "sha256": "290e30cf46f719c08e7481664c4eca494e1279d4838faf5f8483bb8d305861a6"
+    },
+    {
+      "path": "lib/sampapi/v037r5/CHttpClient.lua",
+      "size": 3309,
+      "sha256": "c82ed38b7337bc8b8becfa4a4e072a6762237e5d90b571b77be1a489491f3d89"
+    },
+    {
+      "path": "lib/sampapi/v037r5/CInput.lua",
+      "size": 2992,
+      "sha256": "6b98db4834d1677c021f547c9d37538d3730aa00413d797a6112d827d2d4bc4b"
+    },
+    {
+      "path": "lib/sampapi/v037r5/CLabel.lua",
+      "size": 1835,
+      "sha256": "4a1823ebc94fb8fde96bcdfaedc7cc5fce7455eff55fec1117555ef9b25a4c7d"
+    },
+    {
+      "path": "lib/sampapi/v037r5/CLabelPool.lua",
+      "size": 1861,
+      "sha256": "128fef4f113bf48a933c1de11033751327ab9249f59e71a428e6e73974d1527d"
+    },
+    {
+      "path": "lib/sampapi/v037r5/CLicensePlate.lua",
+      "size": 1984,
+      "sha256": "ca8de8f7c7007bc5b063dd39c2e386b33ca0cd0dbe264da6a91ce3bb5fdb93ba"
+    },
+    {
+      "path": "lib/sampapi/v037r5/CLocalPlayer.lua",
+      "size": 10456,
+      "sha256": "98d17a43197f83d70df30a963ae8a68514f2a9760e9b28e2040415eaa8e1480b"
+    },
+    {
+      "path": "lib/sampapi/v037r5/CMenu.lua",
+      "size": 2448,
+      "sha256": "89d01738bf04424ca5e8a03afdbc83f992cbfd96099867974bb87d4a9a6cd181"
+    },
+    {
+      "path": "lib/sampapi/v037r5/CMenuPool.lua",
+      "size": 1860,
+      "sha256": "c3273eeadbeca1026943dd4e6577655f3e3e7e678255d4a352699a6750f3ffd2"
+    },
+    {
+      "path": "lib/sampapi/v037r5/CNetGame.lua",
+      "size": 9911,
+      "sha256": "4c3093c60572f203319fdfe000ef990ca1a661aa5c3146137bfe401074b1ab0d"
+    },
+    {
+      "path": "lib/sampapi/v037r5/CNetStats.lua",
+      "size": 1449,
+      "sha256": "1e6235b183a8dd61dcb76df6a571ca3a9b72fe0ab657ad4b84fdbf75019e6ecc"
+    },
+    {
+      "path": "lib/sampapi/v037r5/CObject.lua",
+      "size": 5246,
+      "sha256": "32448a5a39b4ff35c48c4c1648b2974f5824c8beab5dd50f94fc5f191267be9e"
+    },
+    {
+      "path": "lib/sampapi/v037r5/CObjectEdit.lua",
+      "size": 4813,
+      "sha256": "69ed600548afa398b2453caf9fc97ce01b10cae4ecd1d14b3891e9356b1b70c0"
+    },
+    {
+      "path": "lib/sampapi/v037r5/CObjectMaterialText.lua",
+      "size": 1949,
+      "sha256": "ec029705b2b7c2e8ac5c315e2f97a5626a1b4c913d2aa07bff05855597b05ce2"
+    },
+    {
+      "path": "lib/sampapi/v037r5/CObjectPool.lua",
+      "size": 2516,
+      "sha256": "166a0a6ed1a5cca64b15de2d5feb629f30da863f6d97d6082c81801ffaaec1b1"
+    },
+    {
+      "path": "lib/sampapi/v037r5/CObjectSelection.lua",
+      "size": 1857,
+      "sha256": "d9880e67c0454a95c0d88d73c730e7b835f92ed219abc44f57477f69db9e05bd"
+    },
+    {
+      "path": "lib/sampapi/v037r5/Commands.lua",
+      "size": 3321,
+      "sha256": "26b93fdaa5d816149c33c322e35fd019caef701ffb5c9377e93fa8318a74d13f"
+    },
+    {
+      "path": "lib/sampapi/v037r5/ControllerState.lua",
+      "size": 1491,
+      "sha256": "c80137217bbc1bf039243b52e7723fa7e60745b37eca055c2629026dddb4fd2a"
+    },
+    {
+      "path": "lib/sampapi/v037r5/CPed.lua",
+      "size": 12293,
+      "sha256": "c9982f8dfab14ca1a46e394894a767882c3de4419ea53066e466e2dc908b68be"
+    },
+    {
+      "path": "lib/sampapi/v037r5/CPickupPool.lua",
+      "size": 2434,
+      "sha256": "2f4f83e0d65dde9db78c554815191de364609e3cf5baf7cc7fd257004e4e3eec"
+    },
+    {
+      "path": "lib/sampapi/v037r5/CPlayerInfo.lua",
+      "size": 1614,
+      "sha256": "75137f46bb39c272a3e0a12ac7700237b336de8cba9baf57ae4a098c5984a4d9"
+    },
+    {
+      "path": "lib/sampapi/v037r5/CPlayerPool.lua",
+      "size": 4166,
+      "sha256": "f95591655768279c304ac74d8d79b5d479edee2fdb292f283ec0b6e551d85a86"
+    },
+    {
+      "path": "lib/sampapi/v037r5/CPlayerTags.lua",
+      "size": 2241,
+      "sha256": "7a9a70be55a8b2314f0bb9994ff2c37fc23ea4badb1207677f6708c5c22290de"
+    },
+    {
+      "path": "lib/sampapi/v037r5/CRemotePlayer.lua",
+      "size": 7377,
+      "sha256": "b6d28e52f094a0cb93a742e09621f71e4f05d5f23f427b9ba3bd91fea903ec81"
+    },
+    {
+      "path": "lib/sampapi/v037r5/CScoreboard.lua",
+      "size": 2224,
+      "sha256": "850941e98a844d69eb471a4ffc0e4dff4d0f62a42b2dc48ffebe91e4a0619b68"
+    },
+    {
+      "path": "lib/sampapi/v037r5/CSpawnScreen.lua",
+      "size": 2041,
+      "sha256": "e139d0162cd7dfdb8d6d8f72358f807da726ebeb0cfc6525ea3eeb4e50ad0c98"
+    },
+    {
+      "path": "lib/sampapi/v037r5/CSrvNetStats.lua",
+      "size": 1527,
+      "sha256": "dcfc54d876c811d5d7c284347d98a96468c63be84d5dcd566d0142083157fdb4"
+    },
+    {
+      "path": "lib/sampapi/v037r5/CTextDraw.lua",
+      "size": 3444,
+      "sha256": "12dce042aa5572ee5afe9463961a2f180ed91d5f8d6335329dec991aef7c3f37"
+    },
+    {
+      "path": "lib/sampapi/v037r5/CTextDrawPool.lua",
+      "size": 1643,
+      "sha256": "604c5f74d4b36c65ebedc0e420f6421040932471604e948df77356a0ae07d77c"
+    },
+    {
+      "path": "lib/sampapi/v037r5/CTextDrawSelection.lua",
+      "size": 1736,
+      "sha256": "a669d7601a61ce3479eeb366a138f90ac5b34cba89d0aa1e2be89379b1f876eb"
+    },
+    {
+      "path": "lib/sampapi/v037r5/CVehicle.lua",
+      "size": 7229,
+      "sha256": "e459b2eca9880eadb77491a788fd7aca46a3147c32c662d6317881d1f852e513"
+    },
+    {
+      "path": "lib/sampapi/v037r5/CVehiclePool.lua",
+      "size": 4086,
+      "sha256": "ca34c37e09dd7f40350f3264ad8fb59899031239ead07e5c192287c21a18e7de"
+    },
+    {
+      "path": "lib/sampapi/v037r5/DebugScript.lua",
+      "size": 1666,
+      "sha256": "73cbce68120052ad5836d88cce0e8c9190c51456f2190b392783b655394cfdaf"
+    },
+    {
+      "path": "lib/sampapi/v037r5/Exception.lua",
+      "size": 1569,
+      "sha256": "702077d8ed9b96844d501706b8c29456beca0b8506ef669f0ae7ea1931ccdd17"
+    },
+    {
+      "path": "lib/sampapi/v037r5/GUI.lua",
+      "size": 2459,
+      "sha256": "a9d3def0bc16d17b0b847a563ce50ad5322865c079dc6b1e79931018aa758d17"
+    },
+    {
+      "path": "lib/sampapi/v037r5/InputHandler.lua",
+      "size": 1481,
+      "sha256": "8579191521b21f871fd3e6375252787ccabd6d8513d4603d0acd514cc96f4a4a"
+    },
+    {
+      "path": "lib/sampapi/v037r5/KeyStuff.lua",
+      "size": 2570,
+      "sha256": "2eb3d358b5671fbd39acb2c18fa0ab3106d1239bbe74439c65357113eaa2bae0"
+    },
+    {
+      "path": "lib/sampapi/v037r5/RPCHandlers.lua",
+      "size": 19013,
+      "sha256": "1e886d3b4149061421273925699c46303bc42ddb73217444aada5defa2de91e0"
+    },
+    {
+      "path": "lib/sampapi/v037r5/Scripting.lua",
+      "size": 1786,
+      "sha256": "cebfa73aa347f92222acc02d9b8b486dfeac47d9fa8bc50cb3c9830e9a49d758"
+    },
+    {
+      "path": "lib/sampapi/v037r5/Settings.lua",
+      "size": 1387,
+      "sha256": "4dab9c254a655cddadb46c2e81b478a0835681e54179cc057ee8cdb1e4e1122a"
+    },
+    {
+      "path": "lib/sampapi/v037r5/SpecialAction.lua",
+      "size": 1223,
+      "sha256": "9d5a3b5c918a486b6c823d82f6a30d843a370981fb12c9cd755c3c9ade442b27"
+    },
+    {
+      "path": "lib/sampapi/v037r5/Synchronization.lua",
+      "size": 3994,
+      "sha256": "3f8ba81b66c21131ecda2dd95a9006521430f51c70840bfd4c3cd9556dd9d33d"
+    },
+    {
+      "path": "lib/sampwebsocket/brotlicommon.dll",
+      "size": 136192,
+      "sha256": "a440169344d0c360cdffe27ec0f74d86b13d4bc63dc96ca9a6e3a973c10b22c7"
+    },
+    {
+      "path": "lib/sampwebsocket/brotlidec.dll",
+      "size": 45056,
+      "sha256": "86edd09c9c864963de258071419e75014a7b804d743e71e08348e05b908abe54"
+    },
+    {
+      "path": "lib/sampwebsocket/brotlienc.dll",
+      "size": 3275264,
+      "sha256": "293913fb18c581b88745f205c25c3bbccd6534d99f75861e0fa3cbed77049494"
+    },
+    {
+      "path": "lib/sampwebsocket/cpprest_2_10.dll",
+      "size": 1577472,
+      "sha256": "e6f2d373c1be9a0a74aae941f56157c575a4ae8e6349aef066f17fc0f8cb98c2"
+    },
+    {
+      "path": "lib/sampwebsocket/jsoncpp.dll",
+      "size": 180224,
+      "sha256": "49dc106019e8ede173d506ed31508118913c918797dc3c6f3efd963bf0cdefc3"
+    },
+    {
+      "path": "lib/sampwebsocket/libcrypto-3.dll",
+      "size": 2833920,
+      "sha256": "f631e5132ae3055c2e33b28cf0da31a4029f9e39671a399662c15f880f60f09f"
+    },
+    {
+      "path": "lib/sampwebsocket/libssl-3.dll",
+      "size": 454144,
+      "sha256": "90e9ab56d169a2be11e5dd606e33808db82c86fe5c535a40771a77da608abaaa"
+    },
+    {
+      "path": "lib/sampwebsocket/microsoft-signalr.dll",
+      "size": 729600,
+      "sha256": "9c9685189485cdc776d936c09b52107d19707b44168bfb62523c0b8d6636e23e"
+    },
+    {
+      "path": "lib/sampwebsocket/zlib1.dll",
+      "size": 77312,
+      "sha256": "643bfeba7afcd3c4ee94d862ac972489c5a87cbf9a54582d2bbaa1454b2b8b76"
+    },
+    {
+      "path": "lib/socket/core.dll",
+      "size": 142848,
+      "sha256": "c7e65c06df09addf05fd807e964e87f4ea56476e15e19ea5e47a321419ace50e"
+    },
+    {
+      "path": "lib/socket/ftp.lua",
+      "size": 9243,
+      "sha256": "05eae0f1477cc17a580cb88e11a62107b1b6cde37a1c76fced6f91b390d98ed5"
+    },
+    {
+      "path": "lib/socket/headers.lua",
+      "size": 3698,
+      "sha256": "aecff8c2d99d77a6473269367d5b085ad0db189d9699c2f47dcb97ae5ad348df"
+    },
+    {
+      "path": "lib/socket/http.lua",
+      "size": 12330,
+      "sha256": "9bdf0c2b37f1941e4a65c31697187ee976b43d0a4a8865b96260222f85c0fdb8"
+    },
+    {
+      "path": "lib/socket/smtp.lua",
+      "size": 8074,
+      "sha256": "55bdeff392dffc381b1487b6e9493a7aadb52f851f78ec29316decf50d88df58"
+    },
+    {
+      "path": "lib/socket/tp.lua",
+      "size": 3612,
+      "sha256": "9faacdfcde3167ab426054625ccf0ca8255a24dc7752f58543edbc93216b53b1"
+    },
+    {
+      "path": "lib/socket/url.lua",
+      "size": 11036,
+      "sha256": "7290952cba25a671e0434a01b5693855cb5d19ba777adb302779b050d8b0d3c7"
+    },
+    {
+      "path": "lib/ssl/https.lua",
+      "size": 4176,
+      "sha256": "4a4d95bf6b4b3e8a0af84e1e53eb799e96c23a1527b424748927f5a62aa1318b"
+    },
+    {
+      "path": "lib/timerwheel/init.lua",
+      "size": 9762,
+      "sha256": "aa1de9cc29c4de9dc2fee74cebf0850780e6412a5f41f7c43fcdf674ee5a5d25"
+    },
+    {
+      "path": "lib/UTF8/utf8.lua",
+      "size": 8252,
+      "sha256": "ae4244062e63d99a513a22e86c56249b92bb3011dffc5f3f1e248507192518b8"
+    },
+    {
+      "path": "lib/UTF8/utf8data.lua",
+      "size": 31622,
+      "sha256": "0c1c8c4c294c661c385c620666f4488e3cdbca40de70eedc931814b82c5f7cb8"
+    },
+    {
+      "path": "lib/UTF8/.svn/all-wcprops",
+      "size": 338,
+      "sha256": "fb768d936ec766132334678bbec11c332d66a9fd3dd71d99327f747167e5eafd"
+    },
+    {
+      "path": "lib/UTF8/.svn/entries",
+      "size": 599,
+      "sha256": "e1c85707a0f28de5690150340bf0e236fddc5693a6762c54cd9d42cca59da8bc"
+    },
+    {
+      "path": "lib/UTF8/.svn/format",
+      "size": 2,
+      "sha256": "aa67a169b0bba217aa0aa88a65346920c84c42447c36ba5f7ea65f422c1fe5d8"
+    },
+    {
+      "path": "lib/UTF8/.svn/prop-base/utf8.lua.svn-base",
+      "size": 69,
+      "sha256": "1004841a895e80141ab9c3889df17c21cab26218a5ae9b031fc729d2d0823cbd"
+    },
+    {
+      "path": "lib/UTF8/.svn/prop-base/utf8data.lua.svn-base",
+      "size": 34,
+      "sha256": "58375ba3ea2bda92adbfcf2cf2e7b5a49bb080782372e92706296f3c494fe42d"
+    },
+    {
+      "path": "lib/UTF8/.svn/text-base/utf8.lua.svn-base",
+      "size": 8210,
+      "sha256": "ef78b7b26714fa31ba7f240a59fca4590774bfcdafa49e713169a74e5d7f838a"
+    },
+    {
+      "path": "lib/UTF8/.svn/text-base/UTF8.toc.svn-base",
+      "size": 132,
+      "sha256": "f263e235e8a13a7ef5b0928ed3b22e3fc100a7d8aad483b72ea9c522f6ca2893"
+    },
+    {
+      "path": "lib/UTF8/.svn/text-base/utf8data.lua.svn-base",
+      "size": 31622,
+      "sha256": "0c1c8c4c294c661c385c620666f4488e3cdbca40de70eedc931814b82c5f7cb8"
+    },
+    {
+      "path": "lib/websocket/bit.lua",
+      "size": 217,
+      "sha256": "de49b1178250eadebe03002b9efa6276f5154a30da2629dafcf8bf4a9850c68e"
+    },
+    {
+      "path": "lib/websocket/client.lua",
+      "size": 246,
+      "sha256": "56d81b390478fad582d8321357c994642dbb5a0f67778b39082e1af744f2d91b"
+    },
+    {
+      "path": "lib/websocket/client_copas.lua",
+      "size": 841,
+      "sha256": "18fea9c36aa7cdffc3acca606ef31d1f333c43d34ac319cec23752bafb5797c8"
+    },
+    {
+      "path": "lib/websocket/client_ev.lua",
+      "size": 6930,
+      "sha256": "ae506eb6fff891d93af416f6d3817a5627d3e4fa6fbe90b6d3b6a7861b1ca270"
+    },
+    {
+      "path": "lib/websocket/client_sync.lua",
+      "size": 776,
+      "sha256": "08cfa591f061579853d6cccd50ea9aa878edd0098da98fde8f0bf1bd11258ef6"
+    },
+    {
+      "path": "lib/websocket/ev_common.lua",
+      "size": 4133,
+      "sha256": "4b916a4893018c37b3663d71df3d35ffa9aef52db170759a6e656c0957b7f98f"
+    },
+    {
+      "path": "lib/websocket/frame.lua",
+      "size": 5551,
+      "sha256": "ac3ad4fb0327c4a675ad07c9e8d222035bbc2d8fc52eabf54476b73d231eaace"
+    },
+    {
+      "path": "lib/websocket/handshake.lua",
+      "size": 2961,
+      "sha256": "beb3781fcbed899e5a5452420110cf688f32665b8a3e595f5e393db795e2a12a"
+    },
+    {
+      "path": "lib/websocket/server.lua",
+      "size": 156,
+      "sha256": "0c53e9f177b61d6d0ed347b0973a2341670e91ff9e9f757680e57dabada741db"
+    },
+    {
+      "path": "lib/websocket/server_copas.lua",
+      "size": 3571,
+      "sha256": "9db34032b844821ead1a0619138331422c8f91c245f0943b6f507c285bc354ef"
+    },
+    {
+      "path": "lib/websocket/server_ev.lua",
+      "size": 7364,
+      "sha256": "5720e5e2f703caf60eee7f9929dede702b9aca90a8fde2ff9e222432fe021091"
+    },
+    {
+      "path": "lib/websocket/sync.lua",
+      "size": 5386,
+      "sha256": "bbfc4f8e679529b2268dd6714b6a7ba037a2b46387211109e08bd4ac50770357"
+    },
+    {
+      "path": "lib/websocket/tools.lua",
+      "size": 4688,
+      "sha256": "b2c7a356034933fba0586ede9a70ee137ce5d9dc145b599b6d93407c25299861"
+    },
+    {
+      "path": "lib/windows/init.lua",
+      "size": 184,
+      "sha256": "259c01a3c10b5470164dcf24614702d3d2121fb4c32b9fedfb626af281a93c11"
+    },
+    {
+      "path": "lib/windows/message.lua",
+      "size": 26909,
+      "sha256": "4ab3845c28e7755c86736162fd22cba165e534ec1df5c76665ce8ffdbb8a929f"
+    },
+    {
+      "path": "lib/xml/core.dll",
+      "size": 140800,
+      "sha256": "7f02af34a92b286bcad9ff5afc3deede314737b9957a9f1cad0108fb087555b6"
+    },
+    {
+      "path": "lib/xml/init.lua",
+      "size": 7549,
+      "sha256": "49648e800722d846cf2a77d5cb4569b46458f217a19aadd4ca9b6652e48ce210"
+    },
+    {
+      "path": "lib/xml/Parser.lua",
+      "size": 1750,
+      "sha256": "c46fa675a7f6303c70bfdffec3bbd4b6babe91fae463ab8d75bbf27f05c6125f"
+    },
+    {
+      "path": "lib/xmlhandler/dom.lua",
+      "size": 7627,
+      "sha256": "3abeb0ceace38fc0bacd48b59a37e1d0176a00a1fb098637f5947b4e91ab8e9b"
+    },
+    {
+      "path": "lib/xmlhandler/print.lua",
+      "size": 3328,
+      "sha256": "3487059d06e0321f6cd4b07b520d22cbf027b6868f8704ac4e367c3e379e1db4"
+    },
+    {
+      "path": "lib/xmlhandler/tree.lua",
+      "size": 5388,
+      "sha256": "f015062fdfada4a2e5f4b7971bec9923f69213199e8749d99d8dd56d9c00129a"
+    }
+  ]
+}
