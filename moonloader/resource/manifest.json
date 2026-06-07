@@ -1,8 +1,8 @@
 {
   "total_files": 926,
-  "generated": "2026-06-07T16:28:33Z",
-  "version": "1.0.10-beta",
-  "total_size": 61666080.0,
+  "generated": "2026-06-07T16:45:17Z",
+  "version": "1.0.11-beta",
+  "total_size": 61654685.0,
   "files": [
     {
       "path": "cad_diagnostics.lua",
@@ -11,13 +11,13 @@
     },
     {
       "path": "cad_system/cadui.lua",
-      "size": 339357,
-      "sha256": "722e083c4dcbc7dfc726b327893281a21a9f42fb521377cb4f5a84e42ebef4c3"
+      "size": 338840,
+      "sha256": "8e5299245f561918bd09d7f7bcebdc55476c761b512b1670aeceace9241ea820"
     },
     {
       "path": "cad_system/cad_autoupdate.lua",
-      "size": 33961,
-      "sha256": "bda7650ef245bc982752ddce8a4ffa7ec74a9973db799d5b8cb432e5e9a55fc0"
+      "size": 23083,
+      "sha256": "d2116793af0279f550e8ebc834c925bc3b96d719b3385921e78c935a7dbf06a9"
     },
     {
       "path": "cad_system/cad_common_new.lua",

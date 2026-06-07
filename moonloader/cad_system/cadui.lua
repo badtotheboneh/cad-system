@@ -529,7 +529,6 @@ end
 function cadui_module.syncInputBuffers(unit_data)
     if not unit_data then return end
 
-    -- While Out of Service, keep local UNIT CONFIGURATION untouched by partner/server sync.
     if unitInfoBuffers and unitInfoBuffers.status and unitInfoBuffers.status[0] == 4 then
         log('UI', log_levels.INFO, "Skipped UNIT CONFIGURATION sync: local status is Out of Service.")
         return
@@ -2648,7 +2647,6 @@ function renderALPRWindow()
                 renderLabeledText("DRIVER:", tostring(alpr_current_scan.driver), imgui.ImVec4(1,1,0,1), imgui.ImVec4(1,1,1,1))
             end
 
-            -- debug panel removed
             imgui.EndChild()
             imgui.Separator()
 
@@ -2757,7 +2755,6 @@ function renderALPRHud()
             status_text = alpr_hud_data.alert_type ~= "" and alpr_hud_data.alert_type or "ALARM"
             alert_pulse = (math.sin(os.clock() * 12.0) + 1.0) * 0.5
 
-            -- Alarm mode: dynamic red tint + pulsing plate text.
             local bg_v = imgui.ImVec4(0.35 + 0.30 * alert_pulse, 0.02, 0.02, 0.98)
             local border_v = imgui.ImVec4(0.85 + 0.15 * alert_pulse, 0.02, 0.02, 1.0)
             local plate_v = imgui.ImVec4(1.0, 0.10 + 0.90 * alert_pulse, 0.10 + 0.90 * alert_pulse, 1.0)
@@ -2846,7 +2843,6 @@ function renderALPRHud()
         end
 
 
-            -- debug overlay removed
 
         if is_manual_mode then
             imgui.SetCursorPosY(105)
@@ -3561,7 +3557,7 @@ local call_status_colors_hex = {
 local incident_status_colors_hex = {
     ['Active']              = 0xFF0000D0, -- Красный (Активный)
     ['Under Investigation'] = 0xFF0080FF, -- Оранжевый
-    ['Code 4']              = 0xFFFFCC00, -- Голубой/Бирюзовый (Ситуация под контролем)
+    ['Code 4']              = 0xFFFFCC00,
     ['Resolved']            = 0xFF2ECC71, -- Зеленый
     ['Default']             = 0xFF808080
 }
@@ -5661,7 +5657,7 @@ function renderMDTWindow()
 
             imgui.SetCursorPos(imgui.new('ImVec2', 20, 25))
             imgui.PushFont(fonts[22])
-            imgui.TextColored(imgui.ImVec4(1, 1, 1, 1), "ZAEBALO")
+            imgui.TextColored(imgui.ImVec4(1, 1, 1, 1), "Computer-Aided Dispatch")
             imgui.SameLine()
             imgui.TextColored(imgui.ImVec4(1, 0.6, 0, 1), "System")
             imgui.PopFont()
@@ -6749,7 +6745,6 @@ end
 
 samp_events.onDisableCheckpoint = function()
     if source_uses_checkpoint(checkpoint_tracker.source_type) and (checkpoint_tracker.dedupe_key or checkpoint_tracker.marker_id) then
-        -- SA:MP can briefly toggle checkpoint; defer removal to polling grace window.
         checkpoint_tracker.last_checkpoint_seen_at = checkpoint_tracker.last_checkpoint_seen_at or os.clock()
         log('UI', log_levels.DEBUG, 'Checkpoint disabled event received for call_911; waiting for grace timeout before removing marker.')
     end
@@ -7544,7 +7539,6 @@ imgui.OnFrame(
         return true
     end,
     function(self)
-        -- Draw autoupdate window
         if autoupdate and autoupdate.draw_window then
             autoupdate.draw_window()
         end
@@ -8229,7 +8223,6 @@ cadui_module.initialize = function(deps)
             end
         end)
 
-        -- /cadupdate открывает UI; Check и Force — кнопки внутри окна
         if autoupdate and autoupdate.register_commands then
             autoupdate.register_commands()
         end

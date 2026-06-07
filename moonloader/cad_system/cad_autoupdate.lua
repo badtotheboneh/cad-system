@@ -7,7 +7,6 @@ local u8 = encoding.UTF8
 local ok_lfs, lfs = pcall(require, 'lfs')
 local ok_imgui, imgui = pcall(require, 'mimgui')
 
--- Configuration (customize to your repo)
 local CFG = {
   gh_owner  = "badtotheboneh",
   gh_repo   = "cad-system",
@@ -19,20 +18,17 @@ CFG.raw_base = ("https://raw.githubusercontent.com/%s/%s/%s/moonloader/"):format
   CFG.gh_owner, CFG.gh_repo, CFG.gh_branch)
 CFG.repo_url = ("https://github.com/%s/%s"):format(CFG.gh_owner, CFG.gh_repo)
 
--- Download poll settings
-local DL_POLL_MS      = 250   -- интервал проверки файла
-local DL_STABLE_TICKS = 3     -- сколько раз подряд размер должен совпасть прежде чем считать файл готовым
-local DL_TIMEOUT_FILE = 30    -- таймаут одного файла (сек)
-local DL_TIMEOUT_META = 15    -- таймаут version.json / manifest.json (сек)
+local DL_POLL_MS      = 250
+local DL_STABLE_TICKS = 3
+local DL_TIMEOUT_FILE = 30
+local DL_TIMEOUT_META = 15
 
--- [FIX #3] Отдельный флаг анимации вместо sentinel 0
 local anim_alpha      = 0.0
 local anim_from       = 0.0
 local anim_to         = 0.0
 local anim_running    = false
 local anim_start_time = 0.0
 
--- State
 M.version = "1.0.0"
 local upd = {
   available = false,
@@ -44,24 +40,22 @@ local upd = {
   status    = nil,
 }
 
--- UI State
 local ui_state = {
   show_window  = false,
-  anim_closing = false,   -- [FIX #3] окно скрывается после завершения fade-out
-  p_open       = imgui.new.bool(true), -- [FIX] Постоянный буфер для состояния окна
+  anim_closing = false,
+  p_open       = imgui.new.bool(true),
   log_lines    = {},
   max_logs     = 100,
   progress     = 0,
   progress_text= "",
   current_file = "",
-  failed_files = {},      -- [FIX #1/#2] список файлов с ошибкой
+  failed_files = {},
 }
 
--- [FIX] Кэшируем FFI объекты, чтобы не создавать их каждый кадр (защита от крашей и утечек)
 local ffi_cache = {
   win_padding = imgui.new('ImVec2', 16, 14),
   item_spacing = imgui.new('ImVec2', 8, 7),
-  progress_size = imgui.new('ImVec2', 0, 6), -- ширина обновится в коде
+  progress_size = imgui.new('ImVec2', 0, 6),
   
   col_win_bg = imgui.new('ImVec4', 0.09, 0.09, 0.11, 0.97),
   col_title_bg = imgui.new('ImVec4', 0.09, 0.09, 0.11, 1.00),
@@ -99,9 +93,6 @@ local function chat_msg(msg)
   end
 end
 
--- ─────────────────────────────────────────────────────────────
--- [FIX #3] Анимация: используем anim_running вместо sentinel 0
--- ─────────────────────────────────────────────────────────────
 local function update_animation()
   if not anim_running then return end
 
@@ -117,7 +108,6 @@ local function update_animation()
     anim_from    = anim_alpha
     anim_running = false
 
-    -- [FIX #3] Скрываем окно только ПОСЛЕ завершения fade-out
     if ui_state.anim_closing then
       ui_state.show_window  = false
       ui_state.anim_closing = false
@@ -191,11 +181,6 @@ local function ensure_dirs(path)
   end
 end
 
--- ─────────────────────────────────────────────────────────────
--- [FIX #1] Стабильное ожидание файла: размер должен совпасть
---          DL_STABLE_TICKS раз подряд, и быть == ожидаемому,
---          а не просто >= (защита от мусора в конце файла)
--- ─────────────────────────────────────────────────────────────
 local function wait_for_file(path, expected_size, timeout_sec)
   local deadline    = os.clock() + timeout_sec
   local stable_count= 0
@@ -207,19 +192,16 @@ local function wait_for_file(path, expected_size, timeout_sec)
 
     if s then
       if expected_size and s > 0 then
-        -- [FIX] Не требуем идеального совпадения байт-в-байт (проблемы CRLF/LF)
-        -- Считаем файл готовым, если его размер не меняется в течение DL_STABLE_TICKS
         if s == last_size then
           stable_count = stable_count + 1
           if stable_count >= DL_STABLE_TICKS then
             return true
           end
         else
-          stable_count = 0  -- размер изменился или не совпадает — сбрасываем
+          stable_count = 0
         end
         last_size = s
       else
-        -- Размер неизвестен — ждём стабилизации (три одинаковых замера)
         if s == last_size and s > 0 then
           stable_count = stable_count + 1
           if stable_count >= DL_STABLE_TICKS then
@@ -233,26 +215,20 @@ local function wait_for_file(path, expected_size, timeout_sec)
     end
   end
 
-  return false  -- таймаут
+  return falseт
 end
 
--- ─────────────────────────────────────────────────────────────
--- [FIX #1] То же самое для JSON-файлов: ждём валидный JSON,
---          а не просто непустой файл
--- ─────────────────────────────────────────────────────────────
 local function wait_for_json(path, validator, timeout_sec)
   local deadline = os.clock() + timeout_sec
 
   while os.clock() < deadline do
     wait(DL_POLL_MS)
 
-    -- Сначала убеждаемся что файл не растёт (стабилен)
     local s1 = file_size(path)
     if s1 and s1 > 0 then
       wait(DL_POLL_MS)
       local s2 = file_size(path)
       if s2 and s2 == s1 then
-        -- Размер стабилен — пробуем декодировать
         local f = io.open(path, 'r')
         if f then
           local raw = f:read('*a')
@@ -262,14 +238,13 @@ local function wait_for_json(path, validator, timeout_sec)
             if data and (not validator or validator(data)) then
               return data
             end
-            -- Если декод упал — JSON ещё пишется, продолжаем ждать
           end
         end
       end
     end
   end
 
-  return nil  -- таймаут или невалидный JSON
+  return nil
 end
 
 local function apply_version_info(data)
@@ -296,7 +271,6 @@ local function apply_version_info(data)
   end
 end
 
--- [FIX #1] check_version использует wait_for_json вместо простого poll
 function M.check_version()
   if ok_lfs then lfs.mkdir(getWorkingDirectory() .. '/config') end
 
@@ -319,15 +293,7 @@ function M.check_version()
   end)
 end
 
--- ─────────────────────────────────────────────────────────────
--- [FIX #1] [FIX #2] sync_resources:
---   • wait_for_file с точным сравнением размера и стабилизацией
---   • счётчик реально успешных файлов
---   • cb(false) если хотя бы один файл не скачался
---   • upd.busy гарантированно сбрасывается в любом случае
--- ─────────────────────────────────────────────────────────────
 local function sync_resources(cb, force_all)
-  -- [FIX #2] Обёртка cb — гарантирует сброс busy даже при панике
   local function finish(ok)
     upd.busy = false
     if cb then cb(ok) end
@@ -343,7 +309,6 @@ local function sync_resources(cb, force_all)
   downloadUrlToFile(CFG.raw_base .. 'resource/manifest.json', mtmp)
 
   lua_thread.create(function()
-    -- [FIX #1] Ждём валидный manifest JSON
     local manifest = wait_for_json(mtmp,
       function(d) return type(d) == 'table' and type(d.files) == 'table' end,
       DL_TIMEOUT_META)
@@ -361,7 +326,6 @@ local function sync_resources(cb, force_all)
           todo[#todo + 1] = item
         else
           local sz = file_size(wd .. '/' .. item.path)
-          -- [FIX #2] Сравниваем точно (==), не >=
           if not (sz and tonumber(item.size) and sz == tonumber(item.size)) then
             todo[#todo + 1] = item
           end
@@ -378,7 +342,6 @@ local function sync_resources(cb, force_all)
     log_fn(("Syncing %d resources (force_all=%s)..."):format(#todo, tostring(force_all or false)))
     upd.status = ('Resources: 0/%d...'):format(#todo)
 
-    -- [FIX #1/#2] Считаем реально успешные загрузки
     local success_count = 0
     ui_state.failed_files = {}
 
@@ -387,10 +350,9 @@ local function sync_resources(cb, force_all)
 
       if item.path == "cad_main.lua" then
         log_fn(("[SKIP] %s пропущен (исключен из обновлений)"):format(item.path))
-        success_count = success_count + 1 -- Засчитываем как успешный, чтобы не портить общую статистику
+        success_count = success_count + 1
         ui_state.progress = i / #todo
       else
-        -- Вся остальная логика скачивания выполняется только для других файлов
         ensure_dirs(lp)
         os.remove(lp)
 
@@ -404,14 +366,12 @@ local function sync_resources(cb, force_all)
 
         downloadUrlToFile(CFG.raw_base .. item.path, lp)
 
-        -- [FIX #1] Ждём стабильного размера == ожидаемому
         local ok = wait_for_file(lp, item.size, DL_TIMEOUT_FILE)
 
         if ok then
           success_count = success_count + 1
           log_fn(("✓ Downloaded: %s (%d bytes)"):format(item.path, file_size(lp) or 0))
         else
-          -- [FIX #2] Логируем конкретный файл с ошибкой
           local actual = file_size(lp) or 0
           log_fn(("✗ FAILED: %s (got %d, expected %s bytes)"):format(
             item.path, actual, tostring(item.size)))
@@ -419,14 +379,13 @@ local function sync_resources(cb, force_all)
         end
 
         ui_state.progress = i / #todo
-      end -- Конец условия проверки игнора
+      end
     end
 
     ui_state.current_file  = ""
     ui_state.progress      = 1.0
     ui_state.progress_text = "Завершено!"
 
-    -- [FIX #2] Успех только если ВСЕ файлы скачались корректно
     if success_count == #todo then
       log_fn(("Resources synchronized: %d/%d"):format(success_count, #todo))
       finish(true)
@@ -438,9 +397,6 @@ local function sync_resources(cb, force_all)
   end)
 end
 
--- ─────────────────────────────────────────────────────────────
--- [FIX #2] Версия пишется ТОЛЬКО при полном успехе всех файлов
--- ─────────────────────────────────────────────────────────────
 local function save_version(version_str)
   if not version_str or version_str == "" then return end
   M.version = version_str
@@ -475,18 +431,15 @@ function M.do_update()
   ui_state.failed_files= {}
 
   sync_resources(function(success)
-    -- upd.busy уже сброшен внутри finish()
     if success then
       upd.status = 'Updates loaded. Restart script to apply.'
       log_fn("✓ Modules updated successfully")
       log_fn("Please restart the game or reload scripts to apply updates")
       chat_msg("Modules updated successfully! Restart to apply changes.")
-      -- [FIX #2] Пишем версию только при 100% успехе
       if upd.latest then save_version(upd.latest) end
     else
       upd.status = 'Update failed. Check logs.'
       log_fn("ERROR: Failed to sync modules")
-      -- Показываем список проблемных файлов в чат
       if #ui_state.failed_files > 0 then
         chat_msg("ERROR: " .. #ui_state.failed_files .. " file(s) failed to download")
         for _, fp in ipairs(ui_state.failed_files) do
@@ -505,7 +458,6 @@ function M.do_update_force()
     return
   end
 
-  -- [FIX #2] Предупреждаем если latest ещё не известен
   if not upd.latest then
     log_fn("WARNING: Latest version unknown (check_version not done yet). Version file will NOT be updated.")
   end
@@ -524,7 +476,6 @@ function M.do_update_force()
       log_fn("✓ ALL files synchronized successfully")
       log_fn("Please restart the game or reload scripts to apply updates")
       chat_msg("Force update completed! Restart to apply changes.")
-      -- [FIX #2] Пишем версию только если она известна
       if upd.latest then
         save_version(upd.latest)
       else
@@ -555,9 +506,6 @@ function M.has_update()  return upd.available or upd.required end
 function M.is_required() return upd.required end
 function M.get_status()  return upd.status end
 
--- ─────────────────────────────────────────────────────────────
--- [FIX #3] show_ui / hide_ui с корректным управлением состоянием
--- ─────────────────────────────────────────────────────────────
 function M.show_ui()
   ui_state.show_window  = true
   ui_state.anim_closing = false
@@ -569,7 +517,6 @@ function M.show_ui()
 end
 
 function M.hide_ui()
-  -- Запускаем fade-out; show_window = false выставится после его завершения
   ui_state.anim_closing = true
   anim_from    = anim_alpha
   anim_to      = 0.0
@@ -581,11 +528,6 @@ function M.is_ui_open()
   return anim_alpha > 0.01
 end
 
--- ─────────────────────────────────────────────────────────────
--- Helpers: стилизованные кнопки
--- ─────────────────────────────────────────────────────────────
-
--- Основная кнопка действия (зелёная / акцентная)
 local function btn_primary(label, w, h)
   imgui.PushStyleVarFloat(imgui.StyleVar.FrameRounding, 6.0)
   imgui.PushStyleColor(imgui.Col.Button,        ffi_cache.btn_primary[1])
@@ -597,7 +539,6 @@ local function btn_primary(label, w, h)
   return clicked
 end
 
--- Вторичная кнопка (тёмно-серая, нейтральная)
 local function btn_secondary(label, w, h)
   imgui.PushStyleVarFloat(imgui.StyleVar.FrameRounding, 6.0)
   imgui.PushStyleColor(imgui.Col.Button,        ffi_cache.btn_secondary[1])
@@ -609,7 +550,6 @@ local function btn_secondary(label, w, h)
   return clicked
 end
 
--- Опасная кнопка (красно-оранжевая, для force update)
 local function btn_danger(label, w, h)
   imgui.PushStyleVarFloat(imgui.StyleVar.FrameRounding, 6.0)
   imgui.PushStyleColor(imgui.Col.Button,        ffi_cache.btn_danger[1])
@@ -621,17 +561,12 @@ local function btn_danger(label, w, h)
   return clicked
 end
 
--- Тонкий горизонтальный разделитель с кастомным цветом
 local function thin_separator()
   imgui.PushStyleColor(imgui.Col.Separator, ffi_cache.col_border)
   imgui.Separator()
   imgui.PopStyleColor()
 end
 
--- ─────────────────────────────────────────────────────────────
--- draw_window: компактное минималистичное окно 360×220 (idle)
---              раскрывается при обновлении для лога ошибок
--- ─────────────────────────────────────────────────────────────
 local WIN_W = 360
 
 function M.draw_window()
@@ -640,13 +575,11 @@ function M.draw_window()
   if not ok_imgui or anim_alpha < 0.01 then return end
   if not ui_state.show_window then return end
 
-  -- ── Глобальные стили окна ──────────────────────────────────
   imgui.PushStyleVarFloat(imgui.StyleVar.Alpha,          anim_alpha)
   imgui.PushStyleVarFloat(imgui.StyleVar.WindowRounding,  10.0)
   imgui.PushStyleVarVec2(imgui.StyleVar.WindowPadding,  ffi_cache.win_padding)
   imgui.PushStyleVarVec2(imgui.StyleVar.ItemSpacing,    ffi_cache.item_spacing)
   
-  -- StyleColor: 4 push
   imgui.PushStyleColor(imgui.Col.WindowBg,     ffi_cache.col_win_bg)
   imgui.PushStyleColor(imgui.Col.TitleBg,      ffi_cache.col_title_bg)
   imgui.PushStyleColor(imgui.Col.TitleBgActive,ffi_cache.col_title_bg)
@@ -659,7 +592,6 @@ function M.draw_window()
     return
   end
 
-  -- Высота окна: компактная в idle/busy, расширенная при ошибках
   local has_errors   = #ui_state.failed_files > 0
   local has_changelog= upd.changelog and upd.changelog ~= ""
   local win_h
@@ -682,7 +614,6 @@ function M.draw_window()
               + imgui.WindowFlags.NoCollapse
   local visible = imgui.Begin(ffi_cache.win_title, ui_state.p_open, flags)
 
-  -- [FIX] Если нажали крестик или окно скрыто — запускаем анимацию закрытия
   if not ui_state.p_open[0] or not visible then
     imgui.End()
     for i = 1, 4 do imgui.PopStyleColor() end
@@ -692,7 +623,6 @@ function M.draw_window()
   end
 
 
-  -- ── Цвета ─────────────────────────────────────────────────
   local C_TEXT    = imgui.ImVec4(0.88, 0.88, 0.90, 1.00)
   local C_DIM     = imgui.ImVec4(0.45, 0.45, 0.50, 1.00)
   local C_GREEN   = imgui.ImVec4(0.27, 0.82, 0.27, 1.00)
@@ -701,20 +631,16 @@ function M.draw_window()
   local C_RED     = imgui.ImVec4(1.00, 0.30, 0.30, 1.00)
   local C_BLUE    = imgui.ImVec4(0.40, 0.75, 1.00, 1.00)
 
-  local inner_w = WIN_W - 32  -- ширина контента с учётом padding
+  local inner_w = WIN_W - 32
 
-  -- ── Блок версий ───────────────────────────────────────────
   local cur_ver    = M.version  or "unknown"
   local latest_ver = upd.latest or "—"
 
-  -- Строка "Installed  v1.0.0    Latest  v1.1.0"
   imgui.TextColored(C_DIM,  u8"Installed")
   imgui.SameLine()
   imgui.TextColored(C_TEXT, u8" " .. cur_ver)
   imgui.SameLine()
-  -- Правая часть: выравниваем по правому краю вручную
   local label_latest = u8"Latest  " .. latest_ver
-  -- Примерная ширина: каждый символ ~7px
   local rw = #("Latest  " .. latest_ver) * 7
   imgui.SetCursorPosX(16 + inner_w - rw)
   imgui.TextColored(C_DIM,  u8"Latest")
@@ -729,16 +655,13 @@ function M.draw_window()
   thin_separator()
   imgui.Spacing()
 
-  -- ── Основной блок состояния ───────────────────────────────
   if upd.busy then
-    -- Статус-строка
     local blink = math.floor(os.clock() * 2) % 2 == 0
     local dot   = blink and "*" or "o"
     imgui.TextColored(C_YELLOW, u8(dot .. " UPDATING..."))
 
     imgui.Spacing()
 
-    -- Прогрессбар: кастомный цвет + скруглённые углы
     ffi_cache.progress_size.x = inner_w
     imgui.PushStyleVarFloat(imgui.StyleVar.FrameRounding, 4.0)
     imgui.PushStyleColor(imgui.Col.PlotHistogram, ffi_cache.col_progress_hist)
@@ -747,23 +670,18 @@ function M.draw_window()
     imgui.PopStyleColor(2)
     imgui.PopStyleVar(1)
 
-    -- Процент (правый край)
     imgui.Spacing()
     local pct_str = math.floor(ui_state.progress * 100) .. "%"
     imgui.SetCursorPosX(16 + inner_w - #pct_str * 7)
     imgui.TextColored(C_DIM, u8(pct_str))
 
-    -- Текущий файл (усекаем если длинный)
     if ui_state.current_file ~= "" then
       local fname = ui_state.current_file
-      -- Показываем только последние ~40 символов пути
       if #fname > 40 then fname = "..." .. fname:sub(-37) end
       imgui.TextColored(C_BLUE, u8("  " .. fname))
     end
 
   else
-    -- ── Idle: статус + changelog + кнопки ─────────────────
-    -- Статус-badge
     if has_errors then
       imgui.TextColored(C_RED,    u8"[X] Update failed")
     elseif upd.required then
@@ -776,7 +694,6 @@ function M.draw_window()
       imgui.TextColored(C_GREEN,  u8"[V] Up to date")
     end
 
-    -- Список битых файлов (компактно, до 4 строк)
     if has_errors then
       imgui.Spacing()
       imgui.TextColored(C_DIM, u8"Failed files:")
@@ -793,11 +710,9 @@ function M.draw_window()
       end
     end
 
-    -- Changelog
     if has_changelog and not has_errors then
       imgui.Spacing()
       imgui.TextColored(C_DIM, u8"What's new:")
-      -- Обрезаем длинный changelog до ~2 строк
       local cl = upd.changelog
       if #cl > 80 then cl = cl:sub(1, 77) .. "..." end
       imgui.TextWrapped(u8(cl))
@@ -807,14 +722,10 @@ function M.draw_window()
     thin_separator()
     imgui.Spacing()
 
-    -- ── Кнопки ────────────────────────────────────────────
-    -- Layout: три кнопки в ряд если есть обновление,
-    --         иначе две (Check + Force)
     local GAP    = 8
     local BTN_H  = 28
 
     if upd.available or upd.required then
-      -- [Update] [Check] [Force]
       local w1 = 140
       local w2 = math.floor((inner_w - w1 - GAP * 2) / 2)
       local w3 = inner_w - w1 - w2 - GAP * 2
@@ -832,7 +743,6 @@ function M.draw_window()
         M.do_update_force()
       end
     else
-      -- [Check] [Force]
       local w1 = math.floor((inner_w - GAP) / 2)
       local w2 = inner_w - w1 - GAP
 
@@ -848,18 +758,13 @@ function M.draw_window()
   end
 
   imgui.End()
-  for i = 1, 4 do imgui.PopStyleColor() end -- Pop 4 colors
-  imgui.PopStyleVar(4) -- Pop 4 style vars
+  for i = 1, 4 do imgui.PopStyleColor() end
+  imgui.PopStyleVar(4)
 end
 
--- ─────────────────────────────────────────────────────────────
--- register_commands: /cadupdate открывает UI,
---   _check и _force перенесены в UI и удалены как команды
--- ─────────────────────────────────────────────────────────────
 function M.register_commands()
   if type(sampRegisterChatCommand) ~= 'function' then return end
 
-  -- /cadupdate — просто открывает окно
   sampRegisterChatCommand("cadupdate", function()
     if not ok_imgui then
       if type(sampAddChatMessage) == 'function' then

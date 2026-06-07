@@ -166,7 +166,6 @@ function main()
 
     local vkeys = require 'vkeys'
     
-    -- Read saved version from file (set by autoupdate after successful update)
     local installed_version = "1.0.0"
     if deps.autoupdate then
         local ver_file = getWorkingDirectory() .. '/config/cad_installed_version.txt'
@@ -175,12 +174,11 @@ function main()
           local saved_ver = vf:read('*a'):match('^%s*(.-)%s*$')
           if saved_ver and #saved_ver > 0 then
             installed_version = saved_ver
-            os.remove(ver_file)  -- Clean up after reading
+            os.remove(ver_file)
           end
           vf:close()
         end
         
-        -- Use the proper method to set version
         deps.autoupdate.set_version(installed_version)
         log('MAIN', log_levels.INFO, "Auto-update module detected, current version: " .. installed_version)
         log('MAIN', log_levels.INFO, "Starting version check.")
