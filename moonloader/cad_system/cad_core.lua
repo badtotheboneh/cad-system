@@ -126,27 +126,45 @@ function core.startHeartbeat()
 end
 
 local function handle_auth_response(data)
-    if data.action == 'login' or data.action == 'login_with_token' then
+    if data.action == 'verify_discord_code' then
+        if data.success then
+            log('CORE', log_levels.INFO, "Discord code verified. ID: " .. tostring(data.discord_id))
+            _G.CAD_EVENT_BUS.trigger('auth:discord_verified', data)
+        else
+            log('CORE', log_levels.ERROR, "Discord verification failed: " .. tostring(data.error))
+            _G.CAD_EVENT_BUS.trigger('auth:discord_error', data.error)
+        end
+
+    elseif data.action == 'get_characters' then
+        if data.success then
+            log('CORE', log_levels.INFO, "Characters list received.")
+            _G.CAD_EVENT_BUS.trigger('auth:characters_list', data.characters)
+        else
+            log('CORE', log_levels.ERROR, "Failed to get characters: " .. tostring(data.error))
+            _G.CAD_EVENT_BUS.trigger('auth:discord_error', data.error)
+        end
+
+    elseif data.action == 'create_character' then
+        if data.success then
+            log('CORE', log_levels.INFO, "Character created successfully.")
+            _G.CAD_EVENT_BUS.trigger('auth:character_created')
+        else
+            log('CORE', log_levels.ERROR, "Failed to create character: " .. tostring(data.error))
+            _G.CAD_EVENT_BUS.trigger('auth:discord_error', data.error)
+        end
+
+    elseif data.action == 'select_character' or data.action == 'login' or data.action == 'login_with_token' then
         core.login_window.is_logging_in = false
         if data.success then
-            log('CORE', log_levels.INFO, "Login successful for user: " .. data.user.username)
+            log('CORE', log_levels.INFO, "Login successful for user: " .. data.user.full_name)
             core.current_user = data.user
             core.auth_token = data.token
             core.fetchAbasData()
             if data.unit and data.unit.id then
-
                 core.current_unit = data.unit
-                
-
-                log('CORE', log_levels.INFO, "Login successful. Fetching logs for Unit ID: " .. tostring(data.unit.id))
-                -- core.fetchUnitLogs(data.unit.id, 'profile')
+                log('CORE', log_levels.INFO, "Login successful. Unit detected.")
             end
             core.startHeartbeat()
-
-            if data.action == 'login' then
-                settings.set("user_settings", "username", ffi.string(core.login_window.username))
-                ffi.fill(core.login_window.password, ffi.sizeof(core.login_window.password), 0)
-            end
 
             settings.set("user_settings", "token", core.auth_token)
             settings.set("user_settings", "currentUser", core.current_user)
@@ -160,12 +178,14 @@ local function handle_auth_response(data)
             _G.CAD_EVENT_BUS.trigger('radio:send_subscriptions')
         else
             core.login_window.error_message = data.error or "Unknown error"
+            log('CORE', log_levels.WARN, "Login failed: " .. tostring(data.error))
             if data.action == 'login_with_token' then
-                log('CORE', log_levels.WARN, "Login with token failed. Clearing session and requiring manual login.")
+                log('CORE', log_levels.WARN, "Login with token failed. Clearing session.")
                 core.current_user = nil
                 core.auth_token = nil
                 _G.CAD_EVENT_BUS.trigger('auth_logout')
             end
+            _G.CAD_EVENT_BUS.trigger('auth:discord_error', data.error)
         end
     elseif data.action == 'validateToken' then 
         if data.success and data.user then
@@ -331,14 +351,38 @@ function core.shutdown()
     core.current_unit = nil
 end
 
-function core.login(username, password)
-    if not cad_websocket.is_connected() then
-        core.login_window.error_message = "Not connected"
-        return
-    end
-    log('CORE', log_levels.INFO, "Attempting login...")
-    core.login_window.is_logging_in = true
-    cad_websocket.send({ type = "auth", action = "login", username = username, password = password })
+function core.verifyDiscordCode(code)
+    if not cad_websocket.is_connected() then return end
+    log('CORE', log_levels.INFO, "Verifying Discord code...")
+    cad_websocket.send({ type = "auth", action = "verify_discord_code", code = code })
+end
+
+function core.fetchCharacters(discord_id)
+    if not cad_websocket.is_connected() then return end
+    log('CORE', log_levels.INFO, "Fetching characters for Discord ID: " .. tostring(discord_id))
+    cad_websocket.send({ type = "auth", action = "get_characters", discord_id = discord_id })
+end
+
+function core.createCharacter(full_name, badge_number, discord_id)
+    if not cad_websocket.is_connected() then return end
+    log('CORE', log_levels.INFO, "Creating new character: " .. tostring(full_name))
+    cad_websocket.send({ 
+        type = "auth", 
+        action = "create_character", 
+        discord_id = discord_id,
+        payload = { full_name = full_name, badge_number = badge_number }
+    })
+end
+
+function core.selectCharacter(character_id, discord_id)
+    if not cad_websocket.is_connected() then return end
+    log('CORE', log_levels.INFO, "Selecting character ID: " .. tostring(character_id))
+    cad_websocket.send({ 
+        type = "auth", 
+        action = "select_character", 
+        discord_id = discord_id,
+        payload = { character_id = character_id }
+    })
 end
 
 function core.logout()

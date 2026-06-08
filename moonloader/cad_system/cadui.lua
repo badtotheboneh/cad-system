@@ -200,6 +200,24 @@ fullNameChangeBuffers = {
     is_error = false
 }
 
+local discord_auth = {
+    code = imgui.new.char[7](),
+    discord_id = nil,
+    avatar_url = nil,
+    avatar_texture = nil,
+    characters = {},
+    state = 'login', -- login, selection, registration
+    error_message = "",
+    is_loading = false
+}
+
+local registration_buffers = {
+    full_name = imgui.new.char[64](),
+    badge = imgui.new.char[32](),
+    is_loading = false,
+    error = ""
+}
+
 function trim_ws(value)
     if type(value) ~= "string" then return "" end
     return (value:gsub("^%s+", ""):gsub("%s+$", ""))
@@ -3236,242 +3254,207 @@ local function renderUnitTable(title, unit_list)
     renderTable("unit_table", columns, unit_list, row_renderer, {selected_index = selectedPatrolUnit, on_select = function(i) selectedPatrolUnit = unit_list[i] end})
 end
 
-local show_register_form = imgui.new.bool(false)
-local show_password = imgui.new.bool(false)
-
-function renderLoginForm()
+function renderDiscordLogin()
     local avail_w = imgui.GetContentRegionAvail().x
     
-
+    if fonts[22] then imgui.PushFont(fonts[22]) end
     local text = "TERMINAL ACCESS"
-    imgui.PushFont(fonts[22])
     local text_size = imgui.CalcTextSize(text)
     imgui.SetCursorPosX((avail_w - text_size.x) / 2)
-    imgui.TextColored(imgui.ImVec4(1, 1, 1, 1), text)
-    imgui.PopFont()
+    imgui.TextColored(imgui.ImVec4(0.45, 0.53, 0.85, 1.0), text)
+    if fonts[22] then imgui.PopFont() end
+
+    local sub_text = "Identify yourself to continue"
+    imgui.SetCursorPosX((avail_w - imgui.CalcTextSize(sub_text).x) / 2)
+    imgui.TextColored(imgui.ImVec4(0.5, 0.5, 0.6, 1), sub_text)
     
-    imgui.SetCursorPosX((avail_w - 200) / 2)
-    imgui.TextColored(imgui.ImVec4(0.5, 0.5, 0.6, 1), "Please identify yourself to continue")
+    imgui.Dummy(imgui.new('ImVec2', 0, 15))
     
-    imgui.Dummy(imgui.new('ImVec2', 0, 20))
-
-
-    drawStyledInput("USERNAME", core.login_window.username, ffi.sizeof(core.login_window.username), avail_w, 0, fa.ICON_FA_USER)
+    imgui.SetCursorPosX((avail_w - 220) / 2)
+    if imgui.Button(fa.ICON_FA_RIGHT_FROM_BRACKET .. " Открыть Discord сервер", imgui.new('ImVec2', 220, 30)) then
+        os.execute('explorer "https://discord.gg/AfRUXtfQ8C"')
+    end
     
-    local flags = show_password[0] and imgui.InputTextFlags.None or imgui.InputTextFlags.Password
-    drawStyledInput("PASSWORD", core.login_window.password, ffi.sizeof(core.login_window.password), avail_w, flags, fa.ICON_FA_ID_CARD)
+    imgui.Dummy(imgui.new('ImVec2', 0, 15))
     
-
-    imgui.PushStyleColor(imgui.Col.FrameBg, imgui.ImVec4(0.15, 0.15, 0.18, 1.0))
-    if imgui.Checkbox("Show Password", show_password) then end
-    imgui.PopStyleColor()
-
-    imgui.Dummy(imgui.new('ImVec2', 0, 10))
-
-
-    if core.login_window.is_logging_in then
-        imgui.SetCursorPosX((avail_w - 100) / 2)
-        imgui.TextColored(imgui.ImVec4(0.0, 0.7, 1.0, 1), "Authenticating...")
-    elseif core.login_window.error_message ~= "" then
+    drawStyledInput("6-DIGIT CODE", discord_auth.code, 7, avail_w, 0, fa.ICON_FA_SHIELD_HALVED)
+    
+    if discord_auth.is_loading then
+        local loading_text = "Authenticating..."
+        imgui.SetCursorPosX((avail_w - imgui.CalcTextSize(loading_text).x) / 2)
+        imgui.TextColored(imgui.ImVec4(0.0, 0.7, 1.0, 1), loading_text)
+    elseif discord_auth.error_message ~= "" then
         imgui.PushTextWrapPos(avail_w)
-        imgui.TextColored(imgui.ImVec4(1, 0.3, 0.3, 1), fa.ICON_FA_TRIANGLE_EXCLAMATION .. " " .. core.login_window.error_message)
+        imgui.TextColored(imgui.ImVec4(1, 0.3, 0.3, 1), fa.ICON_FA_TRIANGLE_EXCLAMATION .. " " .. discord_auth.error_message)
         imgui.PopTextWrapPos()
     end
     
     imgui.Dummy(imgui.new('ImVec2', 0, 15))
-
-
-    if not core.login_window.is_logging_in then
-        imgui.PushStyleColor(imgui.Col.Button, imgui.ImVec4(0.0, 0.4, 0.8, 1.0)) -- Blue
+    
+    if not discord_auth.is_loading then
+        imgui.PushStyleColor(imgui.Col.Button, imgui.ImVec4(0.0, 0.4, 0.8, 1.0))
         imgui.PushStyleColor(imgui.Col.ButtonHovered, imgui.ImVec4(0.1, 0.5, 0.9, 1.0))
         imgui.PushStyleColor(imgui.Col.ButtonActive, imgui.ImVec4(0.0, 0.3, 0.7, 1.0))
-        imgui.PushStyleVarFloat(imgui.StyleVar.FrameRounding, 4.0)
         
-        if imgui.Button("SECURE LOGIN", imgui.new('ImVec2', avail_w, 45)) then
-            log('UI', log_levels.INFO, "Login button clicked.")
-            local username = safe_str(core.login_window.username)
-            local password = safe_str(core.login_window.password)
-            core.login(username, password) 
+        if imgui.Button("VERIFY IDENTITY", imgui.new('ImVec2', avail_w, 45)) then
+            local code = ffi.string(discord_auth.code)
+            if #code == 6 then
+                discord_auth.is_loading = true
+                discord_auth.error_message = ""
+                core.verifyDiscordCode(code)
+            else
+                discord_auth.error_message = "Код должен быть 6-значным"
+            end
         end
-        
-        imgui.PopStyleVar()
         imgui.PopStyleColor(3)
     end
 end
 
-function renderRegisterForm()
-    if not divisionOptions_c then return end
+function renderCharacterSelection()
     local avail_w = imgui.GetContentRegionAvail().x
-
-
-    if fonts[22] then imgui.PushFont(fonts[22]) end
-    imgui.TextColored(imgui.ImVec4(1, 1, 1, 1), "NEW OFFICER PROFILE")
-    if fonts[22] then imgui.PopFont() end
+    local style = imgui.GetStyle()
     
+    if fonts[18] then imgui.PushFont(fonts[18]) end
+    imgui.Text("IDENTIFIED USER")
+    if fonts[18] then imgui.PopFont() end
     imgui.Separator()
     imgui.Dummy(imgui.new('ImVec2', 0, 10))
-
-
-    imgui.BeginChild("RegFormScroll", imgui.new('ImVec2', 0, -55), false) 
-        drawStyledInput("USERNAME", registerBuffers.username, ffi.sizeof(registerBuffers.username), avail_w, 0, fa.ICON_FA_USER)
-        drawStyledInput("FULL NAME (First Last)", registerBuffers.full_name, ffi.sizeof(registerBuffers.full_name), avail_w, 0, fa.ICON_FA_ID_CARD)
+    
+    for i = 1, 2 do
+        local char = discord_auth.characters[i]
         
-
-        imgui.Columns(2, "RegSplit", false)
-        imgui.SetColumnWidth(0, avail_w * 0.4)
+        imgui.PushStyleVarFloat(imgui.StyleVar.ChildRounding, 5.0)
         
-        drawStyledInput("BADGE #", registerBuffers.badge_number, ffi.sizeof(registerBuffers.badge_number), -1, 0, fa.ICON_FA_SHIELD_HALVED)
-        imgui.NextColumn()
-        drawStyledCombo("DIVISION", registerBuffers.division, divisionOptions_c, #comboBoxData.division, -1, fa.ICON_FA_GEARS)
+        local child_flags = imgui.WindowFlags.NoScrollbar + imgui.WindowFlags.NoScrollWithMouse
         
-        imgui.Columns(1)
-
-        imgui.Separator()
-        imgui.Dummy(imgui.new('ImVec2', 0, 10))
-
-        drawStyledInput("PASSWORD", registerBuffers.password, ffi.sizeof(registerBuffers.password), avail_w, imgui.InputTextFlags.Password, nil)
-        drawStyledInput("CONFIRM PASSWORD", registerBuffers.password_confirm, ffi.sizeof(registerBuffers.password_confirm), avail_w, imgui.InputTextFlags.Password, nil)
-
-        if registerBuffers.error ~= "" then
-            imgui.TextColored(imgui.ImVec4(1,0.3,0.3,1), fa.ICON_FA_TRIANGLE_EXCLAMATION .. " " .. registerBuffers.error)
-        end
-        if registerBuffers.success_message ~= "" then
-            imgui.TextColored(imgui.ImVec4(0.2,1,0.2,1), fa.ICON_FA_CIRCLE_QUESTION .. " " .. registerBuffers.success_message)
-        end
-    imgui.EndChild()
-
-
-    if not registerBuffers.loading then
-        imgui.PushStyleColor(imgui.Col.Button, imgui.ImVec4(0.2, 0.6, 0.2, 1.0)) -- Зеленая
-        imgui.PushStyleColor(imgui.Col.ButtonHovered, imgui.ImVec4(0.3, 0.7, 0.3, 1.0))
-        imgui.PushStyleVarFloat(imgui.StyleVar.FrameRounding, 4.0)
-        
-        if imgui.Button("CREATE PROFILE", imgui.new('ImVec2', avail_w, 45)) then
-            registerBuffers.loading = true
-            registerBuffers.error = ""
-            registerBuffers.success_message = ""
+        imgui.BeginChild("Slot" .. i, imgui.new('ImVec2', avail_w, 100), true, child_flags)
+        if char then
+            imgui.SetCursorPosY(15)
             
-            if not cad_websocket or not cad_websocket.is_connected() then
-                registerBuffers.error = "No connection to server"
-                registerBuffers.loading = false
-                return
-            end
-
-            local pass = safe_str(registerBuffers.password)
-            local pass_confirm = safe_str(registerBuffers.password_confirm)
-
-            if pass ~= pass_confirm then
-                registerBuffers.error = "Passwords do not match"
-                registerBuffers.loading = false
-                return
-            end
+            if fonts[18] then imgui.PushFont(fonts[18]) end
+            imgui.Text(char.full_name)
+            if fonts[18] then imgui.PopFont() end
             
-            if #pass < 6 then
-                registerBuffers.error = "Password too short (min 6)"
-                registerBuffers.loading = false
-                return
+            imgui.TextColored(imgui.ImVec4(0.6, 0.6, 0.6, 1), "BADGE: #" .. (char.badge_number or "N/A"))
+            imgui.TextColored(imgui.ImVec4(0.6, 0.6, 0.6, 1), "ROLE: " .. tostring(char.role):upper())
+            
+            local btn_w = 80
+            local padding_right = style.WindowPadding.x + 10
+            
+            imgui.SetCursorPos(imgui.new('ImVec2', avail_w - btn_w - padding_right, 35))
+            if imgui.Button("SELECT##" .. char.id, imgui.new('ImVec2', btn_w, 30)) then
+                core.selectCharacter(char.id, discord_auth.discord_id)
             end
-
-            local payload = {
-                username = safe_str(registerBuffers.username),
-                password = pass,
-                full_name = safe_str(registerBuffers.full_name),
-                badge_number = safe_str(registerBuffers.badge_number),
-                division = registerBuffers.division[0]
-            }
-
-            send_ws_request('auth', 'register', payload, function(data, err) 
-                registerBuffers.loading = false
-                if err then
-                    registerBuffers.error = err
-                else
-                    registerBuffers.success_message = "Success! Returning to login..."
-                    ffi.copy(core.login_window.username, ffi.string(registerBuffers.username))
-                    
-
-                    lua_thread.create(function()
-                        wait(1500)
-                        show_register_form[0] = false
-                    end)
-                end
-            end)
+        else
+            imgui.SetCursorPos(imgui.new('ImVec2', (avail_w - 30) / 2, 20))
+            imgui.Text(fa.ICON_FA_USER)
+            
+            imgui.SetCursorPos(imgui.new('ImVec2', (avail_w - 150) / 2, 55))
+            if imgui.Button("NEW CHARACTER##" .. i, imgui.new('ImVec2', 150, 30)) then
+                discord_auth.state = 'registration'
+                safe_copy(registration_buffers.full_name, "")
+                safe_copy(registration_buffers.badge, "")
+            end
         end
+        imgui.EndChild()
         imgui.PopStyleVar()
-        imgui.PopStyleColor(2)
-    else
-        imgui.TextColored(imgui.ImVec4(0.8, 0.8, 0.8, 1), "Processing request...")
+        imgui.Dummy(imgui.new('ImVec2', 0, 10))
+    end
+    
+    imgui.Dummy(imgui.new('ImVec2', 0, 10))
+    
+    if imgui.Button("LOGOUT", imgui.new('ImVec2', avail_w, 35)) then
+        discord_auth.state = 'login'
+        discord_auth.discord_id = nil
+        safe_copy(discord_auth.code, "")
+    end
+end
+
+function renderCharacterRegistration()
+    local avail_w = imgui.GetContentRegionAvail().x
+    
+    if fonts[18] then imgui.PushFont(fonts[18]) end
+    imgui.Text("CHARACTER REGISTRATION")
+    if fonts[18] then imgui.PopFont() end
+    imgui.Separator()
+    imgui.Dummy(imgui.new('ImVec2', 0, 10))
+    
+    drawStyledInput("FULL NAME (FIRST LAST)", registration_buffers.full_name, 64, avail_w, 0, fa.ICON_FA_USER)
+    drawStyledInput("BADGE NUMBER", registration_buffers.badge, 32, avail_w, 0, fa.ICON_FA_ID_CARD)
+    
+    if registration_buffers.error ~= "" then
+        imgui.PushTextWrapPos(avail_w)
+        imgui.TextColored(imgui.ImVec4(1, 0.3, 0.3, 1), fa.ICON_FA_TRIANGLE_EXCLAMATION .. " " .. registration_buffers.error)
+        imgui.PopTextWrapPos()
+    end
+    
+    imgui.Dummy(imgui.new('ImVec2', 0, 15))
+    
+    if imgui.Button("CREATE CHARACTER", imgui.new('ImVec2', avail_w, 45)) then
+        local name = ffi.string(registration_buffers.full_name)
+        if #name > 3 and name:find(" ") then
+            core.createCharacter(name, ffi.string(registration_buffers.badge), discord_auth.discord_id)
+        else
+            registration_buffers.error = "Enter Full Name (e.g. John Doe)"
+        end
+    end
+    
+    imgui.Dummy(imgui.new('ImVec2', 0, 5))
+    if imgui.Button("CANCEL", imgui.new('ImVec2', avail_w, 30)) then
+        discord_auth.state = 'selection'
+    end
+end
+
+function renderDiscordAuthUI()
+    local avail_w = imgui.GetContentRegionAvail().x
+    
+    if discord_auth.state == 'login' then
+        renderDiscordLogin()
+    elseif discord_auth.state == 'selection' then
+        renderCharacterSelection()
+    elseif discord_auth.state == 'registration' then
+        renderCharacterRegistration()
     end
 end
 
 function renderLoginWindow()
     local sw, sh = getScreenResolution()
-
-    local win_h = show_register_form[0] and 600 or 490 
+    local win_h = 500
     local win_w = 400
 
     imgui.SetNextWindowSize(imgui.new('ImVec2', win_w, win_h), imgui.Cond.Always)
     imgui.SetNextWindowPos(imgui.new('ImVec2', sw / 2, sh / 2), imgui.Cond.FirstUseEver, imgui.new('ImVec2', 0.5, 0.5))
-
 
     imgui.PushStyleColor(imgui.Col.WindowBg, imgui.ImVec4(0.05, 0.05, 0.07, 0.95))
     imgui.PushStyleColor(imgui.Col.Border, imgui.ImVec4(0.2, 0.2, 0.25, 0.5))
     imgui.PushStyleVarFloat(imgui.StyleVar.WindowRounding, 10.0)
     imgui.PushStyleVarVec2(imgui.StyleVar.WindowPadding, imgui.new('ImVec2', 25, 25))
 
-
     if imgui.Begin("##AuthWindow", UI.login_window, imgui.WindowFlags.NoCollapse + imgui.WindowFlags.NoResize + imgui.WindowFlags.NoTitleBar) then
-        
-
         local icon_size = 60
         imgui.SetCursorPosX((win_w - icon_size) / 2)
-        if fonts[22] then 
-            imgui.PushFont(fonts[22]) 
-
-
-            imgui.SetWindowFontScale(2.0) 
-            imgui.TextColored(imgui.ImVec4(0.0, 0.4, 0.8, 1.0), fa.ICON_FA_USER_SHIELD)
+        if fonts[22] then
+            imgui.PushFont(fonts[22])
+            imgui.SetWindowFontScale(2.0)
+            imgui.TextColored(imgui.ImVec4(0.45, 0.53, 0.85, 1.0), fa.ICON_FA_USER_SHIELD)
             imgui.SetWindowFontScale(1.0)
             imgui.PopFont()
         end
-        
+
         imgui.Dummy(imgui.new('ImVec2', 0, 10))
 
-        if show_register_form[0] then
-            renderRegisterForm()
-        else
-            renderLoginForm()
-        end
+        renderDiscordAuthUI()
 
         imgui.Dummy(imgui.new('ImVec2', 0, 15))
         imgui.Separator()
         imgui.Dummy(imgui.new('ImVec2', 0, 10))
 
-
-        local footer_text = show_register_form[0] and "Already have an account? Login" or "No account? Apply here"
+        local footer_text = "CAD System - Discord Auth"
         local ft_w = imgui.CalcTextSize(footer_text).x
         imgui.SetCursorPosX((win_w - ft_w) / 2)
-        
-
-        imgui.PushStyleColor(imgui.Col.Button, imgui.ImVec4(0,0,0,0))
-        imgui.PushStyleColor(imgui.Col.ButtonHovered, imgui.ImVec4(0,0,0,0))
-        imgui.PushStyleColor(imgui.Col.Text, imgui.ImVec4(0.5, 0.5, 0.5, 1.0))
-        
-        if imgui.Button(footer_text) then
-            show_register_form[0] = not show_register_form[0]
-            loginBuffers.error = ""
-            registerBuffers.error = ""
-        end
-        if imgui.IsItemHovered() then
-            imgui.SetMouseCursor(imgui.MouseCursor.Hand)
-
-
-        end
-        
-        imgui.PopStyleColor(3)
-
+        imgui.TextColored(imgui.ImVec4(0.4, 0.4, 0.5, 1), footer_text)
     end
     imgui.End()
-    
     imgui.PopStyleVar(2)
     imgui.PopStyleColor(2)
 end
@@ -8283,6 +8266,28 @@ cadui_module.initialize = function(deps)
     
     boloTypes_c = imgui.new['const char*'][#boloTypes](boloTypes)
 
+    events.register('auth:discord_verified', function(data)
+        discord_auth.is_loading = false
+        discord_auth.discord_id = data.discord_id
+        discord_auth.avatar_url = data.avatar_url
+        discord_auth.state = 'selection'
+        core.fetchCharacters(data.discord_id)
+    end)
+
+    events.register('auth:characters_list', function(characters)
+        discord_auth.characters = characters
+    end)
+
+    events.register('auth:character_created', function()
+        discord_auth.state = 'selection'
+        core.fetchCharacters(discord_auth.discord_id)
+    end)
+
+    events.register('auth:discord_error', function(err)
+        discord_auth.is_loading = false
+        discord_auth.error_message = err
+        registration_buffers.error = err
+    end)
 
     log('UI', log_levels.INFO, "Module initialized.")
 end

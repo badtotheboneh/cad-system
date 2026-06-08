@@ -1,6 +1,6 @@
 {
-  "latest": "1.0.11-beta",
+  "latest": "1.0.12-beta",
   "min_supported": "1.0.10-beta",
-  "changelog": "Первый запуск системы, добавлены автообновления.",
+  "changelog": "First initial release, beta version autoupdater.",
   "url": "https://raw.githubusercontent.com/badtotheboneh/cad-system/main/moonloader/cad_main.lua"
 }
