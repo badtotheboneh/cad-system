@@ -15,9 +15,9 @@ local monitoredChannels = {
 
 local phantomChannelTags = {
     ['r1'] = "A-TAC 1",
-    ['r2'] = "A-TAC 2",
+    ['r2'] = "L-TAC 6",
     ['r3'] = "50 EMERGENCY",
-    ['r4'] = "DISPATCH 11"
+    ['r4'] = "DISPATCH 6"
 }
 
 local bNotf, notf = pcall(import, "imgui_notf.lua")
@@ -244,7 +244,7 @@ function samp.onServerMessage(color, text)
         elseif numChannel == 10 then
             text = "** [A-TAC 1] "..newRadioMessageNick..": "..newRadioMessageText
         elseif numChannel == 20 then
-            text = "** [A-TAC 2] "..newRadioMessageNick..": "..newRadioMessageText
+            text = "** [L-TAC 6] "..newRadioMessageNick..": "..newRadioMessageText
         elseif numChannel == 30 then
             text = "** [50 EMERGENCY] "..newRadioMessageNick..": "..newRadioMessageText
         elseif numChannel == 87 then
@@ -363,6 +363,7 @@ end
 
 sampRegisterChatCommand('tac1', function(param)
     sampSendChat("/slot 10")
+    if deps.events then deps.events.trigger('radio:local_channel_changed', 10) end
 
     local autoSignDisabled = cad_settings.config and cad_settings.config.radio_settings and cad_settings.config.radio_settings.disableAutoSign
 
@@ -384,6 +385,7 @@ end)
 
 sampRegisterChatCommand('tac2', function(param)
     sampSendChat("/slot 20")
+    if deps.events then deps.events.trigger('radio:local_channel_changed', 20) end
 
     local autoSignDisabled = cad_settings.config and cad_settings.config.radio_settings and cad_settings.config.radio_settings.disableAutoSign
 
@@ -404,7 +406,7 @@ end)
 
 sampRegisterChatCommand('tac3', function(param)
     sampSendChat("/slot 30")
-
+    if deps.events then deps.events.trigger('radio:local_channel_changed', 30) end
     local autoSignDisabled = cad_settings.config and cad_settings.config.radio_settings and cad_settings.config.radio_settings.disableAutoSign
 
     if autoSignDisabled then

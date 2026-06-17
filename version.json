@@ -1,6 +1,6 @@
 {
-  "latest": "1.0.12-beta",
+  "latest": "1.0.13-beta",
   "min_supported": "1.0.10-beta",
-  "changelog": "First initial release, beta version autoupdater, discord auth test.",
+  "changelog": "Short cut status, simplex rework, stability fix",
   "url": "https://raw.githubusercontent.com/badtotheboneh/cad-system/main/moonloader/cad_main.lua"
 }

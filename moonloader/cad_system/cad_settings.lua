@@ -39,6 +39,7 @@ local DEFAULT_CONFIG = {
         vehiclePlate = "None",
         division = 0,
         shift = 0,
+        base_radio_slot = 1,
         notes = "None"
     },
     api_settings = {

@@ -10,7 +10,7 @@ local vkeys = require 'vkeys'
 local sampfuncs = require 'sampfuncs' 
 
 
-local profileEditBuffers = {
+profileEditBuffers = {
     full_name = imgui.new.char[64](),
     badge = imgui.new.char[32](),
     phone = imgui.new.char[32]()
@@ -47,10 +47,10 @@ local fonts = {}
 local claimed_vehicle = nil
 local assigned_vehicle_id = nil
 
-local events, core, cad_websocket, json, settings, copas, log, log_levels, safe_str, cars, safe_copy, autoupdate
-local optimistic_accept_assist
+events, core, cad_websocket, json, settings, copas, log, log_levels, safe_str, cars, safe_copy, autoupdate = nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil
+optimistic_accept_assist = nil
 
-local fetchMyUnitData, fetchCalls, fetchBolos, fetchUnits
+fetchMyUnitData, fetchCalls, fetchBolos, fetchUnits = nil, nil, nil, nil
 
 
 local ThemeManager = {
@@ -69,7 +69,7 @@ local ThemeManager = {
     color_buffers = {}
 }
 
-local function ToMSK(date_str)
+function ToMSK(date_str)
     if not date_str or date_str == "" then return "N/A" end
     
     local year, month, day, hour, min, sec = date_str:match("(%d+)-(%d+)-(%d+)T(%d+):(%d+):(%d+)")
@@ -157,10 +157,9 @@ function ThemeManager.resetTheme()
         end
     end
     ThemeManager.applyCurrentTheme()
-    addNotification("Theme Manager", "Тема сброшена к стандартным настройкам.", 5)
 end
 
-local fixed_radio_channels = {
+fixed_radio_channels = {
     { id = "r1", name = "A-TAC 1", freq = "912.120" },
     { id = "r2", name = "A-TAC 2", freq = "912.115" },
     { id = "r3", name = "50 EMERGENCY", freq = "912.100" },
@@ -172,7 +171,7 @@ local radio_channels = {}
 local radio_buffers = {}
 
 
-local function saveRadioChannels()
+function saveRadioChannels()
     local to_save = {}
     for i = 1, 5 do
         table.insert(to_save, {
@@ -182,10 +181,9 @@ local function saveRadioChannels()
     end
     settings.set('radio_settings', 'channels', to_save)
     settings.save()
-    addNotification("SYSTEM", "Radio channels configuration saved.", 3)
 end
 
-local passwordChangeBuffers = {
+passwordChangeBuffers = {
     old_password = imgui.new.char[64](),
     new_password = imgui.new.char[64](),
     confirm_password = imgui.new.char[64](),
@@ -206,12 +204,12 @@ local discord_auth = {
     avatar_url = nil,
     avatar_texture = nil,
     characters = {},
-    state = 'login', -- login, selection, registration
+    state = 'login',
     error_message = "",
     is_loading = false
 }
 
-local registration_buffers = {
+registration_buffers = {
     full_name = imgui.new.char[64](),
     badge = imgui.new.char[32](),
     is_loading = false,
@@ -385,7 +383,8 @@ function cadui_module.clearInterface()
     
     unitInfoBuffers.division[0] = 0
     unitInfoBuffers.status[0] = 0
-    
+    unitInfoBuffers.base_radio_slot[0] = 1
+
     if vehicleEquipment then
         vehicleEquipment.ar15[0] = false
         vehicleEquipment.ll40mm[0] = false
@@ -401,7 +400,7 @@ end
 function BinderManager.executeBind(bind)
     local current_time = os.clock()
     if current_time - BinderManager.last_bind_execution_time < BinderManager.bind_debounce_time then
-        return -- Debounced
+        return
     end
     BinderManager.last_bind_execution_time = current_time
 
@@ -477,29 +476,6 @@ function BinderManager.checkHotkeys()
     end
 end
 
-local function ToMSK(date_str)
-    if not date_str or date_str == "" then return "N/A" end
-    
-    local year, month, day, hour, min, sec = date_str:match("(%d+)-(%d+)-(%d+)T(%d+):(%d+):(%d+)")
-    
-    if year then
-        local ts = os.time({
-            year = tonumber(year),
-            month = tonumber(month),
-            day = tonumber(day),
-            hour = tonumber(hour),
-            min = tonumber(min),
-            sec = tonumber(sec)
-        })
-        
-        ts = ts + (3 * 3600)
-        
-        return os.date("%Y-%m-%d %H:%M:%S", ts)
-    end
-    
-    return date_str
-end
-
 function BinderManager.handleKeyBindingInput()
     if not BinderManager.is_binding_key or not BinderManager.current_bind_index then return end
 
@@ -533,7 +509,7 @@ function BinderManager.handleKeyBindingInput()
         local final_keys = {}
         if imgui.IsKeyDown(vkeys.VK_CONTROL) then table.insert(final_keys, vkeys.VK_CONTROL) end
         if imgui.IsKeyDown(vkeys.VK_SHIFT) then table.insert(final_keys, vkeys.VK_SHIFT) end
-        if imgui.IsKeyDown(vkeys.VK_MENU) then table.insert(final_keys, vkeys.VK_MENU) end -- VK_MENU is Alt
+        if imgui.IsKeyDown(vkeys.VK_MENU) then table.insert(final_keys, vkeys.VK_MENU) end
 
         table.insert(final_keys, trigger_key_pressed)
 
@@ -606,6 +582,12 @@ function cadui_module.syncInputBuffers(unit_data)
         end
     end
 
+    if unit_data.base_radio_slot then
+        if not is_unit_field_dirty("base_radio_slot") then
+            unitInfoBuffers.base_radio_slot[0] = tonumber(unit_data.base_radio_slot)
+        end
+    end
+
 
 
     local function to_bool(val) return (val == 1 or val == true or val == "1") end
@@ -624,7 +606,7 @@ function cadui_module.syncInputBuffers(unit_data)
 end
 
 
-local binderEditBuffers = {
+binderEditBuffers = {
     selected_index = -1,
     title = imgui.new.char[128](),
     command = imgui.new.char[256]()
@@ -902,9 +884,13 @@ local function handle_websocket_message(response)
         end
     elseif response.type == 'force_radio_channel' then
         if response.payload and response.payload.channel then
-            setRadioChannel(response.payload.channel)
-            if response.payload.origin == 'simplex' then
-                play_interface_trigger("simplex_accepted")
+            local channel = tonumber(response.payload.channel)
+            if channel then
+                UI.unit_mini_hud_last_slot = channel
+                setRadioChannel(channel)
+                if response.payload.origin == 'simplex' then
+                    play_interface_trigger("simplex_accepted")
+                end
             end
         end
     end
@@ -1278,6 +1264,10 @@ function updateLastRadioSlotUsed(slot_value, source)
     if not slot_num or slot_num < 1 then return false end
 
     UI.unit_mini_hud_last_slot = slot_num
+    if core and core.current_unit then
+        core.current_unit.current_channel_id = slot_num
+        broadcastUnitStatus()
+    end
     if settings then
         settings.set('ui_settings', 'last_slot_used', slot_num)
         settings.save()
@@ -1287,6 +1277,27 @@ function updateLastRadioSlotUsed(slot_value, source)
         log('UI', log_levels.DEBUG, string.format("Updated last radio slot to %d (%s)", slot_num, tostring(source or "unknown")))
     end
     return true
+end
+
+function revertToBaseRadioSlot()
+    local unit = core and core.current_unit
+    local base_slot
+    
+    if unit and unit.base_radio_slot and tonumber(unit.base_radio_slot) > 0 then
+        base_slot = tonumber(unit.base_radio_slot)
+    else
+        base_slot = tonumber(unitInfoBuffers.base_radio_slot[0])
+    end
+
+    local current_slot = tonumber(UI.unit_mini_hud_last_slot)
+    
+    log('UI', log_levels.DEBUG, string.format("Revert check: base=%s, current=%s", tostring(base_slot), tostring(current_slot)))
+    
+    if base_slot and base_slot > 0 and base_slot ~= current_slot then
+        log('UI', log_levels.INFO, "Reverting to base radio slot: " .. tostring(base_slot))
+        updateLastRadioSlotUsed(base_slot, "auto_reversion")
+        sampSendChat("/slot " .. tostring(base_slot))
+    end
 end
 
 function requestFullNameChange()
@@ -1369,14 +1380,14 @@ function ensure_map_textures_loaded()
 end
 
 
-local loginBuffers = {
+loginBuffers = {
     username = imgui.new.char[64](),
     password = imgui.new.char[64](),
     error = "",
     loading = false
 }
 
-local keyBindBuffers = {
+keyBindBuffers = {
     mdt = imgui.new.char[32](),
     alpr = imgui.new.char[32](),
     map = imgui.new.char[32]()
@@ -1389,7 +1400,7 @@ local selected_alpr_log_index = nil
 alpr_log_comment_buffer = imgui.new.char[256]()
 local last_alpr_scan_time = 0
 
-local registerBuffers = {
+registerBuffers = {
     username = imgui.new.char[64](),
     password = imgui.new.char[64](),
     password_confirm = imgui.new.char[64](),
@@ -1830,8 +1841,6 @@ function updateALPRData()
             log('ALPR', log_levels.INFO, 'BOLO HIT for plate: ' .. plate .. ' (BOLO #' .. tostring(bolo_hit.id or "?") .. ')')
         end
 
-        -- debug output removed
-
         if is_wanted or is_bolo then
             if not alpr_is_wanted_plate then
                 log('ALPR', log_levels.INFO, 'Plate is wanted and was not previously wanted. Playing sound.')
@@ -1993,8 +2002,10 @@ function broadcastUnitStatus(extra_params)
         status = unitInfoBuffers.status[0],
         vehiclePlate = safe_str(unitInfoBuffers.vehiclePlate),
         division = unitInfoBuffers.division[0],
+        base_radio_slot = unitInfoBuffers.base_radio_slot[0],
         notes = safe_str(unitInfoBuffers.notes),
         location = currentLocation,
+        current_channel_id = tonumber(UI.unit_mini_hud_last_slot),
         is_active = (unitInfoBuffers.status[0] ~= 4),
         vehicleId = assigned_vehicle_id, 
         user_id = core.current_user and core.current_user.id or nil
@@ -2302,15 +2313,17 @@ local function is_unit_field_dirty(field)
     return unit_edit_state.dirty[field] == true
 end
 
-local unitInfo = { 
+unitInfo = { 
     unitID = "", unitType = 0, 
     officer1_name = "", officer1_id = "", 
     officer2_name = "", officer2_id = "", 
     status = 0, vehiclePlate = "", 
-    division = 0, shift = 0, notes = "" 
+    division = 0, shift = 0, 
+    base_radio_slot = 1,
+    notes = "" 
 }
 
-local unitInfoBuffers = {
+unitInfoBuffers = {
     unitID = imgui.new.char[32](unitInfo.unitID), 
     unitType = imgui.new.int(unitInfo.unitType),
     
@@ -2326,11 +2339,12 @@ local unitInfoBuffers = {
     vehiclePlate = imgui.new.char[32](unitInfo.vehiclePlate),
     division = imgui.new.int(unitInfo.division), 
     shift = imgui.new.int(unitInfo.shift),
+    base_radio_slot = imgui.new.int(unitInfo.base_radio_slot or 1),
     notes = imgui.new.char[256](unitInfo.notes) 
 }
 
 
-local vehicleEquipment = {
+vehicleEquipment = {
     ar15 = imgui.new.bool(false),
     ll40mm = imgui.new.bool(false),
     beanbag = imgui.new.bool(false),
@@ -3731,6 +3745,20 @@ local function drawModernUnitCard(unit, is_selected)
     local status_text = comboBoxData.status[status_idx + 1] or "Unknown"
     draw_list:AddText(imgui.new('ImVec2', info_x, p.y + 4), color, status_text)
 
+    local slot_num = tonumber(unit.current_channel_id)
+    if not slot_num or slot_num <= 0 then
+        if is_unit_for_current_user(unit) then
+            slot_num = tonumber(UI.unit_mini_hud_last_slot)
+        end
+    end
+    if slot_num and slot_num > 0 then
+        local fq_text = "Fq 912." .. tostring(slot_num)
+        local fq_size = imgui.CalcTextSize(fq_text)
+        local fq_x = p.x + width - fq_size.x - 10
+        local fq_y = p.y + 4
+        draw_list:AddText(imgui.new('ImVec2', fq_x, fq_y), 0xFF808080, fq_text)
+    end
+
     local location_text = tostring(unit.location or "N/A")
     if #location_text > 35 then location_text = string.sub(location_text, 1, 32) .. "..." end
     draw_list:AddText(imgui.new('ImVec2', info_x, p.y + 22), 0xFFAAAAAA, location_text)
@@ -4020,7 +4048,13 @@ local function renderCallsTab()
                 updateCallStatus(call.id, "accept", safe_str(unitInfoBuffers.unitID))
                 sampSendChat('/accept ' .. tostring(call.server_call_id))
                 cadui_module.setPendingCheckpointForCall(call.id)
-                unitInfoBuffers.status[0] = 1 
+                unitInfoBuffers.status[0] = 1
+
+                -- Auto set radio channel if provided in call
+                if call.tactical_channel and tonumber(call.tactical_channel) then
+                    setRadioChannel(tonumber(call.tactical_channel))
+                end
+
                 broadcastUnitStatus()
                 if core.fetchAbasData then
                     core.fetchAbasData()
@@ -4270,6 +4304,11 @@ local function renderIncidentsTab()
                 imgui.PushStyleColor(imgui.Col.ButtonHovered, imgui.ImVec4(0.1, 0.55, 0.8, 1.0))
                 if imgui.Button("ACCEPT ASSIST", imgui.new('ImVec2', btn_w, 40)) then
                     send_ws_request('tactical', 'accept_assist', { incident_id = incident.id })
+                    
+                    if incident.tactical_channel and tonumber(incident.tactical_channel) then
+                        setRadioChannel(tonumber(incident.tactical_channel))
+                    end
+
                     optimistic_accept_assist(incident.id)
                     cadui_module.touchIncidentWaypoint(incident.id, 'incident_tab_accept')
                     addUnitLogEntry("INCIDENT", "Accepted assist for #" .. incident.id)
@@ -4312,6 +4351,7 @@ local function renderIncidentsTab()
                  send_ws_request('tactical', 'update_incident_status', { incident_id = incident.id, status = 'Resolved' })
                  optimistic_set_incident_status(incident.id, 'Resolved')
                  send_map_request('close_dispatch_marker', { dedupe_key = "dispatch:incident_call:" .. tostring(incident.id) })
+                 revertToBaseRadioSlot()
                  selected_incident_index = nil
             end
             imgui.PopStyleColor(1)
@@ -4483,10 +4523,20 @@ local function renderUnitsTab()
             
             imgui.Dummy(imgui.new('ImVec2', 0, 5))
             
-            local div_name = comboBoxData.division[unit.division + 1] or "N/A"
+            local div_idx = tonumber(unit.division) or 0
+            local div_name = comboBoxData.division[div_idx + 1] or "N/A"
             drawInfoCard("Division", div_name, col_w, fa.ICON_FA_ID_CARD)
             imgui.SameLine()
             drawInfoCard("Vehicle", unit.vehiclePlate or "No Plate", col_w, fa.ICON_FA_CAR_SIDE)
+            
+            imgui.Dummy(imgui.new('ImVec2', 0, 5))
+            
+            local current_slot = tonumber(unit.current_channel_id)
+            if (not current_slot or current_slot <= 0) and is_unit_for_current_user(unit) then
+                current_slot = tonumber(UI.unit_mini_hud_last_slot)
+            end
+            local slot_text = (current_slot and current_slot > 0) and ("912." .. tostring(current_slot)) or "N/A"
+            drawInfoCard("Radio Slot", slot_text, col_w, fa.ICON_FA_WALKIE_TALKIE)
             
             imgui.Dummy(imgui.new('ImVec2', 0, 5))
             drawInfoCard("Last Location", unit.location or "Unknown", width, fa.ICON_FA_LOCATION_DOT)
@@ -4697,6 +4747,42 @@ local function renderMyInfoTab()
                 if imgui.Combo("##udiv", unitInfoBuffers.division, divisionOptions_c, #comboBoxData.division) then
                     mark_unit_field_dirty("division")
                 end
+            imgui.EndGroup()
+        imgui.EndChild()
+        imgui.PopStyleColor()
+
+        imgui.Dummy(imgui.new('ImVec2', 0, 5))
+
+        imgui.PushStyleColor(imgui.Col.ChildBg, imgui.ImVec4(0.15, 0.15, 0.18, 0.6))
+        imgui.BeginChild("RadioSlotBlock", imgui.new('ImVec2', 0, 80), true, imgui.WindowFlags.NoScrollbar)
+            imgui.SetCursorPos(imgui.new('ImVec2', 10, 8))
+            
+            if fonts[18] then imgui.PushFont(fonts[18]) end
+            imgui.TextColored(imgui.ImVec4(0.4, 0.7, 1.0, 1), fa.ICON_FA_WALKIE_TALKIE .. " RADIO SIMPLEX")
+            if fonts[18] then imgui.PopFont() end
+            
+            imgui.SetCursorPos(imgui.new('ImVec2', 10, 35))
+            
+            imgui.BeginGroup()
+                imgui.TextDisabled("BASE SIMPLEX (912.X)")
+                imgui.SetNextItemWidth(100)
+                
+                if imgui.InputInt("##rslot", unitInfoBuffers.base_radio_slot, 0, 0) then
+                    mark_unit_field_dirty("base_radio_slot")
+                end
+            imgui.EndGroup()
+            
+            imgui.SameLine()
+            
+            imgui.BeginGroup()
+                imgui.TextDisabled("BASE PATCH")
+                if imgui.Button("C-TAC  (30)") then updateLastRadioSlotUsed(30, "ui_preset"); sampSendChat("/slot 30") end
+                imgui.SameLine()
+                if imgui.Button("A-TAC 1 (10)") then updateLastRadioSlotUsed(10, "ui_preset"); sampSendChat("/slot 10") end
+                imgui.SameLine()
+                if imgui.Button("L-TAC 6 (20)") then updateLastRadioSlotUsed(20, "ui_preset"); sampSendChat("/slot 20") end
+                imgui.SameLine()
+                if imgui.Button("EMER 50 (99)") then updateLastRadioSlotUsed(99, "ui_preset"); sampSendChat("/slot 99") end
             imgui.EndGroup()
         imgui.EndChild()
         imgui.PopStyleColor()
@@ -5018,6 +5104,7 @@ local function renderMyInfoTab()
                 vehiclePlate = safe_str(unitInfoBuffers.vehiclePlate),
                 notes = safe_str(unitInfoBuffers.notes),
                 division = unitInfoBuffers.division[0],
+                base_radio_slot = unitInfoBuffers.base_radio_slot[0],
                 officer1_name = safe_str(unitInfoBuffers.officer1_name),
                 officer1_phone = safe_str(unitInfoBuffers.officer1_phone),
                 officer2_name = safe_str(unitInfoBuffers.officer2_name),
@@ -5066,6 +5153,7 @@ local function renderMyInfoTab()
                 status = unitInfoBuffers.status[0],
                 vehiclePlate = payload.vehiclePlate,
                 division = payload.division,
+                base_radio_slot = unitInfoBuffers.base_radio_slot[0],
                 shift = unitInfoBuffers.shift[0],
                 notes = payload.notes,
                 equipment = { 
@@ -6049,6 +6137,7 @@ function loadUnitInfoFromSettings()
         unitInfoBuffers.status[0] = loaded_unit_info.status or 4
         safe_copy(unitInfoBuffers.vehiclePlate, loaded_unit_info.vehiclePlate or "")
         unitInfoBuffers.division[0] = loaded_unit_info.division or 0
+        unitInfoBuffers.base_radio_slot[0] = loaded_unit_info.base_radio_slot or 1
         safe_copy(unitInfoBuffers.notes, loaded_unit_info.notes or "")
         assigned_vehicle_id = loaded_unit_info.assigned_vehicle_id or nil
         
@@ -7680,6 +7769,7 @@ function updateCallStatus(call_id, action, unit_id)
                 if checkpoint_tracker.dedupe_key == ("dispatch:call_911:" .. tostring(call_id)) then
                     clear_checkpoint_tracker()
                 end
+                revertToBaseRadioSlot()
             end
             forceDataRefresh()
         end
@@ -7749,8 +7839,10 @@ function broadcastUnitStatus(extra_params)
         status = unitInfoBuffers.status[0],
         vehiclePlate = safe_str(unitInfoBuffers.vehiclePlate),
         division = unitInfoBuffers.division[0],
+        base_radio_slot = unitInfoBuffers.base_radio_slot[0],
         notes = safe_str(unitInfoBuffers.notes),
         location = currentLocation,
+        current_channel_id = tonumber(UI.unit_mini_hud_last_slot),
         is_active = (unitInfoBuffers.status[0] ~= 4),
         vehicleId = assigned_vehicle_id,
         ar15 = vehicleEquipment.ar15[0],
@@ -7801,6 +7893,10 @@ function setUnitActiveStatus(isActive)
     local log_message = isActive and "Unit is now ON DUTY" or "Unit is now OFF DUTY"
     addUnitLogEntry("STATUS", log_message)
     broadcastUnitStatus({ is_active = isActive and 'true' or 'false' })
+    
+    if isActive then
+        revertToBaseRadioSlot()
+    end
 end
 
 
@@ -7845,6 +7941,17 @@ cadui_module.toggleMDT = function()
     if UI.mdt[0] then
         forceDataRefresh()
     end
+end
+
+local original_sampSendChat = sampSendChat
+function sampSendChat(msg)
+    if msg then
+        local slotNum = msg:match("^/slot%s+(%d+)")
+        if slotNum then
+            events.trigger('radio:local_channel_changed', tonumber(slotNum))
+        end
+    end
+    original_sampSendChat(msg)
 end
 
 cadui_module.initialize = function(deps)
@@ -8206,6 +8313,46 @@ cadui_module.initialize = function(deps)
             end
         end)
 
+        sampRegisterChatCommand("ps", function(arg)
+            local input = tostring(arg or ""):gsub("^%s+", ""):gsub("%s+$", ""):lower()
+            if not core or not core.isAuthenticated or not core.isAuthenticated() then
+                if sampAddChatMessage then
+                end
+                return
+            end
+
+            if input == "10-8" or input == "108" or input == "clear" or input == "available" then
+                setUnitActiveStatus(true)
+                if sampAddChatMessage then
+                end
+            elseif input == "enroute" or input == "10-97" or input == "1097" then
+                unitInfoBuffers.status[0] = 1
+                broadcastUnitStatus()
+                addUnitLogEntry("STATUS", "En Route")
+                if sampAddChatMessage then
+                end
+            elseif input == "c6" or input == "code6" or input == "code-6" or input == "onscene" then
+                unitInfoBuffers.status[0] = 2
+                broadcastUnitStatus()
+                addUnitLogEntry("STATUS", "Code 6 (On Scene)")
+                if sampAddChatMessage then
+                end
+            elseif input == "10-6" or input == "106" or input == "busy" then
+                unitInfoBuffers.status[0] = 3
+                broadcastUnitStatus()
+                addUnitLogEntry("STATUS", "Busy")
+                if sampAddChatMessage then
+                end
+            elseif input == "10-7" or input == "107" or input == "out" or input == "offduty" or input == "oos" then
+                setUnitActiveStatus(false)
+                if sampAddChatMessage then
+                end
+            else
+                if sampAddChatMessage then
+                end
+            end
+        end)
+
         if autoupdate and autoupdate.register_commands then
             autoupdate.register_commands()
         end
@@ -8226,6 +8373,12 @@ cadui_module.initialize = function(deps)
             end
             return
         end
+        if core and core.current_unit then
+            local server_channel = tonumber(core.current_unit.current_channel_id)
+            if server_channel and server_channel > 0 then
+                UI.unit_mini_hud_last_slot = server_channel
+            end
+        end
         log('UI', log_levels.INFO, 'cad:unit_updated event received. Syncing UI buffers.')
         safe_copy(unitInfoBuffers.unitID, unit_data.unitID or "")
         unitInfoBuffers.unitType[0] = unit_data.unitType or 0
@@ -8236,6 +8389,9 @@ cadui_module.initialize = function(deps)
         unitInfoBuffers.status[0] = unit_data.status or 4
         safe_copy(unitInfoBuffers.vehiclePlate, unit_data.vehiclePlate or "")
         unitInfoBuffers.division[0] = unit_data.division or 0
+        if unit_data.base_radio_slot and tonumber(unit_data.base_radio_slot) > 0 then
+            unitInfoBuffers.base_radio_slot[0] = tonumber(unit_data.base_radio_slot)
+        end
         safe_copy(unitInfoBuffers.notes, unit_data.notes or "")
         local function to_bool(val) return (val == 1 or val == true) end
 
@@ -8287,6 +8443,13 @@ cadui_module.initialize = function(deps)
         discord_auth.is_loading = false
         discord_auth.error_message = err
         registration_buffers.error = err
+    end)
+
+    events.register('radio:local_channel_changed', function(channel)
+        if channel and tonumber(channel) then
+            UI.unit_mini_hud_last_slot = tonumber(channel)
+            log('UI', log_levels.DEBUG, 'Radio slot synced from external source: ' .. tostring(channel))
+        end
     end)
 
     log('UI', log_levels.INFO, "Module initialized.")
