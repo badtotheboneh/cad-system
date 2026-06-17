@@ -1,8 +1,8 @@
 {
   "total_files": 926,
-  "generated": "2026-06-08T15:19:40Z",
-  "version": "1.0.12-beta",
-  "total_size": 61656762.0,
+  "generated": "2026-06-17T15:18:34Z",
+  "version": "1.0.13-beta",
+  "total_size": 61664340.0,
   "files": [
     {
       "path": "cad_diagnostics.lua",
@@ -11,8 +11,8 @@
     },
     {
       "path": "cad_system/cadui.lua",
-      "size": 338884,
-      "sha256": "5fe12021598fb563e36aec3edec27c6b8df1ddf8da9be89366674ebb5a7cc030"
+      "size": 346186,
+      "sha256": "1883d9febe69c5b9b16738ca0dac8da6f3f22ef8dc4b0cf60eff107d6a6e6627"
     },
     {
       "path": "cad_system/cad_autoupdate.lua",
@@ -41,8 +41,8 @@
     },
     {
       "path": "cad_system/cad_settings.lua",
-      "size": 5697,
-      "sha256": "7375161addb0d92029ca5644df3edaba23b5d627cb43d59aa6d4e5b98d59c6d2"
+      "size": 5726,
+      "sha256": "4cf07c97bca1401fc3b8231734bae1783d98b9be5b0930a5c3ee2474b7922b2f"
     },
     {
       "path": "cad_system/cad_websocket.lua",
@@ -51,8 +51,8 @@
     },
     {
       "path": "cad_system/_cadparserradio.lua",
-      "size": 31150,
-      "sha256": "7c0ef21722468ad1534d1d39c1eb43ebbc013a184a4a05d613809707f51ab149"
+      "size": 31397,
+      "sha256": "ea54af0b99c262c4e27af4f6910b31f2c8b9bf3731995b6559d1c508010fbd16"
     },
     {
       "path": "cad_system/resource/1.png",
