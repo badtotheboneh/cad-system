@@ -161,9 +161,9 @@ end
 
 fixed_radio_channels = {
     { id = "r1", name = "A-TAC 1", freq = "912.120" },
-    { id = "r2", name = "A-TAC 2", freq = "912.115" },
+    { id = "r2", name = "L-TAC 6", freq = "912.115" },
     { id = "r3", name = "50 EMERGENCY", freq = "912.100" },
-    { id = "r4", name = "DISPATCH 11", freq = "912.200" }
+    { id = "r4", name = "DISPATCH 6", freq = "912.200" }
 }
 
 local radio_subscription_state = { true, true, true, true }

@@ -1,8 +1,8 @@
 {
   "total_files": 926,
-  "generated": "2026-06-17T15:18:34Z",
-  "version": "1.0.13-beta",
-  "total_size": 61664340.0,
+  "generated": "2026-06-17T15:28:07Z",
+  "version": "1.0.14-beta",
+  "total_size": 61664339.0,
   "files": [
     {
       "path": "cad_diagnostics.lua",
@@ -11,8 +11,8 @@
     },
     {
       "path": "cad_system/cadui.lua",
-      "size": 346186,
-      "sha256": "1883d9febe69c5b9b16738ca0dac8da6f3f22ef8dc4b0cf60eff107d6a6e6627"
+      "size": 346185,
+      "sha256": "10ae3745015409b8411e746d78d32098e4a670f261663a7830da502a9daa0add"
     },
     {
       "path": "cad_system/cad_autoupdate.lua",
