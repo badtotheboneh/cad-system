@@ -3749,6 +3749,8 @@ local function drawModernUnitCard(unit, is_selected)
     if not slot_num or slot_num <= 0 then
         if is_unit_for_current_user(unit) then
             slot_num = tonumber(UI.unit_mini_hud_last_slot)
+        else
+            slot_num = nil
         end
     end
     if slot_num and slot_num > 0 then
@@ -4050,7 +4052,6 @@ local function renderCallsTab()
                 cadui_module.setPendingCheckpointForCall(call.id)
                 unitInfoBuffers.status[0] = 1
 
-                -- Auto set radio channel if provided in call
                 if call.tactical_channel and tonumber(call.tactical_channel) then
                     setRadioChannel(tonumber(call.tactical_channel))
                 end
@@ -8449,6 +8450,30 @@ cadui_module.initialize = function(deps)
         if channel and tonumber(channel) then
             UI.unit_mini_hud_last_slot = tonumber(channel)
             log('UI', log_levels.DEBUG, 'Radio slot synced from external source: ' .. tostring(channel))
+            
+            if core and core.ws_client and core.my_unit_data then
+                local payload = {
+                    action = "broadcastUnitStatus",
+                    status = core.my_unit_data.status,
+                    location = core.my_unit_data.location or "",
+                    unitID = core.my_unit_data.unitID,
+                    division = core.my_unit_data.division,
+                    officer1_name = core.my_unit_data.officer1_name,
+                    officer2_name = core.my_unit_data.officer2_name,
+                    vehiclePlate = core.my_unit_data.vehiclePlate,
+                    current_channel_id = tonumber(channel), -- Передаем новый слот
+                    ar15 = core.my_unit_data.ar15,
+                    ll40mm = core.my_unit_data.ll40mm,
+                    beanbag = core.my_unit_data.beanbag,
+                    riot_shield = core.my_unit_data.riot_shield,
+                    spikes = core.my_unit_data.spikes,
+                    narcan = core.my_unit_data.narcan,
+                    pit_auth = core.my_unit_data.pit_auth,
+                    aed = core.my_unit_data.aed
+                }
+                core.ws_client:send(payload)
+                log('UI', log_levels.INFO, 'Sent radio slot update to backend: ' .. tostring(channel))
+            end
         end
     end)
 
