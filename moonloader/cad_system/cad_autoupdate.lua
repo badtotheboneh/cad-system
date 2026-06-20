@@ -400,10 +400,9 @@ local function sync_resources(cb, force_all)
         else
           if not ok then
             log_fn(("FAILED (Timeout/Size unstable): %s"):format(item.path))
-          local actual = file_size(lp) or 0
           else
-            log_fn(("FAILED (Hash mismatch): %s | Expected: %s, Got: %s"):format(
-              item.path, tostring(item.size)))
+            log_fn(("FAILED (Hash mismatch): %s | Expected Hash: %s, Got: %s"):format(
+              item.path, tostring(item.sha256), tostring(downloaded_sha)))
           end
           ui_state.failed_files[#ui_state.failed_files + 1] = item.path
         end
