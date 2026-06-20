@@ -5,3 +5,7 @@
 *.jpg binary
 *.tga binary
 *.ttf binary
+
+*.wav binary
+*.mp4 binary
+*.mp3 binary

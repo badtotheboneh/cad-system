@@ -1,8 +1,8 @@
 {
-  "total_files": 926,
-  "generated": "2026-06-20T12:44:22Z",
-  "version": "1.1.16-beta",
-  "total_size": 61670192.0,
+  "total_files": 927,
+  "generated": "2026-06-20T14:26:46Z",
+  "version": "1.1.17-beta",
+  "total_size": 61782751.0,
   "files": [
     {
       "path": "cad_diagnostics.lua",
@@ -156,13 +156,13 @@
     },
     {
       "path": "cad_system/resource/fonts/fa-solid-900.ttf_bak",
-      "size": 192472,
-      "sha256": "f30631651feb161ea36ca580ea4921d8153af7793e6e4eff9e58ffc22838e3f3"
+      "size": 192431,
+      "sha256": "1380f462dabe2ea3324f5ceb0c1bb58d9d36c5ea683a8b17382466b781b931b1"
     },
     {
       "path": "cad_system/resource/fonts/fAwesome5.lua",
-      "size": 41642,
-      "sha256": "2b2c5c610885938b438c32cfaa08dd84aeaa227d6d463d11db0cef000e6b8036"
+      "size": 40666,
+      "sha256": "3bcd1e9bc4b991b6a76cbf6f75f33d73eea3329c10c4fb08b1da971ca53a7e00"
     },
     {
       "path": "cad_system/resource/fonts/fAwesome6.lua",
@@ -171,13 +171,18 @@
     },
     {
       "path": "cad_system/resource/fonts/fAwesome6_solid.lua",
-      "size": 343952,
-      "sha256": "26e26996dbdda4292fc13c8265d9ccc050a5f5fbc5d003a8c840e7d2446215f3"
+      "size": 342546,
+      "sha256": "d654f487401d697b5e6d2e58ff6de7f9ae1913f44200de5a6299f8a5d94d55f8"
     },
     {
       "path": "cad_system/resource/fonts/fontawesome-webfont.ttf",
       "size": 165548,
       "sha256": "aa58f33f239a0fb02f5c7a6c45c043d7a9ac9a093335806694ecd6d4edc0d6a8"
+    },
+    {
+      "path": "cad_system/resource/fonts/lucon.ttf",
+      "size": 115068,
+      "sha256": "6ddf64ee896d24cf9908f115ae220a7cfa18dc034bc4a68e4db68dcd57c71512"
     },
     {
       "path": "cad_system/resource/fonts/Roboto-Medium.ttf",
@@ -201,13 +206,13 @@
     },
     {
       "path": "cad_system/resource/sound/INSERT_02.wav",
-      "size": 84112,
-      "sha256": "8eae20bbcc659dbeda491e262e12dbda2a3e50ed0e46c0232d14e3550cd666e8"
+      "size": 84106,
+      "sha256": "71e786ad1e01d223a197f29badc8c1e8958fdbec3fa0611a3575de1496eb49f9"
     },
     {
       "path": "cad_system/resource/sound/INSERT_03.wav",
-      "size": 68000,
-      "sha256": "901fbb07ca7efb1fa5e0f04db75ab6de7385129f5ab40e05e84fc11e3d6ba0ac"
+      "size": 67995,
+      "sha256": "6cc50e88ce7f0f92b9f81f94830bb4c69ebb6865dd9701020f727b9c4530717f"
     },
     {
       "path": "cad_system/resource/sound/INSERT_04.wav",
@@ -216,13 +221,13 @@
     },
     {
       "path": "cad_system/resource/sound/INSERT_05.wav",
-      "size": 230204,
-      "sha256": "4c64c6de8f5dbe196b78feef2136cb8d327bff84bf42f5dfa7d462fb5345b100"
+      "size": 230183,
+      "sha256": "9ed90b963ca95a1bc877584994154b1ce390bb7f3104bae23c06e76d4fb0bbfc"
     },
     {
       "path": "cad_system/resource/sound/INSERT_06.wav",
-      "size": 64648,
-      "sha256": "cb5a0d48551a668e08b736ec3d2fdeb0f1d193bff0708dd7441d97616d19568c"
+      "size": 64646,
+      "sha256": "79ca4502167631cb6f984b05fe40a667a6beeedfaec9a02ae13e453a72eec2b3"
     },
     {
       "path": "cad_system/resource/sound/INSERT_07.wav",
@@ -231,8 +236,8 @@
     },
     {
       "path": "cad_system/resource/sound/INTRO_01.wav",
-      "size": 81160,
-      "sha256": "001d77e4c1ebc5c1eceb4d27b1f294762a4d1f957a842dcf0d41ffb103f7069c"
+      "size": 81159,
+      "sha256": "68e17d791ea8c01d5e4c146f2b313a632a2cd40c9a1e56e91074c0c96089e0f1"
     },
     {
       "path": "cad_system/resource/sound/INTRO_02.wav",
@@ -256,18 +261,18 @@
     },
     {
       "path": "cad_system/resource/sound/OFFICER_INTRO_02.wav",
-      "size": 68164,
-      "sha256": "45369cc25f22ed4c111f30a57282156f917dcb9ffe64b85086e67399963e82e4"
+      "size": 68159,
+      "sha256": "25a067f3e8be21fe4fd3e98fdc0b828d0134c855001758f795c82de2dab09d7e"
     },
     {
       "path": "cad_system/resource/sound/OUTRO_01.wav",
-      "size": 87262,
-      "sha256": "e34878483ed3148af6239df296be6d767a38d6a3b475ffc06926e346ea964624"
+      "size": 87261,
+      "sha256": "da07f3e42c8b06ffc0e70daf336f922ab32a2fe3456253c0350a64dcd3c6dfd5"
     },
     {
       "path": "cad_system/resource/sound/OUTRO_02.wav",
-      "size": 87262,
-      "sha256": "a6a952a9e87cb49891b23a1296402aa2a3589c1c888a0bbbbebe24f8aa1e0084"
+      "size": 87261,
+      "sha256": "a10e5875248ba0dcd7ca8195a64abdfbbaf8ab4604c6497559f72c0b72e1f07c"
     },
     {
       "path": "cad_system/resource/sound/OUTRO_03.wav",
@@ -276,28 +281,28 @@
     },
     {
       "path": "cad_system/resource/sound/PANIC_BUTTON.mp4",
-      "size": 106343,
-      "sha256": "ed36cf9412b8e6d316df29a90b6982fceea0f586a5ee633bd546f348e8a270f5"
+      "size": 106339,
+      "sha256": "b1fbe2052882dc5df60375c10d72742d6bddf2cb56a4611f5120409ce58c6275"
     },
     {
       "path": "cad_system/resource/sound/priority_end.wav",
-      "size": 361004,
-      "sha256": "fc072dea687d10b5bc0522fc964c57b5ae2ac9a8dc61d0336a3a66ce5572b63e"
+      "size": 360988,
+      "sha256": "987bd60d29431c5771d88187baf958f2eefa533ee276ce38baab900296eb7c71"
     },
     {
       "path": "cad_system/resource/sound/priority_middle.wav",
-      "size": 51128,
-      "sha256": "20a7667d2aea46022175ca5e2dbc9fea3280829e59556da18a0c199e7247dd2e"
+      "size": 51120,
+      "sha256": "e9bfcb8ea5a489f1b48435d1dbe09d2225a146c93668e1833162823825fc0995"
     },
     {
       "path": "cad_system/resource/sound/priority_start.wav",
-      "size": 221072,
-      "sha256": "1332a234c3e1734aa47151fecc25aad5fdbd3d14c16b0de7a4b6a6c79dad6411"
+      "size": 221058,
+      "sha256": "26b5411f26ec19865ce452ec583e4b4984e2451ac51a53922308e8c82458216b"
     },
     {
       "path": "cad_system/resource/sound/SIMPLEX_ACCEPT.wav",
-      "size": 64648,
-      "sha256": "cb5a0d48551a668e08b736ec3d2fdeb0f1d193bff0708dd7441d97616d19568c"
+      "size": 64646,
+      "sha256": "79ca4502167631cb6f984b05fe40a667a6beeedfaec9a02ae13e453a72eec2b3"
     },
     {
       "path": "cad_system/resource/sound/SIMPLEX_DECLINE.wav",
