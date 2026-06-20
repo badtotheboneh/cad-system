@@ -168,6 +168,8 @@ function main()
     
     local installed_version = "1.0.0"
     if deps.autoupdate then
+        local installed_version = deps.autoupdate.version or "1.0.0"
+        
         local ver_file = getWorkingDirectory() .. '/config/cad_installed_version.txt'
         local vf = io.open(ver_file, 'r')
         if vf then
@@ -175,11 +177,11 @@ function main()
           if saved_ver and #saved_ver > 0 then
             installed_version = saved_ver
             os.remove(ver_file)
+            deps.autoupdate.set_version(installed_version)
           end
           vf:close()
         end
         
-        deps.autoupdate.set_version(installed_version)
         log('MAIN', log_levels.INFO, "Auto-update module detected, current version: " .. installed_version)
         log('MAIN', log_levels.INFO, "Starting version check.")
         deps.autoupdate.check_version()
