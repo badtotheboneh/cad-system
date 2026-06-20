@@ -391,13 +391,20 @@ local function sync_resources(cb, force_all)
 
         local ok = wait_for_file(lp, item.size, DL_TIMEOUT_FILE)
 
-        if ok then
+        local downloaded_sha = get_file_sha256(lp)
+        local hash_ok = downloaded_sha and item.sha256 and (downloaded_sha:lower() == item.sha256:lower())
+
+        if ok and hash_ok then
           success_count = success_count + 1
-          log_fn(("✓ Downloaded: %s (%d bytes)"):format(item.path, file_size(lp) or 0))
+          log_fn(("Downloaded & Verified: %s"):format(item.path))
         else
+          if not ok then
+            log_fn(("FAILED (Timeout/Size unstable): %s"):format(item.path))
           local actual = file_size(lp) or 0
-          log_fn(("✗ FAILED: %s (got %d, expected %s bytes)"):format(
-            item.path, actual, tostring(item.size)))
+          else
+            log_fn(("FAILED (Hash mismatch): %s | Expected: %s, Got: %s"):format(
+              item.path, tostring(item.size)))
+          end
           ui_state.failed_files[#ui_state.failed_files + 1] = item.path
         end
 
