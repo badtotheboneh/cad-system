@@ -29,19 +29,23 @@ local anim_to         = 0.0
 local anim_running    = false
 local anim_start_time = 0.0
 
+local this_script_path = thisScript().path
+local wd = this_script_path:match("(.*)[/\\]") or "moonloader/cad_system"
+
 M.version = "1.0.0"
 local version_path = (wd .. "/version.json"):gsub('\\', '/')
 local vf = io.open(version_path, "r")
 if vf then
-    local v_content = vf:read("*a")
-    vf:close()
-    if v_content then
-        local ok_v_json, v_json = pcall(json.decode, v_content)
-        if ok_v_json and v_json and type(v_json.latest) == "string" then
-            M.version = v_json.latest
-        end
+  local v_content = vf:read("*a")
+  vf:close()
+  if v_content then
+    local ok_v_json, v_json = pcall(json.decode, v_content)
+    if ok_v_json and v_json and type(v_json.latest) == "string" then
+      M.version = v_json.latest
     end
+  end
 end
+
 local upd = {
   available = false,
   required  = false,
