@@ -1,8 +1,8 @@
 {
   "total_files": 927,
-  "generated": "2026-06-20T15:01:32Z",
-  "version": "1.1.19-beta",
-  "total_size": 61783506.0,
+  "generated": "2026-06-20T15:17:24Z",
+  "version": "1.1.19с-beta",
+  "total_size": 61701186.0,
   "files": [
     {
       "path": "cad_diagnostics.lua",
@@ -16,8 +16,8 @@
     },
     {
       "path": "cad_system/cad_autoupdate.lua",
-      "size": 23838,
-      "sha256": "c75ae93397a3e9ec2f3e763f6c2f04fa05e037ea589626f3f06845fbb763efd9"
+      "size": 24465,
+      "sha256": "04277a0f9008795dcd143e00ee930aaac33a7412c87a46379e08066b783fd7ce"
     },
     {
       "path": "cad_system/cad_common_new.lua",
@@ -156,7 +156,7 @@
     },
     {
       "path": "cad_system/resource/fonts/fa-solid-900.ttf_bak",
-      "size": 192431,
+      "size": 192429,
       "sha256": "1380f462dabe2ea3324f5ceb0c1bb58d9d36c5ea683a8b17382466b781b931b1"
     },
     {
@@ -336,7 +336,7 @@
     },
     {
       "path": "lib/ADDONS.lua",
-      "size": 27643,
+      "size": 26762,
       "sha256": "61985f54e5d9444ec71bf182c42bcf0b74761c0b52f9c9d2e4efc05d587bb902"
     },
     {
@@ -376,12 +376,12 @@
     },
     {
       "path": "lib/bass.lua",
-      "size": 34310,
+      "size": 33569,
       "sha256": "ec30059bb0050029f03c406c58fa65d1b74424816de2c0487a79dad34ba419bd"
     },
     {
       "path": "lib/bitex.lua",
-      "size": 557,
+      "size": 538,
       "sha256": "f447e48e80522e66cd9f4a038a361cfa19912f4c3ed9cd1d8965c8db1a23f24f"
     },
     {
@@ -401,17 +401,17 @@
     },
     {
       "path": "lib/copas.lua",
-      "size": 28580,
+      "size": 27760,
       "sha256": "076bc3bf820d51ed43688e5488901878812cff77c882e44b714ebbd97d3c09d5"
     },
     {
       "path": "lib/copas.lua~",
-      "size": 28580,
+      "size": 27760,
       "sha256": "076bc3bf820d51ed43688e5488901878812cff77c882e44b714ebbd97d3c09d5"
     },
     {
       "path": "lib/crc32ffi.lua",
-      "size": 922,
+      "size": 896,
       "sha256": "172d64c883f4a2c6ddcf6ff8ad419e08e6141382342f0a0188c05a72a53ae02a"
     },
     {
@@ -436,12 +436,12 @@
     },
     {
       "path": "lib/effil.lua",
-      "size": 1654,
+      "size": 1599,
       "sha256": "5685236a73337237372226bef9740a6f7cb981998912724a0e4bd326da7e96dd"
     },
     {
       "path": "lib/encoding.lua",
-      "size": 2636,
+      "size": 2528,
       "sha256": "57cb02218d46eb1b8b2b14ecde30fc0d1798fad9c69c2138ff9a7bf63d3efe9d"
     },
     {
@@ -456,7 +456,7 @@
     },
     {
       "path": "lib/fa-icons.lua",
-      "size": 183441,
+      "size": 182719,
       "sha256": "816f6554f237ef09225778d3d457c626bf0d17d145c6774367505d0b1af731ec"
     },
     {
@@ -466,12 +466,12 @@
     },
     {
       "path": "lib/faIcons.lua",
-      "size": 27408,
+      "size": 26692,
       "sha256": "17fd7333d34bc9d8c6f509e38e82ee1d71e1577654c38577f59705bb09187c7b"
     },
     {
       "path": "lib/FakePack.lua",
-      "size": 16045,
+      "size": 15691,
       "sha256": "c71578d9d48291f34b2d444fb32ec1a618b5d3cff53b186a0568216c9719f706"
     },
     {
@@ -481,7 +481,7 @@
     },
     {
       "path": "lib/fAwesome5.lua",
-      "size": 41642,
+      "size": 40666,
       "sha256": "2b2c5c610885938b438c32cfaa08dd84aeaa227d6d463d11db0cef000e6b8036"
     },
     {
@@ -491,7 +491,7 @@
     },
     {
       "path": "lib/fAwesome6_solid.lua",
-      "size": 343952,
+      "size": 342546,
       "sha256": "26e26996dbdda4292fc13c8265d9ccc050a5f5fbc5d003a8c840e7d2446215f3"
     },
     {
@@ -511,12 +511,12 @@
     },
     {
       "path": "lib/hooks.lua",
-      "size": 7153,
+      "size": 6978,
       "sha256": "0bb212a09ad697f5890701a9cf674dc9c7119e4806a1fb81d10eb912d9ee3ccc"
     },
     {
       "path": "lib/hotkey.lua",
-      "size": 3264,
+      "size": 3159,
       "sha256": "1ce8f00eb523bf00cde2d9c9c61bdd842c8dafb2ad83c1d451fa06294f02c477"
     },
     {
@@ -526,7 +526,7 @@
     },
     {
       "path": "lib/huyna.lua",
-      "size": 1286,
+      "size": 1247,
       "sha256": "4bdac47d5936c60b02ef17d5fe40d7ca34042fa7c0e19149beca6ef53892b378"
     },
     {
@@ -536,12 +536,12 @@
     },
     {
       "path": "lib/imgui.lua",
-      "size": 114068,
+      "size": 112630,
       "sha256": "8da7a6498d493cc36f413b810b171e5d7e44834b9db4cfbe19e412bb1040e614"
     },
     {
       "path": "lib/imgui_addons.lua",
-      "size": 9476,
+      "size": 9189,
       "sha256": "3449231e1fa1e39a6fe51135f89d66af22569156e2b52c0e3fb9fc6b2ec21a75"
     },
     {
@@ -551,12 +551,12 @@
     },
     {
       "path": "lib/imgui_piemenu(new).lua",
-      "size": 13589,
+      "size": 13275,
       "sha256": "e6fe186f5579fd07f0cae7da724e5b689dad728bc2c94738ccf9c6db8f1278e5"
     },
     {
       "path": "lib/imgui_piemenu.lua",
-      "size": 13591,
+      "size": 13276,
       "sha256": "775d77de62e77e8bed762bb31a26b84dfae5358fb75125d2e99916565ed3188e"
     },
     {
@@ -581,7 +581,7 @@
     },
     {
       "path": "lib/lanes.lua",
-      "size": 24777,
+      "size": 24027,
       "sha256": "697bca772fcbcdb05abdf57eb4777dd2d5122dd3d5abdc6e3be6111c85265ebe"
     },
     {
@@ -631,7 +631,7 @@
     },
     {
       "path": "lib/matrix3x3.lua",
-      "size": 2070,
+      "size": 2000,
       "sha256": "4ac3e8f840fdf294edce96a95e3199b2c6b5ea115036a2fd9862742d5db3d4e9"
     },
     {
@@ -641,12 +641,12 @@
     },
     {
       "path": "lib/mdx-scripts.lua",
-      "size": 2432,
+      "size": 2352,
       "sha256": "9a9c2729d3ed3a64cdc1a23d5fab6a82f3b7b356f08ccb82661bbe0273ea66d0"
     },
     {
       "path": "lib/mgtweaks.lua",
-      "size": 6723,
+      "size": 6503,
       "sha256": "6a53da5d8b361dbd46cb94e91d565ab202c1cb4f947b1af6ea7451ad4d74565a"
     },
     {
@@ -661,17 +661,17 @@
     },
     {
       "path": "lib/mimgui_addons.lua",
-      "size": 14833,
+      "size": 14446,
       "sha256": "004acd50acf62309d881f7e0c875b972b6a8e3b7ea894128476bbacd59b6092d"
     },
     {
       "path": "lib/mimgui_hotkeys.lua",
-      "size": 6024,
+      "size": 5787,
       "sha256": "9593e73c8f5e94ff1235336c03091f50789a0419142c2fb5b98770252c8e0ff3"
     },
     {
       "path": "lib/mimhotkey.lua",
-      "size": 6557,
+      "size": 6367,
       "sha256": "3ea5d7a33e1535cfef14e8dccb83a42a1f860e0048e4c51695c4adef346977d0"
     },
     {
@@ -686,7 +686,7 @@
     },
     {
       "path": "lib/moonloader.lua",
-      "size": 3171,
+      "size": 3044,
       "sha256": "58dc9a058468f53efda285b2e1bc41318ca84e1e0c4821e38c70766029c1530e"
     },
     {
@@ -696,12 +696,12 @@
     },
     {
       "path": "lib/neatjson.lua",
-      "size": 8903,
+      "size": 8688,
       "sha256": "99239f347a4d9e3a5a52b7d0ee75625c40a61ab5397afd1c95cab78f5b829dab"
     },
     {
       "path": "lib/newmd5.lua",
-      "size": 11320,
+      "size": 10929,
       "sha256": "8be571c07919f2e25ae6f6285ab5652b87fc5c2dbfb611ee68af9aa87399b9ee"
     },
     {
@@ -711,7 +711,7 @@
     },
     {
       "path": "lib/RakLua.lua",
-      "size": 923,
+      "size": 892,
       "sha256": "fd120240e371548827704d2cdbde15467b2129608547da2aaf78ef06a0c737f7"
     },
     {
@@ -731,12 +731,12 @@
     },
     {
       "path": "lib/README.md",
-      "size": 1776,
+      "size": 1722,
       "sha256": "4c3fafe330b8dbcef50d54e0fff6d438b37ade7454b92f14805f1b56c012914f"
     },
     {
       "path": "lib/requests.lua",
-      "size": 9016,
+      "size": 8717,
       "sha256": "52fc5c27c0de5bfcdc11b7411b4a562d46389f2624b097210ea31f4eb9daa18b"
     },
     {
@@ -746,22 +746,22 @@
     },
     {
       "path": "lib/rkeys.lua",
-      "size": 7111,
+      "size": 6891,
       "sha256": "87112cd9078d47d8bae63882e0e2fdbdd8480d82f7245ed9a0e6773ff4c3f726"
     },
     {
       "path": "lib/samp-lua-2.1.0-1.rockspec",
-      "size": 949,
+      "size": 921,
       "sha256": "70cddab3019a6fbd8ace0115c350f830aef6a0796d01a5f77322c9288fc17c98"
     },
     {
       "path": "lib/sampfuncs.lua",
-      "size": 15207,
+      "size": 14894,
       "sha256": "7c2528ec287d4ffdcb381f3a96a6678361075828cc727e9ff2e9cb91d4ad0cd3"
     },
     {
       "path": "lib/screenshot.lua",
-      "size": 740,
+      "size": 714,
       "sha256": "cd89c568e1806a90ee989adef810153c8498f2108f10e4ae2b59b13be4d1d4b3"
     },
     {
@@ -776,7 +776,7 @@
     },
     {
       "path": "lib/sha256.lua",
-      "size": 5220,
+      "size": 5027,
       "sha256": "81d946d84a5da68998c7524b6c141a74a358c32e89755d4c0e0478cce82f080c"
     },
     {
@@ -791,7 +791,7 @@
     },
     {
       "path": "lib/ssl.lua",
-      "size": 4842,
+      "size": 4663,
       "sha256": "1926c6fc79396cb573f40b8e3fd4810f2b48b9b76e62d2e190041eab1d4a4d16"
     },
     {
@@ -801,7 +801,7 @@
     },
     {
       "path": "lib/tabler_icons.lua",
-      "size": 2234425,
+      "size": 2234422,
       "sha256": "645f479cb200d40326df7e2fb903fafb481cf409dcd65bd16f1efe0d5af730f7"
     },
     {
@@ -831,17 +831,17 @@
     },
     {
       "path": "lib/vector2d.lua",
-      "size": 1186,
+      "size": 1120,
       "sha256": "2a96277c0ed006efaa634915d642ad2509369b8de8852c1e8a385f5673676cf7"
     },
     {
       "path": "lib/vector3d.lua",
-      "size": 1770,
+      "size": 1690,
       "sha256": "53ef9eedad5994e05320dcb5c14b504dd6c09e6a70111d76eb60a52d6c4a68af"
     },
     {
       "path": "lib/vkeys.lua",
-      "size": 9814,
+      "size": 9388,
       "sha256": "a74b3f76666e8c8b9fa078e239bcfd3123762ee064c242f9349fdda9a449718b"
     },
     {
@@ -926,42 +926,42 @@
     },
     {
       "path": "lib/copas/ftp.lua",
-      "size": 2795,
+      "size": 2700,
       "sha256": "43ffda7edb84cea54b465fb7195a55373df4288f2b89c9e58de47b642e22a572"
     },
     {
       "path": "lib/copas/ftp.lua~",
-      "size": 2795,
+      "size": 2700,
       "sha256": "43ffda7edb84cea54b465fb7195a55373df4288f2b89c9e58de47b642e22a572"
     },
     {
       "path": "lib/copas/http.lua",
-      "size": 14645,
+      "size": 14232,
       "sha256": "466c3122263bf0791b6a363e5b29bf46f74882419207e2648706f5d536d581b9"
     },
     {
       "path": "lib/copas/http.lua~",
-      "size": 14645,
+      "size": 14232,
       "sha256": "466c3122263bf0791b6a363e5b29bf46f74882419207e2648706f5d536d581b9"
     },
     {
       "path": "lib/copas/limit.lua",
-      "size": 3508,
+      "size": 3409,
       "sha256": "8089cafe7e409ac16f9d10c79fe3d1393f987d3ca483d72a0c318a26d39e8c21"
     },
     {
       "path": "lib/copas/limit.lua~",
-      "size": 3508,
+      "size": 3409,
       "sha256": "8089cafe7e409ac16f9d10c79fe3d1393f987d3ca483d72a0c318a26d39e8c21"
     },
     {
       "path": "lib/copas/smtp.lua",
-      "size": 988,
+      "size": 956,
       "sha256": "6e57a4c0dbd2cce7336cabc6338e7d33d6784c31795f6a120f529cd2cfc9ef2b"
     },
     {
       "path": "lib/copas/smtp.lua~",
-      "size": 988,
+      "size": 956,
       "sha256": "6e57a4c0dbd2cce7336cabc6338e7d33d6784c31795f6a120f529cd2cfc9ef2b"
     },
     {
@@ -991,22 +991,22 @@
     },
     {
       "path": "lib/game/globals.lua",
-      "size": 28363,
+      "size": 27330,
       "sha256": "f8b12223b5bc4909b90d7b4774c43668f123d094ade3d0d379cb0514e7815c39"
     },
     {
       "path": "lib/game/keys.lua",
-      "size": 1062,
+      "size": 1013,
       "sha256": "10bfe26a67586eabf07823077ab5ba6acd78ebda7666179eaea91fcf2a6a5836"
     },
     {
       "path": "lib/game/models.lua",
-      "size": 12767,
+      "size": 11980,
       "sha256": "ba4dcac97bdd11de9daee4ce771ba34cc9e87ed24298201ea74661ae7b7d2475"
     },
     {
       "path": "lib/game/weapons.lua",
-      "size": 2443,
+      "size": 2338,
       "sha256": "ab044731f71a30a426e2d1aac1936169d4b558a5f6fe11d81c5c290ad0ae1e98"
     },
     {
@@ -1016,7 +1016,7 @@
     },
     {
       "path": "lib/htmlparser/htmlparser.lua",
-      "size": 2280,
+      "size": 2211,
       "sha256": "aeae37cc5993b45d6671a57bd146eccf88238c8da06607b0d5f919b7afcd56a8"
     },
     {
@@ -1026,17 +1026,17 @@
     },
     {
       "path": "lib/htmlparser/htmlparser/ElementNode.lua",
-      "size": 6804,
+      "size": 6610,
       "sha256": "6ae908b95f37f7be1e834f0e44d36b1830020e850ae9ae4ea8cd3b05c27a99a1"
     },
     {
       "path": "lib/htmlparser/htmlparser/voidelements.lua",
-      "size": 272,
+      "size": 254,
       "sha256": "c52a5941d70d7ea3d31030ba16ff53ae72bace1e968a22cd741818671e68f227"
     },
     {
       "path": "lib/htmlparser/Set/init.lua",
-      "size": 1799,
+      "size": 1710,
       "sha256": "5094c460c2d46288453fc81a7dd4213acc7eeb98cee45cde2abd12d093960fb4"
     },
     {
@@ -1056,12 +1056,12 @@
     },
     {
       "path": "lib/imcustom/hotkey.lua",
-      "size": 4140,
+      "size": 4008,
       "sha256": "504fce4f94c3cbff1f22336acd8debc4cf7255a9e3a41541e5f6d69a33a140b7"
     },
     {
       "path": "lib/imcustom/piemenu.lua",
-      "size": 13889,
+      "size": 13517,
       "sha256": "ba18a7009799fc6d5525114876d4be8db6ed92777ac61c03bc378cf3c26a8a96"
     },
     {
@@ -1076,7 +1076,7 @@
     },
     {
       "path": "lib/lanes/lanes.lua",
-      "size": 24777,
+      "size": 24027,
       "sha256": "697bca772fcbcdb05abdf57eb4777dd2d5122dd3d5abdc6e3be6111c85265ebe"
     },
     {
@@ -1086,7 +1086,7 @@
     },
     {
       "path": "lib/libtcc/init.lua",
-      "size": 7880,
+      "size": 7638,
       "sha256": "87ce06726221be4b365063c69956068339bc8651dcb75b8fd2d03b952d36063e"
     },
     {
@@ -1126,502 +1126,502 @@
     },
     {
       "path": "lib/libtcc/dcimgui/dcimgui.h",
-      "size": 398104,
+      "size": 394360,
       "sha256": "d466a9ecc59b228a721889745434149fcf5eaaa247c32907d375c4e1f1bc2507"
     },
     {
       "path": "lib/libtcc/dcimgui/dcimgui_helper.h",
-      "size": 3736,
+      "size": 3633,
       "sha256": "ef0321c4477a1c04b3c2787bc047b9cb937b4d485065dbada20f37e56be9f02b"
     },
     {
       "path": "lib/libtcc/dcimgui/dcimgui_impl_dx9.h",
-      "size": 2041,
+      "size": 1997,
       "sha256": "a8f6a67982983c0a9e23d6a3c9b4d6f4c7370cb96018902805e4a512aabb76e6"
     },
     {
       "path": "lib/libtcc/dcimgui/dcimgui_impl_win32.h",
-      "size": 4230,
+      "size": 4145,
       "sha256": "677da14364534e54eaadeadf847ebeabc2b61c67add7e029327bd55a6482d690"
     },
     {
       "path": "lib/libtcc/dcimgui/imconfig.h",
-      "size": 11805,
+      "size": 11663,
       "sha256": "b198e51703a5b08bcf3763ba114f98a460edc172b6ba88efcbb3bbb8ac843f38"
     },
     {
       "path": "lib/libtcc/include/assert.h",
-      "size": 1703,
+      "size": 1641,
       "sha256": "a59e0bab4881a9003ae15de1f3c140fe245c8852a07360e499941af912d57015"
     },
     {
       "path": "lib/libtcc/include/conio.h",
-      "size": 11539,
+      "size": 11130,
       "sha256": "0923df5256d5579ed8a729038087e19e1fa7b6287d7c1459a03961ba6cb362bf"
     },
     {
       "path": "lib/libtcc/include/ctype.h",
-      "size": 10036,
+      "size": 9755,
       "sha256": "d3a8edf3cdd6ebd9e2c763628364e5ab8a587c4cf5a87fbd847b89655a5a04f8"
     },
     {
       "path": "lib/libtcc/include/dir.h",
-      "size": 983,
+      "size": 952,
       "sha256": "1ff339f49035a0b166b3b204e026593bbe5adc06866ab87de00e8087e7a64b79"
     },
     {
       "path": "lib/libtcc/include/direct.h",
-      "size": 2047,
+      "size": 1979,
       "sha256": "a453af969c3e8a6b496ea177192a2ae1bd15de54db73064a0be8ad8c1bcccd8f"
     },
     {
       "path": "lib/libtcc/include/dirent.h",
-      "size": 3474,
+      "size": 3339,
       "sha256": "4e35d7d3f599b3de455726055a51397cdf0853da6f42ee61ce4a866c4b8e9278"
     },
     {
       "path": "lib/libtcc/include/dos.h",
-      "size": 1145,
+      "size": 1090,
       "sha256": "6e25a8704c529b2b9ff32af858e795993e1b0c4b10e2cbcebdcb4151c5079387"
     },
     {
       "path": "lib/libtcc/include/errno.h",
-      "size": 1478,
+      "size": 1403,
       "sha256": "728c2dafc6422da477fd140d99b11a6dbca20c436fe581cb506d5dff40025116"
     },
     {
       "path": "lib/libtcc/include/excpt.h",
-      "size": 3919,
+      "size": 3796,
       "sha256": "db582d2fa144715591141fb5a4ce1a821d23609f6ee9f50552686df076d4397e"
     },
     {
       "path": "lib/libtcc/include/fcntl.h",
-      "size": 1321,
+      "size": 1269,
       "sha256": "1d868d335afd1100cccee7b2583b868a67bbd77928d8344d3e5571a9d392c078"
     },
     {
       "path": "lib/libtcc/include/fenv.h",
-      "size": 3254,
+      "size": 3146,
       "sha256": "1ddaf9372cd8614b5f29527119ae3024dad54726c8388d89de3e94831deffef4"
     },
     {
       "path": "lib/libtcc/include/float.h",
-      "size": 2005,
+      "size": 1930,
       "sha256": "507ecd2dd9d26df6b084d6a1dd4a5867310fdb4edae9a3bc005338dfddba813c"
     },
     {
       "path": "lib/libtcc/include/inttypes.h",
-      "size": 6369,
+      "size": 6072,
       "sha256": "a940ba8c1a0e875253faaa0f697d1a6d2b88617c541f7041ee21c7ab6df77dbf"
     },
     {
       "path": "lib/libtcc/include/io.h",
-      "size": 13485,
+      "size": 13067,
       "sha256": "3628692e1776cd0d6760790fe2ca7c5e9a50dfd5af2b3087e63e4f6501a92ff1"
     },
     {
       "path": "lib/libtcc/include/iso646.h",
-      "size": 584,
+      "size": 548,
       "sha256": "26959e641653ed31705165e48f99966d9f8e2e73e745a611e583ac7ca5c805ea"
     },
     {
       "path": "lib/libtcc/include/limits.h",
-      "size": 2887,
+      "size": 2771,
       "sha256": "05cd5399dc74c85270efda6b16d1ec7c1cbaa8566c66847391e97ab161a4dacd"
     },
     {
       "path": "lib/libtcc/include/locale.h",
-      "size": 2226,
+      "size": 2135,
       "sha256": "742f08c92f7bb20d1ea34f895fe3f6a7573acfa343df11cf7b039648cc9d5f48"
     },
     {
       "path": "lib/libtcc/include/malloc.h",
-      "size": 5389,
+      "size": 5208,
       "sha256": "cdcd02fc11af728f1650f7715d55c52c34dcfcb902e8dfce6452d23b9b378832"
     },
     {
       "path": "lib/libtcc/include/math.h",
-      "size": 15782,
+      "size": 15285,
       "sha256": "2f628216584813405aab65de00155e746f1e701e589bb6408cee2a70a95416a0"
     },
     {
       "path": "lib/libtcc/include/mem.h",
-      "size": 358,
+      "size": 345,
       "sha256": "515965f209bbbadbc1d192f343fc8817f398754e49d7fe850e30a60fa7a0361a"
     },
     {
       "path": "lib/libtcc/include/memory.h",
-      "size": 1273,
+      "size": 1233,
       "sha256": "52258814c05e0ed887a7c4aba73977d04828c34817403aae92402b6c2bb1d9f6"
     },
     {
       "path": "lib/libtcc/include/process.h",
-      "size": 9267,
+      "size": 9091,
       "sha256": "564c9a233456817a375690519551969ae75b65b01774043ea6ca3ee7f65ace4d"
     },
     {
       "path": "lib/libtcc/include/setjmp.h",
-      "size": 4027,
+      "size": 3867,
       "sha256": "b69351120c299cea9837a9fffe6109f941f47f73d30b9bbd77a356e14f20940f"
     },
     {
       "path": "lib/libtcc/include/share.h",
-      "size": 667,
+      "size": 639,
       "sha256": "b4162007eedbcb47633d03870e3c2d4da270f14bb7f82117983c2caa64ef1077"
     },
     {
       "path": "lib/libtcc/include/signal.h",
-      "size": 1646,
+      "size": 1583,
       "sha256": "2708a2b3fa2922b894bc5bd0b719d0f4e3621b661210831bda271be2594f7336"
     },
     {
       "path": "lib/libtcc/include/stdalign.h",
-      "size": 370,
+      "size": 354,
       "sha256": "1fa970a0f0b45f9469952b1960532a9a4927b27cb00c952f7fd0eb472df4b40b"
     },
     {
       "path": "lib/libtcc/include/stdarg.h",
-      "size": 349,
+      "size": 335,
       "sha256": "834e661dc7b7811be628ec0f75d6d7c36b2aa492e98bf37f4fdf1a5f9f712fb2"
     },
     {
       "path": "lib/libtcc/include/stdatomic.h",
-      "size": 7779,
+      "size": 7606,
       "sha256": "ff282d26a9dfec7b4785dd46ad1b9f3b68b7e0264ed5013826a55fc6ee6f8cdd"
     },
     {
       "path": "lib/libtcc/include/stdbool.h",
-      "size": 187,
+      "size": 176,
       "sha256": "10d9d6fa8e43f8f95475584d41ff7c049e0b3017b234cd828b9814c33be5ae98"
     },
     {
       "path": "lib/libtcc/include/stddef.h",
-      "size": 1161,
+      "size": 1120,
       "sha256": "947d4895848f482d8112d0be744792caaf51f4c8ef6eff0ee824602141981729"
     },
     {
       "path": "lib/libtcc/include/stdint.h",
-      "size": 6545,
+      "size": 6333,
       "sha256": "e89101b34f5d6d65fc666d4c2dc5565646d9dac2319e1d439e9e2633c13b17e4"
     },
     {
       "path": "lib/libtcc/include/stdio.h",
-      "size": 15332,
+      "size": 14903,
       "sha256": "9a38e4c23c93494b37d68782397c626cac05c4b877ee743fca2f14e965e80723"
     },
     {
       "path": "lib/libtcc/include/stdlib.h",
-      "size": 21100,
+      "size": 20515,
       "sha256": "391047ab610a858f220543d38365696ee4687a00687e0b073889241b0cb7381e"
     },
     {
       "path": "lib/libtcc/include/stdnoreturn.h",
-      "size": 132,
+      "size": 125,
       "sha256": "a96966389d7b47748cfba0c2b6bf9522fcc31343e2f3647ba28fb2b9a83f352d"
     },
     {
       "path": "lib/libtcc/include/string.h",
-      "size": 8754,
+      "size": 8590,
       "sha256": "989bea635d42ac071e4edc0bda35959763dfbcfd148b597879452d9f76e954d3"
     },
     {
       "path": "lib/libtcc/include/tccdefs.h",
-      "size": 11781,
+      "size": 11447,
       "sha256": "fcb52ff8db8ccf56033b4fcbb55867e7caee62bf5e3e529ee246449968289460"
     },
     {
       "path": "lib/libtcc/include/tcclib.h",
-      "size": 2691,
+      "size": 2611,
       "sha256": "2918f859a4f4fc1762d1f360ee7296c9defe8f7ba9d2638c28a5fdbf008b375e"
     },
     {
       "path": "lib/libtcc/include/tchar.h",
-      "size": 32466,
+      "size": 31364,
       "sha256": "e6d8ce6871c54630c8de72294f0b0774e1357ecd8a05ebbbde59aa5308cbc96e"
     },
     {
       "path": "lib/libtcc/include/tgmath.h",
-      "size": 4043,
+      "size": 3954,
       "sha256": "0766abfc1515852fca929d13ee1ae75f2da665f9718e78a045427de2c1391bde"
     },
     {
       "path": "lib/libtcc/include/time.h",
-      "size": 8692,
+      "size": 8405,
       "sha256": "02a0a0b29376f3d61ce629b093d5a9f36ba29c5aee3ffb4e4497c258160b944a"
     },
     {
       "path": "lib/libtcc/include/uchar.h",
-      "size": 987,
+      "size": 954,
       "sha256": "7395cfe8030581418d93304103aaf1114c2e9073671740ad49866109c020a6e3"
     },
     {
       "path": "lib/libtcc/include/unistd.h",
-      "size": 25,
+      "size": 24,
       "sha256": "267611fe544013f568bc85f9119eb1ed06287d45b2d5e3cd2db38b9c9e5a39ef"
     },
     {
       "path": "lib/libtcc/include/vadefs.h",
-      "size": 315,
+      "size": 304,
       "sha256": "b075b5ab9f08e5a2d62293222f74b3310765c68c8026df8625e2cec3aa41cc98"
     },
     {
       "path": "lib/libtcc/include/values.h",
-      "size": 130,
+      "size": 126,
       "sha256": "a61b378c212d62c03e8c80b51b37ae49fde3493d90d7f23cf684d5e91107f348"
     },
     {
       "path": "lib/libtcc/include/varargs.h",
-      "size": 367,
+      "size": 355,
       "sha256": "eabde10c768ae692f12a1737dcc21b2fae4fa07c849c9d88a94c5d2cd097e059"
     },
     {
       "path": "lib/libtcc/include/wchar.h",
-      "size": 35005,
+      "size": 34132,
       "sha256": "be5b9ca56a01d7445627d38bd973b2ba258b2f7a91146e154b98243a4146444b"
     },
     {
       "path": "lib/libtcc/include/wctype.h",
-      "size": 4954,
+      "size": 4782,
       "sha256": "ce1d8d17842c31b0a3f5714d82b0dcf6097d5b09a2cc81198acf9f23422a7a4b"
     },
     {
       "path": "lib/libtcc/include/_mingw.h",
-      "size": 4069,
+      "size": 3901,
       "sha256": "ef0762ca9a5ce9274d49b73af39bb8bf8e020bb43f64a176679bce4a79dc3742"
     },
     {
       "path": "lib/libtcc/include/sec_api/conio_s.h",
-      "size": 1577,
+      "size": 1535,
       "sha256": "015d2986bc5bc7fa86f807c53bd4425b60514a798da7fc4374850dc99a94838a"
     },
     {
       "path": "lib/libtcc/include/sec_api/crtdbg_s.h",
-      "size": 480,
+      "size": 461,
       "sha256": "2011bfda8a57b3802f16b3eee14124f6e16fc49cf66d623466dd4cdcd205bd4f"
     },
     {
       "path": "lib/libtcc/include/sec_api/io_s.h",
-      "size": 914,
+      "size": 881,
       "sha256": "4b4df25b8cf35cb2c83f0b569a53859f8184c98485f81aea869f2daa0ae4ace8"
     },
     {
       "path": "lib/libtcc/include/sec_api/mbstring_s.h",
-      "size": 3667,
+      "size": 3615,
       "sha256": "ce6642894698c81e83e01b77f22e52178822af03e89a8894d6306b751a21841f"
     },
     {
       "path": "lib/libtcc/include/sec_api/search_s.h",
-      "size": 821,
+      "size": 796,
       "sha256": "02ba91ab7c1dc736adaa3c151edd544e6b5427c8dfa81363c49afb9f13006b40"
     },
     {
       "path": "lib/libtcc/include/sec_api/stdio_s.h",
-      "size": 11653,
+      "size": 11508,
       "sha256": "a7d8ea42001d3cbc2870207a7c5b3bb4ca6c5b470260a5b82c0795ddc3db6adf"
     },
     {
       "path": "lib/libtcc/include/sec_api/stdlib_s.h",
-      "size": 4180,
+      "size": 4113,
       "sha256": "9aa3d572b6acb49313b07bdbbb64cc882fc047a8ab660e328265c802ef31423d"
     },
     {
       "path": "lib/libtcc/include/sec_api/stralign_s.h",
-      "size": 854,
+      "size": 824,
       "sha256": "057f5dc11c7617f7a6d695ef7461997b10d8af77416927406d694cea664d2333"
     },
     {
       "path": "lib/libtcc/include/sec_api/string_s.h",
-      "size": 1828,
+      "size": 1787,
       "sha256": "68e2605c4e96c51f100c583fc64366cc9894d0a0920bc31522b06662aed2e219"
     },
     {
       "path": "lib/libtcc/include/sec_api/tchar_s.h",
-      "size": 8594,
+      "size": 8328,
       "sha256": "4e8130143e11c8f8c72b74de78bed1de42beb57291a04c7c94625a00e34a1f44"
     },
     {
       "path": "lib/libtcc/include/sec_api/time_s.h",
-      "size": 2392,
+      "size": 2331,
       "sha256": "233c4a62037a004e95a8ad877ca29e9e4dc2788ee8d6ab5eecc9fc15e6975d86"
     },
     {
       "path": "lib/libtcc/include/sec_api/wchar_s.h",
-      "size": 7620,
+      "size": 7492,
       "sha256": "9d339133a0001c67522192f986b8cf3f028647838cdf98aef7c91a6ce8879ba5"
     },
     {
       "path": "lib/libtcc/include/sec_api/sys/timeb_s.h",
-      "size": 687,
+      "size": 653,
       "sha256": "a09cd647aac26e2681c4d8be73ed74645384317354857ccd871a44196fdd1f4b"
     },
     {
       "path": "lib/libtcc/include/sys/fcntl.h",
-      "size": 372,
+      "size": 359,
       "sha256": "f4ae64090b7754d4ea9215fe5e065edad840848bc27019965688d22622760458"
     },
     {
       "path": "lib/libtcc/include/sys/file.h",
-      "size": 381,
+      "size": 367,
       "sha256": "7195530abe06063434e68b966d0c68a558fec1d97deda69753ff5e8aa2acc86f"
     },
     {
       "path": "lib/libtcc/include/sys/locking.h",
-      "size": 678,
+      "size": 648,
       "sha256": "40cdd12ff83f65e5ab723583dc8acd8b2325d80f350e4e2f1310b8083634f604"
     },
     {
       "path": "lib/libtcc/include/sys/stat.h",
-      "size": 7165,
+      "size": 6875,
       "sha256": "69d21ec7381c5a3259a9de05708ff37b70d45c6b79ce9929f4869baa696798ad"
     },
     {
       "path": "lib/libtcc/include/sys/time.h",
-      "size": 1786,
+      "size": 1717,
       "sha256": "3265cfa6fba4f6b59b8cb9a437a5e1f74a6a251b1d0a625ada23813fdd36d5d9"
     },
     {
       "path": "lib/libtcc/include/sys/timeb.h",
-      "size": 2578,
+      "size": 2445,
       "sha256": "7a19f966f583a75929a77e6ef53e837484972792a0de70bff12e5b2344021aaa"
     },
     {
       "path": "lib/libtcc/include/sys/types.h",
-      "size": 2372,
+      "size": 2249,
       "sha256": "f28ceeeaabf5439d4da8fe3ac92e35b402b0ef9844157cf73ac4c56abd1269e8"
     },
     {
       "path": "lib/libtcc/include/sys/unistd.h",
-      "size": 365,
+      "size": 351,
       "sha256": "4b1f8530bfab7c74608d666e9bbac056deccec8360cd58d7f82a77e324ad7c86"
     },
     {
       "path": "lib/libtcc/include/sys/utime.h",
-      "size": 3575,
+      "size": 3429,
       "sha256": "d578f572565b7ef829effb0962f225fab9cd4be13a13b2dde39bd9dbd65142bb"
     },
     {
       "path": "lib/libtcc/include/tcc/tcc_libm.h",
-      "size": 19377,
+      "size": 18759,
       "sha256": "1d793b787187a75100d7c4950c8c594997e440816099aca820b96574357f5506"
     },
     {
       "path": "lib/libtcc/include/winapi/basetsd.h",
-      "size": 5763,
+      "size": 5614,
       "sha256": "57a5e7d720ecf2582edce21cb4096bd8bd617e549e1cdbfc9942c8f2d5f39cae"
     },
     {
       "path": "lib/libtcc/include/winapi/basetyps.h",
-      "size": 2498,
+      "size": 2413,
       "sha256": "3604850035bd6bf5cda57bc1c9c1363c03918a1a2750795c88338b15d107a359"
     },
     {
       "path": "lib/libtcc/include/winapi/guiddef.h",
-      "size": 4321,
+      "size": 4165,
       "sha256": "09e29431aaacc0d17af07fdeb8299320b80efb080ad32d2743b00862765a70ea"
     },
     {
       "path": "lib/libtcc/include/winapi/poppack.h",
-      "size": 290,
+      "size": 282,
       "sha256": "6c16c8f8539b29728bf26c3004c17539073d4118a57f729620cc7cc8376fe628"
     },
     {
       "path": "lib/libtcc/include/winapi/pshpack1.h",
-      "size": 293,
+      "size": 285,
       "sha256": "e3673d5d790d4e0e6e6d362d422b720b73a57d926edc821e352a88fa861c34a3"
     },
     {
       "path": "lib/libtcc/include/winapi/pshpack2.h",
-      "size": 293,
+      "size": 285,
       "sha256": "03c6c57014d050deaefe1913c9f46677f7d87af8a44049593f0c07f9406da22e"
     },
     {
       "path": "lib/libtcc/include/winapi/pshpack4.h",
-      "size": 293,
+      "size": 285,
       "sha256": "08dfd6b387dfbbf36a877747a1ba49220808717338d493772cc16b87f92997d7"
     },
     {
       "path": "lib/libtcc/include/winapi/pshpack8.h",
-      "size": 293,
+      "size": 285,
       "sha256": "ae5b1be720998b44df31899faf563949a84649855191b6a9a230e6ba763810fb"
     },
     {
       "path": "lib/libtcc/include/winapi/qos.h",
-      "size": 2127,
+      "size": 2055,
       "sha256": "3a6b2da2845c8c02496b28f2f71f93f917df731216f331482b3a39194eedf2b2"
     },
     {
       "path": "lib/libtcc/include/winapi/shellapi.h",
-      "size": 1708,
+      "size": 1649,
       "sha256": "4f7e4d7d9845b69d1353fd94156ec000248a16df5b25bc01d1b93db2e654f84c"
     },
     {
       "path": "lib/libtcc/include/winapi/winbase.h",
-      "size": 162891,
+      "size": 159933,
       "sha256": "facf40f7bd41f937f04bc1db687c16d59353d78e54a82bf2f360b3777f83080c"
     },
     {
       "path": "lib/libtcc/include/winapi/wincon.h",
-      "size": 15090,
+      "size": 14781,
       "sha256": "a773fe5f01b8839ea44b7e82550d8ba350fbdf5ecb30d457106eed8ad68ed596"
     },
     {
       "path": "lib/libtcc/include/winapi/windef.h",
-      "size": 5967,
+      "size": 5674,
       "sha256": "15be4c0539d31c82e395ba2c01dc69ba58206332dfcf8f19dd56c8186c1650ea"
     },
     {
       "path": "lib/libtcc/include/winapi/windows.h",
-      "size": 2295,
+      "size": 2168,
       "sha256": "00deeaf7486644a7caeebced61ec0863b2479174d0a53f64a4a74834dbbfd0e0"
     },
     {
       "path": "lib/libtcc/include/winapi/winerror.h",
-      "size": 153678,
+      "size": 150512,
       "sha256": "6fa2371856eca200f70f9522e56affbe8effe90779273504e2cc8f2079c568ae"
     },
     {
       "path": "lib/libtcc/include/winapi/wingdi.h",
-      "size": 125381,
+      "size": 121301,
       "sha256": "229e5f2ed72ab303a434b4b78ce7112245a5e9a5e66f9cc0cddb70a11a1e1f2d"
     },
     {
       "path": "lib/libtcc/include/winapi/winnls.h",
-      "size": 30179,
+      "size": 29401,
       "sha256": "c7af0b527af2e588f202dbb8f7080d1bbf230840c2ed11c85094326438f320c8"
     },
     {
       "path": "lib/libtcc/include/winapi/winnt.h",
-      "size": 198662,
+      "size": 192825,
       "sha256": "d9d2999ba3300289e91f6129c569063852c082fa98b599cdf1365e1162f147da"
     },
     {
       "path": "lib/libtcc/include/winapi/winreg.h",
-      "size": 14235,
+      "size": 13963,
       "sha256": "b29d6247de2859262db30be0d8a8fdec62cd27e76d81d6cadde18e248a92773a"
     },
     {
       "path": "lib/libtcc/include/winapi/winsock2.h",
-      "size": 58606,
+      "size": 57132,
       "sha256": "7771a95c3ad6ab372256175e95198247dbd7d319987cb71f9ce1f3d48ce0f95b"
     },
     {
       "path": "lib/libtcc/include/winapi/winuser.h",
-      "size": 185329,
+      "size": 179678,
       "sha256": "a4dac7f588af4f60189a54ee853b70d3ea106110a251756a1d19bd5add7133e6"
     },
     {
       "path": "lib/libtcc/include/winapi/winver.h",
-      "size": 5541,
+      "size": 5381,
       "sha256": "ea40a25fd1fc8d26b5f606984e1f5682f54941f91549891d1df91a1c247f5e5c"
     },
     {
       "path": "lib/libtcc/include/winapi/ws2ipdef.h",
-      "size": 353,
+      "size": 332,
       "sha256": "8754b8d83bbae5128dd1055ff17007b5ab4b021b14732d2c00e8a85de722bb17"
     },
     {
       "path": "lib/libtcc/include/winapi/ws2tcpip.h",
-      "size": 12834,
+      "size": 12443,
       "sha256": "ede24b03bb18e3f4e4df667d367feabbbde60a0c2c54ddc6fcb48ebc512d7bec"
     },
     {
@@ -1646,42 +1646,42 @@
     },
     {
       "path": "lib/libtcc/lib/chkstk.S",
-      "size": 1793,
+      "size": 1720,
       "sha256": "7819a6e5f73d3b7f9560d8ba8ab895e512c0badd30983a5de6ccbf3dd1a9a05b"
     },
     {
       "path": "lib/libtcc/lib/crt1.c",
-      "size": 2774,
+      "size": 2673,
       "sha256": "7cbad5c1343495aa6233097d6f49cab2a80ec305518316cabdba4fc5d4e54cd4"
     },
     {
       "path": "lib/libtcc/lib/crt1w.c",
-      "size": 58,
+      "size": 55,
       "sha256": "56b8a0fc569a2465a28add837fa5dcbfe33237a34d8d7f46987f2460c1e4f47e"
     },
     {
       "path": "lib/libtcc/lib/crtinit.c",
-      "size": 771,
+      "size": 745,
       "sha256": "43437ef3641e08dd83ba9a32e12a3c076048409c07774f2d46888d0ce76bcc55"
     },
     {
       "path": "lib/libtcc/lib/dllcrt1.c",
-      "size": 584,
+      "size": 566,
       "sha256": "784ccd4afe52881fee0323fbaa5897a8047a8326209c699ca9ff8d5b130b0cef"
     },
     {
       "path": "lib/libtcc/lib/dllmain.c",
-      "size": 202,
+      "size": 193,
       "sha256": "980ef2857919dba56d175d772bca5852c97d7d8be1f3de328fdd062a268f4a78"
     },
     {
       "path": "lib/libtcc/lib/gdi32.def",
-      "size": 5389,
+      "size": 5052,
       "sha256": "7e8c4b1dcdc4dd5907a69a940f21c9726d61c73359961bcd91fc7acc04b194fc"
     },
     {
       "path": "lib/libtcc/lib/kernel32.def",
-      "size": 13770,
+      "size": 12995,
       "sha256": "a152bc89e9eb81f9ff72765ef56993dc622c605b78d7d61b0d4eb0348ab2fb5d"
     },
     {
@@ -1691,7 +1691,7 @@
     },
     {
       "path": "lib/libtcc/lib/msvcrt.def",
-      "size": 16014,
+      "size": 14694,
       "sha256": "7ced55355dfd873de2e4c5f7ac9ea183985ef2e5b4dafd9f83708213e2afad1e"
     },
     {
@@ -1701,22 +1701,22 @@
     },
     {
       "path": "lib/libtcc/lib/user32.def",
-      "size": 11097,
+      "size": 10439,
       "sha256": "9b195e4bdccf4c64d4a933f022791aa36e5ae069c639b737ef3a62c936a55726"
     },
     {
       "path": "lib/libtcc/lib/wincrt1.c",
-      "size": 2378,
+      "size": 2292,
       "sha256": "99624d44b9722d40d7f95b1af65287f3dde16eb971fe22011bae6985851374dc"
     },
     {
       "path": "lib/libtcc/lib/wincrt1w.c",
-      "size": 61,
+      "size": 58,
       "sha256": "5d8d0253091e7d319bb855668f338b46bb1a7ff4b3495afb7f82fe4e7b95b08e"
     },
     {
       "path": "lib/libtcc/lib/ws2_32.def",
-      "size": 3746,
+      "size": 3548,
       "sha256": "f16b8009693b08789c0eb676e62d1fc42e6da184ab83f37b79746a084c974804"
     },
     {
@@ -1726,17 +1726,17 @@
     },
     {
       "path": "lib/libtcc/libtcc/libtcc.h",
-      "size": 4326,
+      "size": 4210,
       "sha256": "e65ec9c409debff8bf69aa74df03465bce624d7e037b275f6f3dc1097c703cc8"
     },
     {
       "path": "lib/libtcc/lua/lauxlib.h",
-      "size": 6189,
+      "size": 6028,
       "sha256": "bd8649d24bea582aa5bafeed66dc6f60d3196deca5d9ab017f5ba2f768437575"
     },
     {
       "path": "lib/libtcc/lua/lua.h",
-      "size": 12726,
+      "size": 12324,
       "sha256": "b3992febdcd6e2e108915667706cf9b0f288830d0624c271cd1e6911a3d2a702"
     },
     {
@@ -1746,22 +1746,22 @@
     },
     {
       "path": "lib/libtcc/lua/luaconf.h",
-      "size": 4534,
+      "size": 4391,
       "sha256": "e52fe8697e4cfe3029c2017a92b392daf2df441c57b062d88b1ab6631920f35a"
     },
     {
       "path": "lib/libtcc/lua/luajit.h",
-      "size": 3064,
+      "size": 2985,
       "sha256": "caaa7e4009c93b9b544f4e60d4ec8c3f48171c5891f549f2bc27b213c6afd75d"
     },
     {
       "path": "lib/libtcc/lua/lualib.h",
-      "size": 1209,
+      "size": 1165,
       "sha256": "59c044efbf21034cf413f35932b01fe831baa6167aef6c0c4ee3802e52792998"
     },
     {
       "path": "lib/libtcc/minhook/MinHook.h",
-      "size": 7715,
+      "size": 7530,
       "sha256": "c3608e584bd9659aebdbb4c8c82585605989193623f240552d35c43311b3d31a"
     },
     {
@@ -2026,7 +2026,7 @@
     },
     {
       "path": "lib/luasql/myqql.lua",
-      "size": 542,
+      "size": 518,
       "sha256": "a05a790ecceea815360b02ec171ca762e1e08ebc8db8b841647037686cc7af7c"
     },
     {
@@ -2076,22 +2076,22 @@
     },
     {
       "path": "lib/lustache/lustache.lua",
-      "size": 745,
+      "size": 718,
       "sha256": "cb2cf51a795ac3297d555fc6fc686d9253aa6d78dbf160b2c1450ae12582c90e"
     },
     {
       "path": "lib/lustache/lustache/context.lua",
-      "size": 1262,
+      "size": 1196,
       "sha256": "e6c60553691180c14b99b506e1cffdb029ab118668d831d14be08d1d6a93dd94"
     },
     {
       "path": "lib/lustache/lustache/renderer.lua",
-      "size": 10460,
+      "size": 10072,
       "sha256": "6900b782652edc2dba1c060b3ce15b656ccb57c3d84fb16082313861049a6f19"
     },
     {
       "path": "lib/lustache/lustache/scanner.lua",
-      "size": 1384,
+      "size": 1327,
       "sha256": "8ed86e2a7df57b59352e1e6ae4956100d3b764506ac7e27eeec150f7bc3514d8"
     },
     {
@@ -2106,7 +2106,7 @@
     },
     {
       "path": "lib/mimgui/cdefs.lua",
-      "size": 118018,
+      "size": 116058,
       "sha256": "8e5d3488f23c446a6a8a61b6b0ecc25cc38f326257b14801023bfad3bf650a7e"
     },
     {
@@ -2116,27 +2116,27 @@
     },
     {
       "path": "lib/mimgui/dx9.lua",
-      "size": 6905,
+      "size": 6734,
       "sha256": "32904fdf0d1c8ecf6842df2c6feac94545cdf1c98631e174f0ccd50f37185f38"
     },
     {
       "path": "lib/mimgui/imgui.lua",
-      "size": 103788,
+      "size": 101558,
       "sha256": "dac0e8cad50f766f8284a6bfeccb9ce275aa809d842e90ce81de52991cd87e9a"
     },
     {
       "path": "lib/mimgui/init.lua",
-      "size": 12042,
+      "size": 11674,
       "sha256": "9df73262d77abce0970d409f599e1bd02cecbeb8bd1629027796d74454ed3efd"
     },
     {
       "path": "lib/mimgui/win32.lua",
-      "size": 2276,
+      "size": 2196,
       "sha256": "90a3e731b1df60d2022c6935631553b2424aa28ae45b84797c62d5119df95bee"
     },
     {
       "path": "lib/mimgui_blur/init.lua",
-      "size": 3988,
+      "size": 3891,
       "sha256": "639f985d77ce8b4c263f9565af15325c0f0304eea93b666961d89dac03673f2c"
     },
     {
@@ -2146,7 +2146,7 @@
     },
     {
       "path": "lib/MoonMonet/init.lua",
-      "size": 1246,
+      "size": 1197,
       "sha256": "e7565ad6aace7ada124f6df8cd5c217536234c278ee18644ea01176e27668f78"
     },
     {
@@ -2476,12 +2476,12 @@
     },
     {
       "path": "lib/plc/gimli.lua",
-      "size": 6368,
+      "size": 6167,
       "sha256": "e74a1afd272b7bec8b56370f326f18cac670dbb7b978224e00655b4c2b0f4fdb"
     },
     {
       "path": "lib/plc/md5.lua",
-      "size": 6173,
+      "size": 6005,
       "sha256": "6da81805be0b8d775cdc504bbdc8f0ffff08ca6422d0405011efd9043a9a2d60"
     },
     {
@@ -2491,12 +2491,12 @@
     },
     {
       "path": "lib/plc/norx.lua",
-      "size": 12439,
+      "size": 12014,
       "sha256": "415e8a02c89be212d30add70d411f5d76895b1a3bf5bd6f706eba3484b2cd1e8"
     },
     {
       "path": "lib/plc/norx32.lua",
-      "size": 12777,
+      "size": 12352,
       "sha256": "39b073da422b64c1c0a2eb373f420e4892258e320e4f3fdad3f6c60880aba925"
     },
     {
@@ -2541,857 +2541,857 @@
     },
     {
       "path": "lib/SA-MP API/init.lua",
-      "size": 8899,
+      "size": 8657,
       "sha256": "82af10a7ce796e7ea03ffcc19b3611d29d12fa1c83c5082a198be6a9ef2a6732"
     },
     {
       "path": "lib/SA-MP API/kernel.lua",
-      "size": 404,
+      "size": 384,
       "sha256": "600fda29595684183303194d51172d19d1613f9d2f4693d08fa71a495a20dee6"
     },
     {
       "path": "lib/SA-MP API/samp/definitions.lua",
-      "size": 3157,
+      "size": 3084,
       "sha256": "5cc3d032035eec371b6d73424f8c8f7049fbec2ee93088b827321f37364293e0"
     },
     {
       "path": "lib/SA-MP API/samp/0_3_7-R1/enums.lua",
-      "size": 1502,
+      "size": 1404,
       "sha256": "80d4a2e85a42b880fa446a4b40916b26c50a17dcb05316c47de91a9b230bfab3"
     },
     {
       "path": "lib/SA-MP API/samp/0_3_7-R1/stActorPool.lua",
-      "size": 528,
+      "size": 505,
       "sha256": "f34bdbe0e80bfc89a4b7b89cbdf7701e3c7f20b94d6add34ebe5f8a5d4d69695"
     },
     {
       "path": "lib/SA-MP API/samp/0_3_7-R1/stChatEntry.lua",
-      "size": 500,
+      "size": 476,
       "sha256": "940db0e7384869c64f2146c207b2595399521b7234e4d0aa7789d5ab7a558a57"
     },
     {
       "path": "lib/SA-MP API/samp/0_3_7-R1/stChatInfo.lua",
-      "size": 1259,
+      "size": 1210,
       "sha256": "c472062a643ffc2c1403870ede3bcb891f582494057e15e19d5d0b420cc7c45a"
     },
     {
       "path": "lib/SA-MP API/samp/0_3_7-R1/stDialogInfo.lua",
-      "size": 710,
+      "size": 675,
       "sha256": "7225e0a4026cf97fd781d0d0c1952d1342d724cb2effca00bf151f8ea8bcbb90"
     },
     {
       "path": "lib/SA-MP API/samp/0_3_7-R1/stFontRenderer.lua",
-      "size": 518,
+      "size": 493,
       "sha256": "7259c3fc9261c8898521e6e180106fec7a76b9369c7e6c201683b83928cbbf8d"
     },
     {
       "path": "lib/SA-MP API/samp/0_3_7-R1/stGameInfo.lua",
-      "size": 1284,
+      "size": 1229,
       "sha256": "5fa736ab2085c86c703cffa0b290e8670e5e5575491e27dee9425a60206092ae"
     },
     {
       "path": "lib/SA-MP API/samp/0_3_7-R1/stGangzone.lua",
-      "size": 394,
+      "size": 374,
       "sha256": "8b3ac1d23db00222ae08d689f9de29de7a2aac1e830b9dc43b230483356a1616"
     },
     {
       "path": "lib/SA-MP API/samp/0_3_7-R1/stGangzonePool.lua",
-      "size": 439,
+      "size": 418,
       "sha256": "50bacad26e5ba8ca588579778982b303b6cae5a5f28d8005251f18997a87a440"
     },
     {
       "path": "lib/SA-MP API/samp/0_3_7-R1/stInputInfo.lua",
-      "size": 1122,
+      "size": 1075,
       "sha256": "ad6db3482261bd31ac6d5b74d1d530617cde8527d24b61a0a067bc5de6a5b984"
     },
     {
       "path": "lib/SA-MP API/samp/0_3_7-R1/stKillEntry.lua",
-      "size": 462,
+      "size": 440,
       "sha256": "883abe6696dbe5f8f3ab8238ad0d68af08f34303890663383e345a7770d07b19"
     },
     {
       "path": "lib/SA-MP API/samp/0_3_7-R1/stKillInfo.lua",
-      "size": 680,
+      "size": 648,
       "sha256": "39e898e7c359e842520698dd0d2430811f7126f9d8248ec7438c4087120924b1"
     },
     {
       "path": "lib/SA-MP API/samp/0_3_7-R1/stLocalPlayer.lua",
-      "size": 2394,
+      "size": 2317,
       "sha256": "74c927b46f775dfe0c74cc7c4ed80916ec1349327c2c02f6cc5dc64e0550612b"
     },
     {
       "path": "lib/SA-MP API/samp/0_3_7-R1/stObject.lua",
-      "size": 610,
+      "size": 581,
       "sha256": "d729fe4ca495767f1539062db810d5f5502bf72bbbe9956cd6b5c47ff4f029d7"
     },
     {
       "path": "lib/SA-MP API/samp/0_3_7-R1/stObjectPool.lua",
-      "size": 456,
+      "size": 433,
       "sha256": "af1fbe33793569211985bd64f75bc331ad0b7bfeec0c8c65b942ff598c1dc84d"
     },
     {
       "path": "lib/SA-MP API/samp/0_3_7-R1/stPickup.lua",
-      "size": 370,
+      "size": 350,
       "sha256": "cbdc25817d5330e0145f98b95854e630c209a54491054ee71d739ff05adff040"
     },
     {
       "path": "lib/SA-MP API/samp/0_3_7-R1/stPickupPool.lua",
-      "size": 561,
+      "size": 536,
       "sha256": "d17f9740fe9ba5df6145b06146d5146dd198c16b41f544fefa0569b8396c7da7"
     },
     {
       "path": "lib/SA-MP API/samp/0_3_7-R1/stPlayerPool.lua",
-      "size": 794,
+      "size": 764,
       "sha256": "485890e7604f656dfe34e482ee5cb218e5ba9e1531355f6822da67913a06acec"
     },
     {
       "path": "lib/SA-MP API/samp/0_3_7-R1/stRemotePlayer.lua",
-      "size": 1832,
+      "size": 1766,
       "sha256": "266ec5f95ad994ea84e5a1e0a43c8a0967b7992b1e6ca5a8b9ba462f887d6930"
     },
     {
       "path": "lib/SA-MP API/samp/0_3_7-R1/stSAMP.lua",
-      "size": 921,
+      "size": 886,
       "sha256": "8ba030f129f102f6a4a32e95624526ca65120c3bb3be15f818c32d771f81b2e2"
     },
     {
       "path": "lib/SA-MP API/samp/0_3_7-R1/stSAMPEntity.lua",
-      "size": 425,
+      "size": 404,
       "sha256": "c4a7cb5ab7717e6be38d964666809866efc4409a4c2c0b5f2322cfd3eaecb830"
     },
     {
       "path": "lib/SA-MP API/samp/0_3_7-R1/stSAMPPed.lua",
-      "size": 847,
+      "size": 812,
       "sha256": "f2a323b24007025e0ed286215372241cc27af92d1530ccbad0204c9de9002c12"
     },
     {
       "path": "lib/SA-MP API/samp/0_3_7-R1/stSAMPPools.lua",
-      "size": 1061,
+      "size": 1026,
       "sha256": "ee68049ade444951ba4740661848c362e827f98ec25e5782418e724616c605fc"
     },
     {
       "path": "lib/SA-MP API/samp/0_3_7-R1/stSAMPVehicle.lua",
-      "size": 707,
+      "size": 677,
       "sha256": "ca665320f4fdd68c667e473b1939fd21e9c0ff0d0c851c1dfd51649c474222b2"
     },
     {
       "path": "lib/SA-MP API/samp/0_3_7-R1/stScoreboardInfo.lua",
-      "size": 575,
+      "size": 547,
       "sha256": "6872d2d2554637f3ca6990a3833a83aa35418d47e3ac10cd6ebeec5c13e1d771"
     },
     {
       "path": "lib/SA-MP API/samp/0_3_7-R1/stServerInfo.lua",
-      "size": 373,
+      "size": 354,
       "sha256": "28be60d41410cb1b859122657ddfd009807282ab1663b9b02aa61cc68f7480dd"
     },
     {
       "path": "lib/SA-MP API/samp/0_3_7-R1/stServerPresets.lua",
-      "size": 1011,
+      "size": 972,
       "sha256": "6b60f9a41c3ee2adf648cec87bf89a9800967afc221e0584f671faadd1e6e96f"
     },
     {
       "path": "lib/SA-MP API/samp/0_3_7-R1/stTextdraw.lua",
-      "size": 1343,
+      "size": 1288,
       "sha256": "6779aba2266e9a524531c1d82a9a54e037d1129e15c942b058b889ff1c647dd3"
     },
     {
       "path": "lib/SA-MP API/samp/0_3_7-R1/stTextdrawPool.lua",
-      "size": 508,
+      "size": 485,
       "sha256": "ca73c86d5133a1c31c3e933c9aef29f969d94217d6e8c457ce977042f8eedfcb"
     },
     {
       "path": "lib/SA-MP API/samp/0_3_7-R1/stTextLabel.lua",
-      "size": 537,
+      "size": 513,
       "sha256": "1c0c13380bb781cdb45707cbdd5d3f9ea93833829372ee50281892eb6c0c1665"
     },
     {
       "path": "lib/SA-MP API/samp/0_3_7-R1/stTextLabelPool.lua",
-      "size": 441,
+      "size": 420,
       "sha256": "5326113f0bc8f5102909be680876f0f57388c8e4dc4e2a87a781e65dec6e1e4b"
     },
     {
       "path": "lib/SA-MP API/samp/0_3_7-R1/stVehiclePool.lua",
-      "size": 786,
+      "size": 755,
       "sha256": "a66bf02b177c1f70bcd62b48a04d52a6321f85e0a8e3c97aa82e85ef74f488dc"
     },
     {
       "path": "lib/SA-MP API/samp/0_3_7-R1/sync.lua",
-      "size": 4264,
+      "size": 4094,
       "sha256": "c5d01fb380d6bc93a481ad7e656ec2198741fa8d0d34d5c3e60b3b525e07c0be"
     },
     {
       "path": "lib/SA-MP API/samp/0_3_DL-R1/enums.lua",
-      "size": 1502,
+      "size": 1404,
       "sha256": "23212743356ca7db8b6d12bfd0406dda54810827dcf41fa1cc5e30bd994c0091"
     },
     {
       "path": "lib/SA-MP API/samp/0_3_DL-R1/stActorPool.lua",
-      "size": 502,
+      "size": 479,
       "sha256": "7a75f5488782de4d703b5386fe715be211bb806dff0a71ab9f69e71d2d047318"
     },
     {
       "path": "lib/SA-MP API/samp/0_3_DL-R1/stChatEntry.lua",
-      "size": 510,
+      "size": 486,
       "sha256": "21b36b9c5e5eeb922ae7570902a226de2f8b8a37461cfe70335edc22241245be"
     },
     {
       "path": "lib/SA-MP API/samp/0_3_DL-R1/stChatInfo.lua",
-      "size": 1344,
+      "size": 1295,
       "sha256": "6866a35e00863680ff635be0c6c1773cb91cf0015f094dca9b23d18eae6d23f9"
     },
     {
       "path": "lib/SA-MP API/samp/0_3_DL-R1/stDialogInfo.lua",
-      "size": 742,
+      "size": 707,
       "sha256": "7da68c394d7d4e51b1d05272db8a738900a1c8cb20f639b7919fac3ac98a0927"
     },
     {
       "path": "lib/SA-MP API/samp/0_3_DL-R1/stFontRenderer.lua",
-      "size": 525,
+      "size": 500,
       "sha256": "c878a8aee9c957177917e886d1081be0ca103c29b7f85b6f4d1772f29dc3841a"
     },
     {
       "path": "lib/SA-MP API/samp/0_3_DL-R1/stGameInfo.lua",
-      "size": 1312,
+      "size": 1260,
       "sha256": "6afa4a17ccca168b5f7bbdc9840547b0631b3735700479e6499621eb3786b830"
     },
     {
       "path": "lib/SA-MP API/samp/0_3_DL-R1/stGangzone.lua",
-      "size": 394,
+      "size": 374,
       "sha256": "8b3ac1d23db00222ae08d689f9de29de7a2aac1e830b9dc43b230483356a1616"
     },
     {
       "path": "lib/SA-MP API/samp/0_3_DL-R1/stGangzonePool.lua",
-      "size": 440,
+      "size": 419,
       "sha256": "c7816722ef79ed7218d14675ba897f44cab33c281860082ba4ca78d5d8f48ac2"
     },
     {
       "path": "lib/SA-MP API/samp/0_3_DL-R1/stInputInfo.lua",
-      "size": 1171,
+      "size": 1124,
       "sha256": "d3a93db3c02d0464fd3d0f51a2a4aa8431433a0ce4621411123565ea6be59d38"
     },
     {
       "path": "lib/SA-MP API/samp/0_3_DL-R1/stKillEntry.lua",
-      "size": 455,
+      "size": 433,
       "sha256": "373a9ad77c6b699b6d2e4c5b9af4957c4f3ac1cd7a3c6714c41fe03bd7766f6d"
     },
     {
       "path": "lib/SA-MP API/samp/0_3_DL-R1/stKillInfo.lua",
-      "size": 694,
+      "size": 662,
       "sha256": "f9d0ce6cc3a78e22b4c8a516e8cf91bb44c9bc4ef76d5ff7f41bc98052b84b4d"
     },
     {
       "path": "lib/SA-MP API/samp/0_3_DL-R1/stLocalPlayer.lua",
-      "size": 2206,
+      "size": 2135,
       "sha256": "6c819de28593cc93a96e3219e95fe24fb3993c09a97fe376b9ce0d98842f597e"
     },
     {
       "path": "lib/SA-MP API/samp/0_3_DL-R1/stObject.lua",
-      "size": 607,
+      "size": 579,
       "sha256": "495a6f8d2a45b1010d597182b34006a045dbb4ff2f43d1c58891e072dcaff262"
     },
     {
       "path": "lib/SA-MP API/samp/0_3_DL-R1/stObjectPool.lua",
-      "size": 458,
+      "size": 436,
       "sha256": "a52b0b5257053acf553a0409abbd496ab866780f6d96483a30583c8c1a949cf3"
     },
     {
       "path": "lib/SA-MP API/samp/0_3_DL-R1/stPickup.lua",
-      "size": 370,
+      "size": 350,
       "sha256": "cbdc25817d5330e0145f98b95854e630c209a54491054ee71d739ff05adff040"
     },
     {
       "path": "lib/SA-MP API/samp/0_3_DL-R1/stPickupPool.lua",
-      "size": 559,
+      "size": 534,
       "sha256": "8582d1cfdcf41036c8ff730a1e1754d86adb9e0401c51f4e6247e34e91b98ce7"
     },
     {
       "path": "lib/SA-MP API/samp/0_3_DL-R1/stPlayerPool.lua",
-      "size": 800,
+      "size": 770,
       "sha256": "6c94e206721567d279d3e0a8e463ae4deb643aef6cec906adb508fd33830c437"
     },
     {
       "path": "lib/SA-MP API/samp/0_3_DL-R1/stRemotePlayer.lua",
-      "size": 1957,
+      "size": 1888,
       "sha256": "a15a3df316f4fdd3e8f978321bca7a328d40c0dd60eb9ede95b09e0ea8def97f"
     },
     {
       "path": "lib/SA-MP API/samp/0_3_DL-R1/stSAMP.lua",
-      "size": 1144,
+      "size": 1105,
       "sha256": "82a246ce8158f3c7e4d7f471e5ab7df8ce1f195b94147e33c3e73aef72362c3f"
     },
     {
       "path": "lib/SA-MP API/samp/0_3_DL-R1/stSAMPEntity.lua",
-      "size": 432,
+      "size": 411,
       "sha256": "eeb469f28c87b93c809daa93d8ee0c5c6f30b5ae07817f1eecae30970ca91ff0"
     },
     {
       "path": "lib/SA-MP API/samp/0_3_DL-R1/stSAMPPed.lua",
-      "size": 816,
+      "size": 783,
       "sha256": "f5d683dc85ad60a8695055757aa163563e0ee5e7b414d6eac8dfa864c7fad0c3"
     },
     {
       "path": "lib/SA-MP API/samp/0_3_DL-R1/stSAMPPools.lua",
-      "size": 1136,
+      "size": 1101,
       "sha256": "578893213ae1e42e6e3734b3af9abb7eb6668cade4e1adef130acf4ac5437d08"
     },
     {
       "path": "lib/SA-MP API/samp/0_3_DL-R1/stSAMPVehicle.lua",
-      "size": 707,
+      "size": 677,
       "sha256": "be8fa32aab6a400c36ef8433c3cdbe1c450acce36a7f8dcc51d81f0808794097"
     },
     {
       "path": "lib/SA-MP API/samp/0_3_DL-R1/stScoreboardInfo.lua",
-      "size": 574,
+      "size": 546,
       "sha256": "39194c863a949f9fc8cd1ed47917a8cde982c5dd7dfc59114eb2953c62231cd6"
     },
     {
       "path": "lib/SA-MP API/samp/0_3_DL-R1/stServerInfo.lua",
-      "size": 371,
+      "size": 352,
       "sha256": "a6d1a627f9eae2633c4e26033f018bbd319ab95bbb4d72e6c5415ba0eda01770"
     },
     {
       "path": "lib/SA-MP API/samp/0_3_DL-R1/stServerPresets.lua",
-      "size": 1006,
+      "size": 967,
       "sha256": "08a369d5e3da75623299c0f8468d9a7475c087aa63109f1eadb3ddf8761e1958"
     },
     {
       "path": "lib/SA-MP API/samp/0_3_DL-R1/stSpawnInfo.lua",
-      "size": 477,
+      "size": 452,
       "sha256": "cfc06e0717342914b98821bcee7ef06670b26be3a5a552a65c18d1627c22b6a5"
     },
     {
       "path": "lib/SA-MP API/samp/0_3_DL-R1/stTargetInfo.lua",
-      "size": 429,
+      "size": 408,
       "sha256": "c54d20594252eb4ea78412ccc96f9318af06883203f0eade43d43eca83b8a148"
     },
     {
       "path": "lib/SA-MP API/samp/0_3_DL-R1/stTextdraw.lua",
-      "size": 1294,
+      "size": 1239,
       "sha256": "d37ca284d8f1dc5edd6f36edcc95ab16ceb35e8cca05482cc3f52fa0b5896234"
     },
     {
       "path": "lib/SA-MP API/samp/0_3_DL-R1/stTextdrawPool.lua",
-      "size": 509,
+      "size": 486,
       "sha256": "af341d5e10e403d3b53e7bdee2ccb63478d14911db49a60b93553ccf16eb999f"
     },
     {
       "path": "lib/SA-MP API/samp/0_3_DL-R1/stTextLabel.lua",
-      "size": 537,
+      "size": 513,
       "sha256": "1c0c13380bb781cdb45707cbdd5d3f9ea93833829372ee50281892eb6c0c1665"
     },
     {
       "path": "lib/SA-MP API/samp/0_3_DL-R1/stTextLabelPool.lua",
-      "size": 442,
+      "size": 421,
       "sha256": "f43f707229965501a1a9c569e04df8b2de6003db001651ef9b70893fe09ba744"
     },
     {
       "path": "lib/SA-MP API/samp/0_3_DL-R1/stVehiclePool.lua",
-      "size": 789,
+      "size": 758,
       "sha256": "d7e2bdfec5789761c1ae997eeb45bb8df1ce9f31d27c4337359593f494816531"
     },
     {
       "path": "lib/SA-MP API/samp/0_3_DL-R1/sync.lua",
-      "size": 4003,
+      "size": 3832,
       "sha256": "68ac35972d98210e66b69e150969733c070f436f89bda051fe127624a375694a"
     },
     {
       "path": "lib/SAMemory/init.lua",
-      "size": 1382,
+      "size": 1320,
       "sha256": "fea742bcdc3a4330b33a30d68262761dac44fe073d7a28d005b3700308279731"
     },
     {
       "path": "lib/SAMemory/Kernel.lua",
-      "size": 902,
+      "size": 862,
       "sha256": "7df1e5a0256520e504a6b1d60c076ce538113b6c02000d462e7dd67f0a5b17c3"
     },
     {
       "path": "lib/SAMemory/metatype.lua",
-      "size": 1947,
+      "size": 1845,
       "sha256": "b13a4f7032f132b57f621999fb82587d6f46b6879cc2d91902c575d3336f1801"
     },
     {
       "path": "lib/SAMemory/shared.lua",
-      "size": 902,
+      "size": 862,
       "sha256": "7df1e5a0256520e504a6b1d60c076ce538113b6c02000d462e7dd67f0a5b17c3"
     },
     {
       "path": "lib/SAMemory/game/AnimBlendFrameData.lua",
-      "size": 481,
+      "size": 458,
       "sha256": "4554df821ad54d0b05ac1a5fe1698062ba699a6f9977b7ee5c92c3730f7b2981"
     },
     {
       "path": "lib/SAMemory/game/C2dEffect.lua",
-      "size": 2811,
+      "size": 2681,
       "sha256": "1e1345c54aa50ce8bc294c363870eed690ec6303e30958c4396fcf6d25dbf03b"
     },
     {
       "path": "lib/SAMemory/game/CAEAudioEntity.lua",
-      "size": 457,
+      "size": 434,
       "sha256": "1cb2ba5e917d22872abb9a131f25b28301354c578ab7717ca5f354364111fb2f"
     },
     {
       "path": "lib/SAMemory/game/CAEPedAudioEntity.lua",
-      "size": 869,
+      "size": 830,
       "sha256": "4e71422d454e1606c34f796de7c264161dfb2bdb2ea6c6c7b8f97168c8593ced"
     },
     {
       "path": "lib/SAMemory/game/CAEPedSpeechAudioEntity.lua",
-      "size": 1075,
+      "size": 1022,
       "sha256": "361b2c419bda50dfcc13c52701da0aea65521018d3a4c1de7b5153001bcb0f2f"
     },
     {
       "path": "lib/SAMemory/game/CAEPoliceScannerAudioEntity.lua",
-      "size": 429,
+      "size": 409,
       "sha256": "38858115c7fca1e778e89fa9d6f8a407c1a184d824b1ad3eae6963c974951cc6"
     },
     {
       "path": "lib/SAMemory/game/CAESound.lua",
-      "size": 2506,
+      "size": 2421,
       "sha256": "9ddbd5d9fa806e470577a5755486f496ee095bb6060871a630e626d1a43fc7a7"
     },
     {
       "path": "lib/SAMemory/game/CAETwinLoopSoundEntity.lua",
-      "size": 925,
+      "size": 888,
       "sha256": "afc64ea4370d538998261c8123e4969ad0c623422cb6ca618c8f6e5abd7a00c4"
     },
     {
       "path": "lib/SAMemory/game/CAEVehicleAudioEntity.lua",
-      "size": 3364,
+      "size": 3248,
       "sha256": "eb02f0886c6a953cf0a82ddb64049d3f9f10e174752940ee02ff42493d809c24"
     },
     {
       "path": "lib/SAMemory/game/CAEWeaponAudioEntity.lua",
-      "size": 870,
+      "size": 832,
       "sha256": "36d5a77e2283cbbc59fc63cf4862fc407602886729999fe56b77bc2dac7c41c8"
     },
     {
       "path": "lib/SAMemory/game/CAttractorScanner.lua",
-      "size": 568,
+      "size": 540,
       "sha256": "6d7fee0b8e43416fbadb872f5b0f85b9957ebf9282d94e3d42b76304bcdcedbc"
     },
     {
       "path": "lib/SAMemory/game/CAutomobile.lua",
-      "size": 3311,
+      "size": 3170,
       "sha256": "736cffb9cf8d10b402f8be23594faedc5cacc5d4f2ff08831dad076e6097ea12"
     },
     {
       "path": "lib/SAMemory/game/CAutoPilot.lua",
-      "size": 2062,
+      "size": 1981,
       "sha256": "83313071252c53b82c21ed659d4f0fd21f3a5e7dc8efd9d868f835f75f4b2f3c"
     },
     {
       "path": "lib/SAMemory/game/CBike.lua",
-      "size": 2295,
+      "size": 2204,
       "sha256": "6ebe538dd4fef70e0eb93ad3e60fc006d8325dc715f63a5da65e7a403f127bb9"
     },
     {
       "path": "lib/SAMemory/game/CBmx.lua",
-      "size": 586,
+      "size": 556,
       "sha256": "86793d8a4480423de113e82bc7b5ee1c112fdf73f9a8b104df0e792364f8c8d0"
     },
     {
       "path": "lib/SAMemory/game/CBoat.lua",
-      "size": 1880,
+      "size": 1809,
       "sha256": "a8c39f2568b4eed0021eed00db3e2f46960ba3f83f7bb22af3f141cd66c33431"
     },
     {
       "path": "lib/SAMemory/game/CBouncingPanel.lua",
-      "size": 505,
+      "size": 481,
       "sha256": "c3672dd85ea97987e059e5d0ee4e31632117f1a7ede387fbf0f8d7ab339f32a9"
     },
     {
       "path": "lib/SAMemory/game/CCam.lua",
-      "size": 4312,
+      "size": 4185,
       "sha256": "6567cfa8b0d772de16f36327be79ad0f75d3497d56ca49b1dd9235d89c056994"
     },
     {
       "path": "lib/SAMemory/game/CCamera.lua",
-      "size": 10415,
+      "size": 10110,
       "sha256": "e481662a5f8e883fde7312948884d994b5bc3c3b24f813d2a6b4bcdd876e042d"
     },
     {
       "path": "lib/SAMemory/game/CCamPathSplines.lua",
-      "size": 361,
+      "size": 343,
       "sha256": "d9544d34c4c54b68f10a3bfafd77291683b4e05538eb13144f5b6ce712bdfa52"
     },
     {
       "path": "lib/SAMemory/game/CColBox.lua",
-      "size": 283,
+      "size": 268,
       "sha256": "a9c8202f9164c91ffaeb52ced6fda486bbbb8506e8241ec37d738a99462dae3a"
     },
     {
       "path": "lib/SAMemory/game/CColDisk.lua",
-      "size": 533,
+      "size": 506,
       "sha256": "f31bba4eb2208ded8b8bbd22022f7c16f410960416ca7e4f9d49dbc77fa94dd2"
     },
     {
       "path": "lib/SAMemory/game/CColLine.lua",
-      "size": 433,
+      "size": 410,
       "sha256": "4f160abd991dbfbc49a3aa25f010bcdbcfb6aff17d85ea6b45f74297410584f3"
     },
     {
       "path": "lib/SAMemory/game/CCollisionData.lua",
-      "size": 1380,
+      "size": 1331,
       "sha256": "8bf12ddcfa2b02a513e2f31fe3babaf33abd8f58f36d6618d82df016a70fd2ad"
     },
     {
       "path": "lib/SAMemory/game/CColModel.lua",
-      "size": 484,
+      "size": 460,
       "sha256": "0862b055b83dfe15098dce8540f82eb913b1c1fedb56f058f0ebd47c3bd777fa"
     },
     {
       "path": "lib/SAMemory/game/CColourSet.lua",
-      "size": 2127,
+      "size": 2057,
       "sha256": "2de2cd20d3410ec0aa55fecf0a1c1b89a72c08d8e21ca15d6f6f6a54481b1b5c"
     },
     {
       "path": "lib/SAMemory/game/CColPoint.lua",
-      "size": 816,
+      "size": 778,
       "sha256": "62349a8dbe1b84cff6afa60f6c5fdfc365930ba9204bfe3c05b881bf2ef35d05"
     },
     {
       "path": "lib/SAMemory/game/CColSphere.lua",
-      "size": 491,
+      "size": 467,
       "sha256": "105b5860d7a4e0f93e947992aba0d396d2c2b2c00466094cac0b503434d8db18"
     },
     {
       "path": "lib/SAMemory/game/CColTriangle.lua",
-      "size": 460,
+      "size": 438,
       "sha256": "829aee89319594c7c785af48f6e8b07963b5522e2338c4869a8f0caa7821c833"
     },
     {
       "path": "lib/SAMemory/game/CColTrianglePlane.lua",
-      "size": 467,
+      "size": 445,
       "sha256": "4256588696832a644218e328251dc722cab6b26ac2c0a599a1878919d135f717"
     },
     {
       "path": "lib/SAMemory/game/CCopPed.lua",
-      "size": 701,
+      "size": 665,
       "sha256": "026d0312a078db66bf7ea9c12210ba6ac68a1347a4f20791af7df64eda00911f"
     },
     {
       "path": "lib/SAMemory/game/CCrimeBeingQd.lua",
-      "size": 567,
+      "size": 541,
       "sha256": "c054528b905a422db0d153ab9f94bce76821f2fe3b7ce26dd1f5ca9bc392d9ce"
     },
     {
       "path": "lib/SAMemory/game/CCutsceneObject.lua",
-      "size": 671,
+      "size": 641,
       "sha256": "bea8076b6446246eedad5648fceca2701ec2364bc4e07cd870425e4b0f10a523"
     },
     {
       "path": "lib/SAMemory/game/CDamageManager.lua",
-      "size": 2619,
+      "size": 2501,
       "sha256": "69e36567da0a8aa13a27247766e32978e0da870907ff99234f7a294a1145afb3"
     },
     {
       "path": "lib/SAMemory/game/CDoor.lua",
-      "size": 537,
+      "size": 511,
       "sha256": "3f90b4fde775cb4d0939d101225dddbe043ed1a83d6cc1ed7c652151e51ea9e8"
     },
     {
       "path": "lib/SAMemory/game/CDummy.lua",
-      "size": 385,
+      "size": 365,
       "sha256": "5cc657da3346baf77f27c6ed0ae919617124fda62909485a19632589d43df190"
     },
     {
       "path": "lib/SAMemory/game/CEntity.lua",
-      "size": 2114,
+      "size": 2035,
       "sha256": "5a8f0543fdf84825d52b7b707a1851d56cfc6b0667217f392809992568c0f97e"
     },
     {
       "path": "lib/SAMemory/game/CEntityScanner.lua",
-      "size": 469,
+      "size": 445,
       "sha256": "e3e697282570d4b785664c1bac4c7f13f7726e4acdd35b7c97d8c74db12e885a"
     },
     {
       "path": "lib/SAMemory/game/CEventGroup.lua",
-      "size": 460,
+      "size": 437,
       "sha256": "98588b569e2d2d49c20a8dc739618016f1675349fb6459e25cd4d9c97b203575"
     },
     {
       "path": "lib/SAMemory/game/CEventHandler.lua",
-      "size": 616,
+      "size": 582,
       "sha256": "8e03be5b6d69add7be69a4aadfb13880c8b145f197518c43518eb8bfb54f4a25"
     },
     {
       "path": "lib/SAMemory/game/CEventScanner.lua",
-      "size": 651,
+      "size": 620,
       "sha256": "b8fe828fb2303e7f265ca9eb8dadc9e44dce2a3e3e0f74e70e6cedff7f9b5a3b"
     },
     {
       "path": "lib/SAMemory/game/CFire.lua",
-      "size": 900,
+      "size": 861,
       "sha256": "1714fa63ca69333e9d38e4ec39bb58c06d3bcce5c1e86c8ac8b090eec6b2974b"
     },
     {
       "path": "lib/SAMemory/game/CHeli.lua",
-      "size": 1380,
+      "size": 1327,
       "sha256": "011b9311f86cdd11670c586665348c8903a10009e14dd85f3abbe9261e5cd63a"
     },
     {
       "path": "lib/SAMemory/game/CMatrix.lua",
-      "size": 587,
+      "size": 557,
       "sha256": "b071e3bb1c86bfdf81fd5608abc8dff6f550719122f6a65b9388687610f946d8"
     },
     {
       "path": "lib/SAMemory/game/CMatrixLink.lua",
-      "size": 565,
+      "size": 539,
       "sha256": "75f7e2303900f94634baac4dfb47dfaff0d1cdffe7f4b072190c4a7e4dd28ae0"
     },
     {
       "path": "lib/SAMemory/game/CObject.lua",
-      "size": 2551,
+      "size": 2461,
       "sha256": "3f0093f902b9963709499805c73250532c4fc1a2467b66e5e50845401eade15e"
     },
     {
       "path": "lib/SAMemory/game/CObjectInfo.lua",
-      "size": 1036,
+      "size": 997,
       "sha256": "b552456b4890a770e448d5bcf20c70e3d1b14088cdf98b0eacd2ad2e45baa7f5"
     },
     {
       "path": "lib/SAMemory/game/CompressedVector.lua",
-      "size": 394,
+      "size": 374,
       "sha256": "c71c790c3812dd8550e2a9b337cc6c8e48c9aa7a90dea6bc4cf0ea031b301434"
     },
     {
       "path": "lib/SAMemory/game/CPed.lua",
-      "size": 8560,
+      "size": 8303,
       "sha256": "4c993349e4cbcd6549cec1a54c5c50d2c0ed6b287f8d26132dd6ea47af014cf0"
     },
     {
       "path": "lib/SAMemory/game/CPedAcquaintance.lua",
-      "size": 463,
+      "size": 441,
       "sha256": "07a7aa12f93e8f6b0fc58a7bebf0371becaf3784dd3a5658cfedbc0985b71fd5"
     },
     {
       "path": "lib/SAMemory/game/CPedClothesDesc.lua",
-      "size": 447,
+      "size": 426,
       "sha256": "cb6b06ba0cff84cf9651ead1fc19400dfbfae842dc15f1bce654857b553681ba"
     },
     {
       "path": "lib/SAMemory/game/CPedIK.lua",
-      "size": 515,
+      "size": 489,
       "sha256": "27fdbb7fa82ce90c088ce7971d0217eb3172347c94b44337a91adfdfffd9a774"
     },
     {
       "path": "lib/SAMemory/game/CPedIntelligence.lua",
-      "size": 1429,
+      "size": 1373,
       "sha256": "39fb0acef3807182a7c40129e704cee08aa10de3a82b9b72891167cbbcabbfbd"
     },
     {
       "path": "lib/SAMemory/game/CPhysical.lua",
-      "size": 2934,
+      "size": 2838,
       "sha256": "16061335f10fffa820da9f39f4c0e33dddadc0ba286ac00cdda1a6f926925df8"
     },
     {
       "path": "lib/SAMemory/game/CPlaceable.lua",
-      "size": 471,
+      "size": 448,
       "sha256": "f749961fe56690eafde838c2a315b6d2ea999c47f5de82998532c25af4b5b2aa"
     },
     {
       "path": "lib/SAMemory/game/CPlane.lua",
-      "size": 1092,
+      "size": 1041,
       "sha256": "0031347db2ef11f6302e7454d9f677311e61f4fe3256255c04c05318b806a9b1"
     },
     {
       "path": "lib/SAMemory/game/CPlayerData.lua",
-      "size": 2603,
+      "size": 2515,
       "sha256": "5a023d765c92a161e46ffd6c8274bc2038399f52de20732f4720869eaf387476"
     },
     {
       "path": "lib/SAMemory/game/CPlayerInfo.lua",
-      "size": 2817,
+      "size": 2729,
       "sha256": "310d170326086e49cd109e78d380b7ebd3d2522b8d71d51488a4782ed1130842"
     },
     {
       "path": "lib/SAMemory/game/CPlayerPed.lua",
-      "size": 423,
+      "size": 400,
       "sha256": "37d7d2772e19d70f3025afa28312c718f2fc00f1f89eb90756837d82fd643319"
     },
     {
       "path": "lib/SAMemory/game/CPool.lua",
-      "size": 800,
+      "size": 756,
       "sha256": "42375ef89ead8810154103fe7d204baac1692a70c53bde3517330780da8e0859"
     },
     {
       "path": "lib/SAMemory/game/CQueuedMode.lua",
-      "size": 435,
+      "size": 414,
       "sha256": "3ae218651fe63067400ceb2b96ba4a6666ed5013f68a9324b6c6ee3d6f138751"
     },
     {
       "path": "lib/SAMemory/game/CRealTimeShadow.lua",
-      "size": 755,
+      "size": 722,
       "sha256": "43ca32fdbb18f4a87243334620b862fab6b5ed094139448a5dd169aa8935d91d"
     },
     {
       "path": "lib/SAMemory/game/CReference.lua",
-      "size": 401,
+      "size": 380,
       "sha256": "78d3c4348cd7761480e892678c712fcc23b0192dbdba35c02f86627cf871c7db"
     },
     {
       "path": "lib/SAMemory/game/CReferences.lua",
-      "size": 381,
+      "size": 362,
       "sha256": "df71b82fad6bf169085fd50034f0cc1c6bdb401ae2aedf1a13c5f41f56143fde"
     },
     {
       "path": "lib/SAMemory/game/CRideAnimData.lua",
-      "size": 509,
+      "size": 485,
       "sha256": "1e18d82b1a9aabe98b44eb2495b4e857e8fac4b43e56634541937a8889f2a10e"
     },
     {
       "path": "lib/SAMemory/game/CShadowCamera.lua",
-      "size": 424,
+      "size": 403,
       "sha256": "6d4d03635f4d2f9bd521c9d5d973d91690eda4e81e4a6de9f1fd138bb1635391"
     },
     {
       "path": "lib/SAMemory/game/CSimpleTransform.lua",
-      "size": 409,
+      "size": 388,
       "sha256": "2598f75b880d975cd7661ec5cd03e7285bb1f9cdbf274adc1697490d28a2ecad"
     },
     {
       "path": "lib/SAMemory/game/CStoredCollPoly.lua",
-      "size": 458,
+      "size": 436,
       "sha256": "551ec916a6b8f64ac76a157d92df6a192a0580105fb5f87203756462c1b3e8a7"
     },
     {
       "path": "lib/SAMemory/game/CTask.lua",
-      "size": 363,
+      "size": 344,
       "sha256": "42f1dce664590c8ba74175e87aac8ce3dae8866a58f12f440f20047100fdd3cc"
     },
     {
       "path": "lib/SAMemory/game/CTaskManager.lua",
-      "size": 461,
+      "size": 438,
       "sha256": "f7d6ed62948d54111885023e8c8a41897599220616e5d34375185404a25ea7f7"
     },
     {
       "path": "lib/SAMemory/game/CTaskTimer.lua",
-      "size": 427,
+      "size": 405,
       "sha256": "a7b17009346c6da1976d81b802d35d999ae6ca0cff2f9cc1c30667e8ee431c69"
     },
     {
       "path": "lib/SAMemory/game/CTrain.lua",
-      "size": 2521,
+      "size": 2435,
       "sha256": "6cc10e4eeae486c399b31841368cb42295c495b380c1b9d7323e1c2cf848efee"
     },
     {
       "path": "lib/SAMemory/game/CTransmission.lua",
-      "size": 738,
+      "size": 707,
       "sha256": "84cd478b8f991130e571bd5e5f2c2553c00c34c727c1c6896871862209472cdc"
     },
     {
       "path": "lib/SAMemory/game/CVehicle.lua",
-      "size": 8730,
+      "size": 8431,
       "sha256": "6c3f603ffd3f9c7c99a398e21d91c254014cc105e54626cf5c32953690b1d283"
     },
     {
       "path": "lib/SAMemory/game/CWanted.lua",
-      "size": 1477,
+      "size": 1429,
       "sha256": "9f2d07ef1963343d05af254c6670b77df619ab3a3fd4c1f7ffa610a15f96758c"
     },
     {
       "path": "lib/SAMemory/game/CWeapon.lua",
-      "size": 763,
+      "size": 726,
       "sha256": "34904df673aab9e1a32af9448dd3de26915239e7f249fb8b97433354b9d7d582"
     },
     {
       "path": "lib/SAMemory/game/CWeaponEffects.lua",
-      "size": 605,
+      "size": 575,
       "sha256": "93c089688e8ae1ffef18ffd37e0d42465284f3201b6773b7a91aec59d191031e"
     },
     {
       "path": "lib/SAMemory/game/CWeaponInfo.lua",
-      "size": 1958,
+      "size": 1890,
       "sha256": "d0decdda0d940cca6decc6d119c8d213b7b80dcfa2aff0dff244688660b2702c"
     },
     {
       "path": "lib/SAMemory/game/definitions.lua",
-      "size": 6937,
+      "size": 6767,
       "sha256": "dfaf59a27fb1c667ae2b909ff81732238ed1a62c30646b65edb07715f2d58352"
     },
     {
       "path": "lib/SAMemory/game/eCamMode.lua",
-      "size": 2245,
+      "size": 2164,
       "sha256": "a846c1163f03fd3327ce6413c0659e477e7589937fac7d8d80771396637a02a3"
     },
     {
       "path": "lib/SAMemory/game/ePedState.lua",
-      "size": 1789,
+      "size": 1709,
       "sha256": "800058b3a3d6807409ff20ca0a82f49d829e1e7e371202daca433ad39d0d2c48"
     },
     {
       "path": "lib/SAMemory/game/ePedType.lua",
-      "size": 948,
+      "size": 901,
       "sha256": "4fe3c0a641184c4c02bd3def35cee3f00f8b161da617ae45e4fbc3f8cf3044ac"
     },
     {
       "path": "lib/SAMemory/game/eVehicleHandlingFlags.lua",
-      "size": 1539,
+      "size": 1496,
       "sha256": "de385ca337523535b7b072b3fb2e08e298fde121462141319b7baf255b35e1b7"
     },
     {
       "path": "lib/SAMemory/game/eVehicleHandlingModelFlags.lua",
-      "size": 1872,
+      "size": 1825,
       "sha256": "16f1d049248b5948593debf47ae774019314c718c134ea6cf1f81cacb0466120"
     },
     {
       "path": "lib/SAMemory/game/eWeaponType.lua",
-      "size": 1582,
+      "size": 1518,
       "sha256": "f2c876ebf116790eed409b6f562eda00a47a3c5f90a056c7f886a670546aff9e"
     },
     {
       "path": "lib/SAMemory/game/FxSystem_c.lua",
-      "size": 1186,
+      "size": 1132,
       "sha256": "42f0962e51658e7d72d4bace8ce17ca7d54d118c132de0196d9648c6dc5f6c12"
     },
     {
       "path": "lib/SAMemory/game/matrix.lua",
-      "size": 2112,
+      "size": 2060,
       "sha256": "198d4e1e0aa59c0407d079e84d375d8e83b636a7921e87ed7ed28d62911b9ffb"
     },
     {
       "path": "lib/SAMemory/game/quaternion.lua",
-      "size": 1437,
+      "size": 1385,
       "sha256": "3510837e046429c1c76530101c072de6b44be9de03a7fe48c0bca4ccc9e2ec9c"
     },
     {
       "path": "lib/SAMemory/game/RenderWare.lua",
-      "size": 8550,
+      "size": 8175,
       "sha256": "9e3a75d5ea3eb2dd2769ca5ec2f99a3a7736b0df2909ff7c8975b7d44ffc69f2"
     },
     {
       "path": "lib/SAMemory/game/rkeys.lua",
-      "size": 16588,
+      "size": 16126,
       "sha256": "8df03f4f26a750da32b27da8e045094bcacd239edbc33c0e8a26c7c8c71141d7"
     },
     {
       "path": "lib/SAMemory/game/tBoatHandlingData.lua",
-      "size": 626,
+      "size": 596,
       "sha256": "4aa3e9e1e97b7d009961db256b1921fdf84de14eace7307af43bf76e39785afb"
     },
     {
       "path": "lib/SAMemory/game/tFlyingHandlingData.lua",
-      "size": 732,
+      "size": 695,
       "sha256": "3903d1fe0f224f3038f55a61290a3d2dc659dcada150e50698fa547f605c7771"
     },
     {
       "path": "lib/SAMemory/game/tHandlingData.lua",
-      "size": 4115,
+      "size": 3984,
       "sha256": "bc0f7a550daf1980817375c10da8700f88fcbe5345bbb02d4e638dfaea974c81"
     },
     {
       "path": "lib/SAMemory/game/tTransmissionGear.lua",
-      "size": 422,
+      "size": 402,
       "sha256": "9669555d43ea9b53bb8a599b9b770b7f4ba196d7e34e200199b6891b31660c34"
     },
     {
       "path": "lib/SAMemory/game/vector2d.lua",
-      "size": 1186,
+      "size": 1120,
       "sha256": "2a96277c0ed006efaa634915d642ad2509369b8de8852c1e8a385f5673676cf7"
     },
     {
       "path": "lib/SAMemory/game/vector3d.lua",
-      "size": 2224,
+      "size": 2114,
       "sha256": "9ba5fe9cd86138ba7eab72577ca819d68b387a67c724826e362bd41c3ecf6d75"
     },
     {
@@ -3796,7 +3796,7 @@
     },
     {
       "path": "lib/sampapi/v037r1/v037r1.zip",
-      "size": 55658,
+      "size": 55656,
       "sha256": "603e169b72b7c34574a3408f3fd8bba099403959fbfb5c442707d5eed233975b"
     },
     {
@@ -4476,7 +4476,7 @@
     },
     {
       "path": "lib/ssl/https.lua",
-      "size": 4176,
+      "size": 4033,
       "sha256": "4a4d95bf6b4b3e8a0af84e1e53eb799e96c23a1527b424748927f5a62aa1318b"
     },
     {
@@ -4601,12 +4601,12 @@
     },
     {
       "path": "lib/windows/init.lua",
-      "size": 184,
+      "size": 178,
       "sha256": "259c01a3c10b5470164dcf24614702d3d2121fb4c32b9fedfb626af281a93c11"
     },
     {
       "path": "lib/windows/message.lua",
-      "size": 26909,
+      "size": 25898,
       "sha256": "4ab3845c28e7755c86736162fd22cba165e534ec1df5c76665ce8ffdbb8a929f"
     },
     {

@@ -30,6 +30,18 @@ local anim_running    = false
 local anim_start_time = 0.0
 
 M.version = "1.0.0"
+local version_path = (wd .. "/version.json"):gsub('\\', '/')
+local vf = io.open(version_path, "r")
+if vf then
+    local v_content = vf:read("*a")
+    vf:close()
+    if v_content then
+        local ok_v_json, v_json = pcall(json.decode, v_content)
+        if ok_v_json and v_json and type(v_json.latest) == "string" then
+            M.version = v_json.latest
+        end
+    end
+end
 local upd = {
   available = false,
   required  = false,
@@ -234,7 +246,7 @@ local function wait_for_file(path, expected_size, timeout_sec)
     end
   end
 
-  return falseт
+  return false
 end
 
 local function wait_for_json(path, validator, timeout_sec)
@@ -384,13 +396,14 @@ local function sync_resources(cb, force_all)
         ui_state.progress_text = ("Загрузка: %d/%d - %s"):format(i, #todo, item.path)
         upd.status             = ('Resources: %d/%d...'):format(i - 1, #todo)
 
-        log_fn(("[%d/%d] Downloading: %s (expect %s bytes)"):format(
-          i, #todo, item.path, tostring(item.size)))
+        log_fn(("[%d/%d] Downloading: %s"):format(i, #todo, item.path))
 
         downloadUrlToFile(CFG.raw_base .. item.path, lp)
 
-        local ok = wait_for_file(lp, item.size, DL_TIMEOUT_FILE)
+        -- Передаем nil вместо item.size, чтобы функция просто ждала окончания записи файла
+        local ok = wait_for_file(lp, nil, DL_TIMEOUT_FILE)
 
+        -- Получаем SHA256 скачанного файла
         local downloaded_sha = get_file_sha256(lp)
         local hash_ok = downloaded_sha and item.sha256 and (downloaded_sha:lower() == item.sha256:lower())
 
@@ -401,6 +414,7 @@ local function sync_resources(cb, force_all)
           if not ok then
             log_fn(("FAILED (Timeout/Size unstable): %s"):format(item.path))
           else
+            -- Исправленный лог (передаем 3 аргумента)
             log_fn(("FAILED (Hash mismatch): %s | Expected Hash: %s, Got: %s"):format(
               item.path, tostring(item.sha256), tostring(downloaded_sha)))
           end
