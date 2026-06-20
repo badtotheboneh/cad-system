@@ -170,6 +170,25 @@ local function file_size(path)
   return s
 end
 
+local function get_file_sha256(path)
+  local f = io.open(path, 'rb')
+  if not f then return nil end
+  
+  local ok_openssl, openssl = pcall(require, 'openssl')
+  if not ok_openssl then
+    f:close()
+    return nil
+  end
+  
+  local body = f:read('*a')
+  f:close()
+  
+  if body then
+    return openssl.digest.new('sha256'):update(body):final()
+  end
+  return nil
+end
+
 local function ensure_dirs(path)
   if not ok_lfs then return end
   local dir = path:match('^(.*)[/\\][^/\\]+$')
@@ -319,14 +338,18 @@ local function sync_resources(cb, force_all)
       return
     end
 
-    local todo = {}
+  local todo = {}
     for _, item in ipairs(manifest.files) do
       if type(item.path) == 'string' then
         if force_all then
           todo[#todo + 1] = item
         else
-          local sz = file_size(wd .. '/' .. item.path)
-          if not (sz and tonumber(item.size) and sz == tonumber(item.size)) then
+          local local_path = (wd .. '/' .. item.path):gsub('\\', '/')
+          
+          local local_sha = get_file_sha256(local_path)
+          
+          if local_sha and item.sha256 and local_sha:lower() == item.sha256:lower() then
+          else
             todo[#todo + 1] = item
           end
         end
@@ -348,7 +371,7 @@ local function sync_resources(cb, force_all)
     for i, item in ipairs(todo) do
       local lp = wd .. '/' .. item.path
 
-      if item.path == "cad_main.lua" then
+      if item.path:find("cad_main%.lua$") then
         log_fn(("[SKIP] %s пропущен (исключен из обновлений)"):format(item.path))
         success_count = success_count + 1
         ui_state.progress = i / #todo
