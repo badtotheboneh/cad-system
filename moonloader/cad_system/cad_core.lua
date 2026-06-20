@@ -262,22 +262,27 @@ local function handle_websocket_message(data)
             elseif cadui_module and cadui_module.isUnitConfigSyncLocked then
                 sync_locked = cadui_module.isUnitConfigSyncLocked()
             end
+            local force_sync = new_unit_data and (new_unit_data.force_sync == true or new_unit_data.__force_sync == true)
 
-            if sync_locked then
+            if sync_locked and not force_sync then
                 log('CORE', log_levels.INFO, "Skipping UNIT SYNC apply: local status is Out of Service.")
                 return
             end
 
+            if new_unit_data then
+                new_unit_data.force_sync = nil
+                new_unit_data.__force_sync = nil
+            end
             core.current_unit = new_unit_data
 
             local ui = _G.cadui_module
             
 
             if cadui_module and cadui_module.syncInputBuffers then
-                cadui_module.syncInputBuffers(new_unit_data)
+                cadui_module.syncInputBuffers(new_unit_data, { force_sync = force_sync })
                 log('CORE', log_levels.INFO, "Called syncInputBuffers")
             elseif _G.cadui_module and _G.cadui_module.syncInputBuffers then
-                _G.cadui_module.syncInputBuffers(new_unit_data)
+                _G.cadui_module.syncInputBuffers(new_unit_data, { force_sync = force_sync })
                 log('CORE', log_levels.INFO, "Called _G.cadui_module.syncInputBuffers")
             else
                 log('CORE', log_levels.ERROR, "CRITICAL: Could not find cadui_module!")

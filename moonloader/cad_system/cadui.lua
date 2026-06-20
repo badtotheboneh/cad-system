@@ -520,70 +520,75 @@ function BinderManager.handleKeyBindingInput()
 end
 
 
-function cadui_module.syncInputBuffers(unit_data)
+function cadui_module.syncInputBuffers(unit_data, opts)
     if not unit_data then return end
+    opts = opts or {}
+    local force_sync = opts.force_sync == true or unit_data.force_sync == true or unit_data.__force_sync == true
 
     if unitInfoBuffers and unitInfoBuffers.status and unitInfoBuffers.status[0] == 4 then
-        log('UI', log_levels.INFO, "Skipped UNIT CONFIGURATION sync: local status is Out of Service.")
-        return
+        if not force_sync then
+            log('UI', log_levels.INFO, "Skipped UNIT CONFIGURATION sync because local status is Out of Service.")
+            return
+        end
+        log('UI', log_levels.INFO, "Applying forced UNIT CONFIGURATION sync while local status is Out of Service.")
     end
 
     log('UI', log_levels.INFO, "Syncing UI buffers... Status: " .. tostring(unit_data.status))
 
     local off1_name = unit_data.officer1_name
     if off1_name == "None" then off1_name = "" end
-    if not is_unit_field_dirty("officer1_name") then
+    if force_sync or not is_unit_field_dirty("officer1_name") then
         safe_copy(unitInfoBuffers.officer1_name, off1_name or "")
     end
 
     local off1_phone = unit_data.officer1_phone
     if off1_phone == "None" then off1_phone = "" end
-    if not is_unit_field_dirty("officer1_phone") then
+    if force_sync or not is_unit_field_dirty("officer1_phone") then
         safe_copy(unitInfoBuffers.officer1_phone, off1_phone or "")
     end
 
-    if not is_unit_field_dirty("notes") then
+    if force_sync or not is_unit_field_dirty("notes") then
         safe_copy(unitInfoBuffers.notes, unit_data.notes or "")
     end
     local off2 = unit_data.officer2_name
     if off2 == "None" then off2 = "" end
-    if not is_unit_field_dirty("officer2_name") then
+    if force_sync or not is_unit_field_dirty("officer2_name") then
         safe_copy(unitInfoBuffers.officer2_name, off2 or "")
     end
 
     local off2_phone = unit_data.officer2_phone
     if off2_phone == "None" then off2_phone = "" end
-    if not is_unit_field_dirty("officer2_phone") then
+    if force_sync or not is_unit_field_dirty("officer2_phone") then
         safe_copy(unitInfoBuffers.officer2_phone, off2_phone or "")
     end
     
     local plate = unit_data.vehiclePlate
     if plate == "None" then plate = "" end
-    if not is_unit_field_dirty("vehiclePlate") then
+    if force_sync or not is_unit_field_dirty("vehiclePlate") then
         safe_copy(unitInfoBuffers.vehiclePlate, plate or "")
     end
 
     if unit_data.division then
-        if not is_unit_field_dirty("division") then
+        if force_sync or not is_unit_field_dirty("division") then
             unitInfoBuffers.division[0] = tonumber(unit_data.division) 
         end
     end
     
 
     if unit_data.status then
-        if not is_unit_field_dirty("status") then
+        if force_sync or not is_unit_field_dirty("status") then
             unitInfoBuffers.status[0] = tonumber(unit_data.status)
         end
     end
     
     if unit_data.shift then
-        if not is_unit_field_dirty("shift") then
+        if force_sync or not is_unit_field_dirty("shift") then
             unitInfoBuffers.shift[0] = tonumber(unit_data.shift)
         end
     end
 
     if unit_data.base_radio_slot then
-        if not is_unit_field_dirty("base_radio_slot") then
+        if force_sync or not is_unit_field_dirty("base_radio_slot") then
             unitInfoBuffers.base_radio_slot[0] = tonumber(unit_data.base_radio_slot)
         end
     end
@@ -709,6 +714,57 @@ local function is_unit_for_current_user(unit)
     return tostring(unit.user_id or "") == uid
         or tostring(unit.officer1_userid or "") == uid
         or tostring(unit.officer2_userid or "") == uid
+end
+
+local function is_shared_unit_for_current_user(unit)
+    if not unit or not core or not core.current_user or not core.current_user.id then
+        return false
+    end
+
+    local uid = tostring(core.current_user.id)
+    return tostring(unit.user_id or "") ~= uid
+        and (tostring(unit.officer1_userid or "") == uid
+            or tostring(unit.officer2_userid or "") == uid)
+end
+
+local function select_preferred_current_unit(units)
+    if type(units) ~= 'table' or not core or not core.current_user or not core.current_user.id then
+        return nil
+    end
+
+    local uid = tostring(core.current_user.id)
+    local exact_current = nil
+    local shared_active = nil
+    local owned_active = nil
+    local shared_any = nil
+    local owned_any = nil
+
+    for _, unit in ipairs(units) do
+        if unit and unit.id then
+            if core.current_unit and core.current_unit.id and tostring(unit.id) == tostring(core.current_unit.id) then
+                exact_current = unit
+            end
+
+            local is_shared = tostring(unit.user_id or "") ~= uid
+                and (tostring(unit.officer1_userid or "") == uid or tostring(unit.officer2_userid or "") == uid)
+            local is_owned = tostring(unit.user_id or "") == uid
+            local is_active = unit.is_active == true or tonumber(unit.is_active) == 1
+
+            if is_shared and is_active and not shared_active then
+                shared_active = unit
+            elseif is_shared and not shared_any then
+                shared_any = unit
+            end
+
+            if is_owned and is_active and not owned_active then
+                owned_active = unit
+            elseif is_owned and not owned_any then
+                owned_any = unit
+            end
+        end
+    end
+
+    return shared_active or owned_active or shared_any or owned_any or exact_current or nil
 end
 
 local function setRadioChannel(channel)
@@ -846,36 +902,30 @@ local function handle_websocket_message(response)
             return
         end
 
-        if is_unit_for_current_user(updated_unit) then
-            log('UI', log_levels.INFO, 'Received unit_update for our own unit ID: ' .. tostring(updated_unit.unitID or updated_unit.id))
-            
-            core.current_unit = merge_unit_data(core.current_unit or {}, updated_unit)
-            events.trigger('cad:unit_updated', core.current_unit)
+        local unit_found_in_storage = false
+        for i, unit in ipairs(data_storage.units) do
+            if unit.id == updated_unit.id then
+                data_storage.units[i] = merge_unit_data(unit, updated_unit)
+                unit_found_in_storage = true
+                break
+            end
+        end
+        if not unit_found_in_storage then
+            table.insert(data_storage.units, updated_unit)
+        end
 
-            local unit_found_in_storage = false
-            for i, unit in ipairs(data_storage.units) do
-                if unit.id == updated_unit.id then
-                    data_storage.units[i] = merge_unit_data(unit, updated_unit)
-                    unit_found_in_storage = true
-                    break
-                end
+        local preferred_unit = select_preferred_current_unit(data_storage.units)
+        if preferred_unit and is_unit_for_current_user(preferred_unit) then
+            log('UI', log_levels.INFO, 'Received unit_update for current active unit ID: ' .. tostring(preferred_unit.unitID or preferred_unit.id))
+
+            if core.current_unit and core.current_unit.id and tostring(core.current_unit.id) == tostring(preferred_unit.id) then
+                core.current_unit = merge_unit_data(core.current_unit, preferred_unit)
+            else
+                core.current_unit = merge_unit_data({}, preferred_unit)
             end
-            if not unit_found_in_storage then
-                table.insert(data_storage.units, updated_unit)
-            end
+            events.trigger('cad:unit_updated', core.current_unit)
         else
-            log('UI', log_levels.DEBUG, 'Received unit_update for another unit ID: ' .. tostring(updated_unit.unitID or updated_unit.id))
-            local unit_found = false
-            for i, unit in ipairs(data_storage.units) do
-                if unit.id == updated_unit.id then
-                    data_storage.units[i] = merge_unit_data(unit, updated_unit)
-                    unit_found = true
-                    break
-                end
-            end
-            if not unit_found then
-                table.insert(data_storage.units, updated_unit)
-            end
+            log('UI', log_levels.DEBUG, 'Received unit_update for a non-active unit ID: ' .. tostring(updated_unit.unitID or updated_unit.id))
         end
     elseif response.type == 'execute_chat_command' then
         if response.command then
@@ -1993,6 +2043,7 @@ function broadcastUnitStatus(extra_params)
     extra_params = extra_params or {}
     updateCurrentLocation()
     local payload = {
+        id = core.current_unit and core.current_unit.id or nil,
         unitID = safe_str(unitInfoBuffers.unitID),
         unitType = unitInfoBuffers.unitType[0],
         officer1_name = safe_str(unitInfoBuffers.officer1_name),
@@ -7890,14 +7941,59 @@ end
 
 function setUnitActiveStatus(isActive)
     local status_code = isActive and 0 or 4
-    unitInfoBuffers.status[0] = status_code
-    local log_message = isActive and "Unit is now ON DUTY" or "Unit is now OFF DUTY"
-    addUnitLogEntry("STATUS", log_message)
-    broadcastUnitStatus({ is_active = isActive and 'true' or 'false' })
-    
     if isActive then
-        revertToBaseRadioSlot()
+        send_ws_request('unit', 'fetch_my_unit', {}, function(data, err)
+            if err or not data or not data.success or not data.payload then
+                log('UI', log_levels.WARN, "Failed to fetch authoritative unit before CLEAR: " .. tostring(err or data and data.error or "unknown"))
+                unitInfoBuffers.status[0] = status_code
+                local log_message = "Unit is now ON DUTY"
+                addUnitLogEntry("STATUS", log_message)
+                broadcastUnitStatus({ is_active = 'true' })
+                revertToBaseRadioSlot()
+                return
+            end
+
+            local fresh_unit = data.payload
+            local forced_unit = merge_unit_data({}, fresh_unit)
+            forced_unit.force_sync = true
+            forced_unit.status = status_code
+            core.current_unit = forced_unit
+            if data_storage and type(data_storage.units) == 'table' then
+                local stored = false
+                for i, unit in ipairs(data_storage.units) do
+                    if unit.id == forced_unit.id then
+                        data_storage.units[i] = merge_unit_data(unit, fresh_unit)
+                        stored = true
+                        break
+                    end
+                end
+                if not stored then
+                    table.insert(data_storage.units, fresh_unit)
+                end
+            end
+            events.trigger('cad:unit_updated', forced_unit)
+
+            unitInfoBuffers.status[0] = status_code
+            if core.current_unit then
+                core.current_unit.status = status_code
+            end
+            if unitInfoBuffers and unitInfoBuffers.status then
+                unitInfoBuffers.status[0] = status_code
+            end
+
+            addUnitLogEntry("STATUS", "Unit is now ON DUTY")
+            broadcastUnitStatus({ is_active = 'true' })
+            revertToBaseRadioSlot()
+            if core.current_unit then
+                core.current_unit.force_sync = nil
+            end
+        end)
+        return
     end
+
+    unitInfoBuffers.status[0] = status_code
+    addUnitLogEntry("STATUS", "Unit is now OFF DUTY")
+    broadcastUnitStatus({ is_active = 'false' })
 end
 
 
@@ -8218,12 +8314,10 @@ cadui_module.initialize = function(deps)
         if payload.units then
             data_storage.units = payload.units
             if core and core.current_user then
-                for _, unit in ipairs(data_storage.units) do
-                    if is_unit_for_current_user(unit) then
-                        core.current_unit = unit 
-                        events.trigger('cad:unit_updated', unit)
-                        break
-                    end
+                local preferred_unit = select_preferred_current_unit(data_storage.units)
+                if preferred_unit then
+                    core.current_unit = preferred_unit
+                    events.trigger('cad:unit_updated', preferred_unit)
                 end
             end
         end
@@ -8363,16 +8457,17 @@ cadui_module.initialize = function(deps)
     events.trigger('radio:ui_request_sync')
 
     events.register('cad:unit_updated', function(unit_data)
-        if not unit_data or isEditingUnitInfo then return end
+        if not unit_data then return end
+        local force_sync = unit_data.force_sync == true or unit_data.__force_sync == true
+        if isEditingUnitInfo and not force_sync then return end
         if unitInfoBuffers and unitInfoBuffers.status and unitInfoBuffers.status[0] == 4 then
             local incoming_status = tonumber(unit_data.status)
-            if incoming_status and incoming_status ~= 4 then
-                unitInfoBuffers.status[0] = incoming_status
-                log('UI', log_levels.INFO, 'cad:unit_updated: applied incoming status while Out of Service: ' .. tostring(incoming_status))
+            if force_sync then
+                log('UI', log_levels.INFO, 'cad:unit_updated: forced sync while local status is Out of Service.')
             else
                 log('UI', log_levels.INFO, 'cad:unit_updated skipped: local status is Out of Service.')
+                return
             end
-            return
         end
         if core and core.current_unit then
             local server_channel = tonumber(core.current_unit.current_channel_id)
@@ -8411,6 +8506,8 @@ cadui_module.initialize = function(deps)
             broadcastUnitStatus()
             is_first_unit_update_after_login = false
         end
+        unit_data.force_sync = nil
+        unit_data.__force_sync = nil
     end)
 
     
