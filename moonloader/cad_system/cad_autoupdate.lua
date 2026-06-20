@@ -32,18 +32,42 @@ local anim_start_time = 0.0
 local this_script_path = thisScript().path
 local wd = this_script_path:match("(.*)[/\\]") or "moonloader/cad_system"
 
+local root_dir = wd:match("(.*)[/\\]moonloader") or wd:match("(.*)[/\\]") or "."
+
 M.version = "1.0.0"
-local version_path = (wd .. "/version.json"):gsub('\\', '/')
-local vf = io.open(version_path, "r")
+
+local paths_to_try = {
+  (root_dir .. "/version.json"):gsub('\\', '/'),
+  (wd .. "/version.json"):gsub('\\', '/'),
+  (wd .. "/main/version.json"):gsub('\\', '/')
+}
+
+local vf = nil
+local final_path = ""
+for _, p in ipairs(paths_to_try) do
+  vf = io.open(p, "r")
+  if vf then 
+    final_path = p
+    break 
+  end
+end
+
 if vf then
   local v_content = vf:read("*a")
   vf:close()
-  if v_content then
+  if v_content and #v_content > 0 then
     local ok_v_json, v_json = pcall(json.decode, v_content)
     if ok_v_json and v_json and type(v_json.latest) == "string" then
       M.version = v_json.latest
+      print(("[CAD Update] Успешно считана локальная версия: %s из файла %s"):format(M.version, final_path))
+    else
+      print("[CAD Update] Ошибка парсинга JSON в локальном version.json")
     end
+  else
+    print("[CAD Update] Локальный файл version.json пуст")
   end
+else
+  print("[CAD Update] ПРЕДУПРЕЖДЕНИЕ: Не удалось найти локальный version.json. Будет использована версия 1.0.0")
 end
 
 local upd = {
