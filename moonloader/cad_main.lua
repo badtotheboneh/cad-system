@@ -187,8 +187,56 @@ function main()
         deps.autoupdate.check_version()
     end
     
+    local ffi = require('ffi')
+    ffi.cdef[[
+        typedef struct {
+            unsigned int cbSize;
+            unsigned int dwTime;
+        } LASTINPUTINFO;
+        int GetLastInputInfo(LASTINPUTINFO*);
+        unsigned int GetTickCount(void);
+    ]]
+    local user32 = ffi.load('User32.dll')
+    local kernel32 = ffi.load('Kernel32.dll')
+    local function get_last_input_time()
+        local info = ffi.new('LASTINPUTINFO')
+        info.cbSize = ffi.sizeof(info)
+        if user32.GetLastInputInfo(info) ~= 0 then
+            return tonumber(info.dwTime)
+        end
+        return 0
+    end
+    local AFK_THRESHOLD_MS = 60 * 1000
+    local AFK_CHECK_INTERVAL_MS = 500
+    local last_afk_check_tick = 0
+    local was_afk = false
+
     while script_running do
         copas.step(0)
+        local now_tick = kernel32.GetTickCount()
+        if now_tick - last_afk_check_tick >= AFK_CHECK_INTERVAL_MS then
+            last_afk_check_tick = now_tick
+            local last_input_time = get_last_input_time()
+            local idle_time = 0
+            if last_input_time ~= 0 then
+                idle_time = now_tick - last_input_time
+            end
+            local is_afk = idle_time > AFK_THRESHOLD_MS
+            if is_afk and not was_afk then
+                log('MAIN', log_levels.INFO, "Player went AFK (idle for " .. (idle_time/1000) .. "s)")
+            elseif not is_afk and was_afk then
+                log('MAIN', log_levels.INFO, "Player returned from AFK (idle was " .. (idle_time/1000) .. "s)")
+                if not (deps.websocket and deps.websocket.is_connected and deps.websocket.is_connected()) then
+                    log('MAIN', log_levels.WARN, "WebSocket disconnected during AFK; reconnecting...")
+                    deps.websocket.connect()
+                end
+                if deps.core and deps.core.isAuthenticated and deps.core:isAuthenticated() then
+                    log('MAIN', log_levels.INFO, "Requesting unit data refresh after AFK")
+                    deps.core.fetchUnitData()
+                end
+            end
+            was_afk = is_afk
+        end
         if deps.websocket then
             deps.websocket.process_messages()
         end

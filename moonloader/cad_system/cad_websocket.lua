@@ -1,15 +1,14 @@
-
 local success, ws_lib_or_err = pcall(require, 'websocketsamp')
 local ws_lib = success and ws_lib_or_err or nil
-local err = not success and ws_lib_or_err or nil
+err = not success and ws_lib_or_err or nil
 
 local common, events, settings, json, log, log_levels, copas
 
 local M = {}
 
-local connection_status = 'DISCONNECTED' 
+local connection_status = 'DISCONNECTED'
 local receive_thread = nil
-local message_queue = {} 
+local message_queue = {}
 local MAX_MESSAGE_QUEUE_SIZE = 200
 
 local connection_config = require('cad_connection')
@@ -17,10 +16,10 @@ local connection_config = require('cad_connection')
 local function get_server_url()
     if connection_config and connection_config.websocket_url then
         local url = connection_config.websocket_url
-        log('WEBSOCKET', log_levels.INFO, "Server URL found: " .. url)
+        log('WEBSOCKET', log_levels.INFO, "Server URL found: found: " .. url)
         return url
     else
-        log('WEBSOCKET', log_levels.ERROR, "CRITICAL: WebSocket URL not found in cad_connection.lua!")
+        log('WEBSOCKET', log_levels.ERROR, "CRITICAL: Server URL not found in cad_connection.lua!")
         return nil
     end
 end
@@ -32,8 +31,14 @@ local function flush_queue()
     log('WEBSOCKET', log_levels.INFO, "Flushing message queue (" .. #message_queue .. " messages)...")
     for i, json_data in ipairs(message_queue) do
         if ws_lib then
-            ws_lib.SendMessage(json_data)
-            log('WEBSOCKET', log_levels.DEBUG, "Sent queued data: " .. json_data)
+            local sent_ok, sent_err = pcall(function() return ws_lib.SendMessage(json_data) end)
+            if not sent_ok then
+                log('WEBSOCKET', log_levels.ERROR, "Failed to send queued message (exception): " .. tostring(sent_err))
+            elseif sent_err ~= nil then
+                log('WEBSOCKET', log_levels.ERROR, "SendMessage returned error: " .. tostring(sent_err))
+            else
+                log('WEBSOCKET', log_levels.DEBUG, "Sent queued data: " .. json_data)
+            end
         end
     end
     message_queue = {}
@@ -49,6 +54,7 @@ function M.send(data)
     if #message_queue >= MAX_MESSAGE_QUEUE_SIZE then
         table.remove(message_queue, 1)
         log('WEBSOCKET', log_levels.WARN, "Message queue limit reached. Dropped oldest message.")
+        pcall(function() forceDataRefresh() end)
     end
     table.insert(message_queue, json_data)
     log('WEBSOCKET', log_levels.DEBUG, "Queued data for sending: " .. json_data)
@@ -58,7 +64,7 @@ function M.send(data)
     else
         log('WEBSOCKET', log_levels.WARN, "Queued message while disconnected. Will send upon connection.")
     end
-    
+
     return true
 end
 
@@ -71,12 +77,12 @@ function M.process_messages()
         log('WEBSOCKET', log_levels.INFO, "WebSocket connection ESTABLISHED.")
         connection_status = 'CONNECTED'
         events.trigger('websocket_connected')
-        flush_queue() 
+        flush_queue()
     elseif (status == 'CLOSING' or status == 'CLOSED') and connection_status == 'CONNECTED' then
         log('WEBSOCKET', log_levels.WARN, "WebSocket connection has been closed.")
         connection_status = 'DISCONNECTED'
         events.trigger('websocket_disconnected', 1006, "Connection closed by server or network.")
-        return 
+        return
     end
 
     if connection_status == 'CONNECTED' then
@@ -119,19 +125,46 @@ function M.connect()
     events.trigger('websocket_connecting')
 
     ws_lib.Connect(url)
+
+    if not receive_thread then
+        receive_thread = {}
+        local ok, lt = pcall(require, "lua_thread")
+        if ok and lt then
+            receive_thread = lt.create(function()
+                local socket_available, socket = pcall(require, "socket")
+                while true do
+                    if socket_available then
+                        socket.select(nil, nil, 0.01)
+                    else
+                        local start = os.clock()
+                        while os.clock() - start < 0.01 do end
+                    end
+                    M.process_messages()
+                end
+            end)
+        else
+            receive_thread = true
+        end
+    end
+
+    if ws_lib.SetNoDelay then
+        pcall(function() ws_lib.SetNoDelay(true) end)
+    end
 end
 
 function M.disconnect(code, reason)
     if not ws_lib or connection_status == 'DISCONNECTED' then return end
     log('WEBSOCKET', log_levels.INFO, "Manual disconnect called.")
-    
+
     ws_lib.Disconnect()
-    
+
     if receive_thread then
-        lua_thread.kill(receive_thread)
+        if type(receive_thread) == "thread" then
+            pcall(function() lua_thread.kill(receive_thread) end)
+        end
         receive_thread = nil
     end
-    
+
     connection_status = 'DISCONNECTED'
     events.trigger('websocket_disconnected', code or 1000, reason or "Manual disconnect")
 end
@@ -151,7 +184,7 @@ function M.initialize(deps)
     log = deps.log
     log_levels = deps.log_levels
     copas = deps.copas
-    
+
     if not ws_lib then
         log('WEBSOCKET', log_levels.FATAL, "Module could not be initialized because 'websocketsamp' library failed to load. Error: " .. tostring(err))
     else

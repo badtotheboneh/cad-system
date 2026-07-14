@@ -1,6 +1,7 @@
 ---@diagnostic disable: lowercase-global, undefined-global
+-- local utf8 = require('lib.encoding').UTF8
 local utf8 = require('lib.encoding').UTF8
-
+local safe_decoder = require('lib.utf8_pure')
 
 local radio_parser = {}
 local deps = {}
@@ -217,7 +218,7 @@ function samp.onServerMessage(color, text)
 
 	if color == -13142 and text:find('[CH: 912, S: 1] .+ (%a+ %a+): (.+)') then
 		local nick, tmptext = text:match('[CH: 912, S: 1] .+ (%a+ %a+): (.+)')
-		text = "** [BASE, RTO] "..nick..": "..tmptext
+		text = "** [BASE, SCC] "..nick..": "..tmptext
 	end
 
 
@@ -880,6 +881,16 @@ function radio_parser.initialize(dependencies)
         
 
         updateServerSubscriptions()
+    end)
+
+    _G.CAD_EVENT_BUS.register('radio:on_broadcast', function(payload)
+        if payload and payload.text and payload.channelId and payload.sender then
+            local cp1251_text = safe_decoder.decode(payload.text)
+            
+            if monitoredChannels[payload.channelId] then
+                wrapAndPrintMessage(payload.sender, payload.channelId, cp1251_text)
+            end
+        end
     end)
 
     deps.log('RADIO_PARSER', deps.log_levels.INFO, "Module initialized.")

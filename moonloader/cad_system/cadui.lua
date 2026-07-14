@@ -1,5 +1,6 @@
 local cadui_module = {}
 _G.cadui_module = cadui_module
+cadui_module.incident_actions_inflight = {}
 
 local ffi = require('ffi')
 local bit = require('bit')
@@ -9,6 +10,167 @@ local memory = require 'memory'
 local vkeys = require 'vkeys'
 local sampfuncs = require 'sampfuncs' 
 
+local codePatterns = {
+        {"002", {"допы", "dops", "дополнительные", "lssd", "lspd", "лспд", "лссд", "SHERIFF", "sheriff", "police"}},
+        {"121", {"документы", "фальсификация", "фальшивые", "подделка"}},
+        {"125", {"нарушение общественного порядка", "шуметь", "шумят", "разбить", "разбили", "шумы", "шум", "Происходит что-то неладное!"}},
+        {"125B", {"клубе", "баре", "пабе", "магазине"}},
+        {"125E", {"громкая музыка", "вечеринка","музыку"}},
+        {"125F", {"семейный", "мужа", "жену", "скандал"}},
+        {"125G", {"банды", "банда", "банда избила"}},
+        {"125J", {"несовершеннолетних", "детей", "малолетних"}},
+        {"125LT", {"арендодатель", "арендатор"}},
+        {"125N", {"соседей", "соседи", "по соседству"}},
+        {"415", {"драка", "избивают", "избили", "драки", "избиение"}},
+        {"201", {"убили за", "убивают за", "убить"}},
+        {"203", {"убийство", "убийств", "убили", "убийца", "убийц", "труп", "трупы"}},
+        {"207", {"нападение", "оружие", "вооружены", "пистолет", "застрелили", "стреляют", "растреляли", "расстреляли", "напали"}},
+        {"210", {"похищение человека", "похитили", "похищение"}},
+        {"215", {"ограбление", "грабят", "грабёж", "грабеж"}},
+        {"216", {"вооружённое ограбление"}},
+        {"217", {"изнасилование", "насилуют", "изнасиловали"}},
+        {"221", {"домашнее насилие"}},
+
+        {"301", {"поджог", "подожгли", "поджигают"}},
+        {"302", {"кража со взломом", "взлом", "взломали", "взламывают"}},
+        {"302A", {"сигнализация"}},
+        {"304", {"крупная кража"}},
+        {"305", {"мелкая кража", "украли велосипед", "велосипед"}},
+        {"306", {"угон автомобиля", "Угон", "угнали", "угон", "авто", "угнали машину", "сработала сигнализация"}},
+        {"310", {"незаконное проникновение", "вломились"}},
+        {"311", {"вандализм", "порча", "испортил", "портит", "ударил мою", "ударил мой"}},
+
+        {"403", {"скрылся с места ДТП"}},
+        {"407", {"нарушение правил парковки", "припарковался"}},
+        {"410", {"превышение скорости"}},
+        {"411", {"значительное превышение скорости"}},
+        {"413", {"вождение в нетрезвом виде", "под воздействием веществ", "пьяный", "под наркотиками"}},
+        {"432", {"гоняют", "гонки", "гонщик"}},
+
+        {"501", {"непристойное обнажение", "голый", "раздетый"}},
+        {"505", {"преследование", "преследуют", "гонятся"}},
+        {"507", {"жестокое обращение с детьми"}},
+        {"511", {"жестокое обращение с животными"}},
+
+        {"706", {"человек с оружием", "вооружённые", "вооружённый", "размахивает оружием"}},
+        {"706A", {"человек с ножом", "нож"}},
+        {"706B", {"вооружённый забаррикадировавшийся подозреваемый", "забаррикадировался", "в доме с оружием"}},
+        {"706BH", {"заложник", "заложники", "заложником"}},
+        {"706S", {"выстрелы", "стреляют", "выстрел", "Стрельба", "стрельба"}},
+
+        {"902", {"ранен", "раненый", "упал", "медики", "пострадал"}},
+        {"902H", {"скорая", "скорую"}},
+        {"902R", {"нужны медики", "парамедики", "скорую", "скорая"}},
+
+        {"904", {"пожар"}},
+        {"904A", {"пожар автомобиля", "горит машина"}},
+        {"904B", {"горит трава"}},
+        {"904S", {"пожар в доме"}},
+        {"904T", {"горит мусор"}},
+
+        {"916", {"помощник шерифа удерживает подозреваемого в совершении мелкого преступления"}},
+        {"916A", {"помощник шерифа удерживает подозреваемого в совершении тяжкого преступления"}},
+
+        {"917A", {"брошенный автомобиль"}},
+        {"917S", {"подозрительный автомобиль"}},
+
+        {"918", {"псих", "психопат", "сумасшедший", "неадекват", "неадекватный"}},
+
+        {"925", {"подозрительный человек", "подозрительный"}},
+
+        {"996", {"взрыв"}},
+    }
+
+table.sort(codePatterns, function(a, b) return #a[1] > #b[1] end)
+
+local function getCallCode(call)
+    local details = call.description or {}
+    local text    = details.incident_details or ""
+    local lower   = string.lower(text)
+
+    for _, pair in ipairs(codePatterns) do
+        local code   = pair[1]
+        local words  = pair[2]
+        for _, kw in ipairs(words) do
+            if string.find(lower, kw, 1, true) then
+                if not call.code or tostring(call.code) == "" then
+                    call.code = code
+                    log('CAD', log_levels.INFO, string.format("Assigned code %s to call %s", code, tostring(call.id or 'nil')))
+                end
+                call._code_checked = true
+                return
+            end
+        end
+    end
+    call._code_checked = true
+end
+
+local callCodeReference = {
+    {code = "000",    desc = "Общий вызов без уточнения"},
+    {code = "002",    desc = "Служебный / административный вызов"},
+    {code = "121",    desc = "Подделка документов"},
+    {code = "125",    desc = "Нарушение общественного порядка / шум"},
+    {code = "125B",   desc = "Шум в клубе, баре, пабе или магазине"},
+    {code = "125E",   desc = "Громкая музыка / шумная вечеринка"},
+    {code = "125F",   desc = "Семейный скандал"},
+    {code = "125G",   desc = "Конфликт с участием банды"},
+    {code = "125J",   desc = "Происшествие с участием несовершеннолетних"},
+    {code = "125LT",  desc = "Конфликт арендодателя и арендатора"},
+    {code = "125N",   desc = "Конфликт с соседями"},
+    {code = "201",    desc = "Заказное убийство / убийство за вознаграждение"},
+    {code = "203",    desc = "Убийство"},
+    {code = "207",    desc = "Нападение с применением оружия"},
+    {code = "210",    desc = "Похищение человека"},
+    {code = "215",    desc = "Ограбление"},
+    {code = "216",    desc = "Вооружённое ограбление"},
+    {code = "217",    desc = "Изнасилование"},
+    {code = "221",    desc = "Домашнее насилие"},
+    {code = "301",    desc = "Поджог"},
+    {code = "302",    desc = "Кража со взломом"},
+    {code = "302A",   desc = "Сработала охранная сигнализация"},
+    {code = "304",    desc = "Крупная кража"},
+    {code = "305",    desc = "Мелкая кража"},
+    {code = "306",    desc = "Угон автомобиля"},
+    {code = "310",    desc = "Незаконное проникновение в помещение / на территорию"},
+    {code = "311",    desc = "Вандализм / порча имущества"},
+    {code = "403",    desc = "Скрылся с места ДТП"},
+    {code = "407",    desc = "Нарушение правил парковки"},
+    {code = "410",    desc = "Превышение скорости"},
+    {code = "411",    desc = "Значительное превышение скорости"},
+    {code = "413",    desc = "Вождение в нетрезвом виде / под наркотиками"},
+    {code = "415",    desc = "Драка / избиение"},
+    {code = "432",    desc = "Опасное вождение / уличные гонки"},
+    {code = "501",    desc = "Непристойное обнажение"},
+    {code = "505",    desc = "Преследование"},
+    {code = "507",    desc = "Жестокое обращение с детьми"},
+    {code = "511",    desc = "Жестокое обращение с животными"},
+    {code = "706",    desc = "Человек с оружием"},
+    {code = "706A",   desc = "Человек с ножом"},
+    {code = "706B",   desc = "Вооружённый забаррикадировавшийся подозреваемый"},
+    {code = "706BH",  desc = "Захват заложников"},
+    {code = "706S",   desc = "Стрельба / слышны выстрелы"},
+    {code = "902",    desc = "Ранение, требуется медицинская помощь"},
+    {code = "902H",   desc = "Требуется скорая помощь"},
+    {code = "902R",   desc = "Требуются медики (реанимация)"},
+    {code = "904",    desc = "Пожар"},
+    {code = "904A",   desc = "Пожар автомобиля"},
+    {code = "904B",   desc = "Пожар растительности (горит трава)"},
+    {code = "904S",   desc = "Пожар в доме / здании"},
+    {code = "904T",   desc = "Горит мусор"},
+    {code = "916",    desc = "Задержание подозреваемого в мелком преступлении"},
+    {code = "916A",   desc = "Задержание подозреваемого в тяжком преступлении"},
+    {code = "917A",   desc = "Брошенный автомобиль"},
+    {code = "917S",   desc = "Подозрительный автомобиль"},
+    {code = "918",    desc = "Психически неуравновешенный человек"},
+    {code = "925",    desc = "Подозрительный человек"},
+    {code = "996",    desc = "Взрыв"},
+}
+
+local moonmonet_ok, MoonMonet = pcall(require, 'MoonMonet')
+if not moonmonet_ok then
+    MoonMonet = nil
+end
+
 
 profileEditBuffers = {
     full_name = imgui.new.char[64](),
@@ -17,6 +179,8 @@ profileEditBuffers = {
 }
 
 local profile_buffers_init = false
+local code_help_open = ffi.new('bool[1]', false)
+local code_help_search_buf = imgui.new('char[64]')
 
 local fa = {
     ICON_FA_HOUSE = '\xef\x80\x95',                -- f015
@@ -39,7 +203,13 @@ local fa = {
 
     ICON_FA_CHECK_SQUARE = '\xef\x85\x8a',
     ICON_FA_SQUARE = '\xef\x83\x88',
-    
+
+    ICON_FA_VOLUME_XMARK = '\xef\x9a\xa9',         -- f6a9
+    ICON_FA_VOLUME_LOW = '\xef\x80\xa7',           -- f027
+    ICON_FA_VOLUME_HIGH = '\xef\x80\xa8',          -- f028
+
+    ICON_FA_SORT = '\xef\x83\x9c',                 -- f0dc
+
     min_range = 0xe000,
     max_range = 0xf8ff
 }
@@ -69,27 +239,56 @@ local ThemeManager = {
     color_buffers = {}
 }
 
-function ToMSK(date_str)
-    if not date_str or date_str == "" then return "N/A" end
-    
+local function utcTableToEpoch(t)
+    local now = os.time()
+    local local_t = os.date("*t", now)
+    local utc_t = os.date("!*t", now)
+    local_t.isdst = false
+    local offset = os.difftime(os.time(local_t), os.time(utc_t))
+    return os.time(t) + offset
+end
+
+local function isoToEpoch(date_str)
+    if not date_str or date_str == "" then return nil end
     local year, month, day, hour, min, sec = date_str:match("(%d+)-(%d+)-(%d+)T(%d+):(%d+):(%d+)")
-    
-    if year then
-        local ts = os.time({
-            year = tonumber(year),
-            month = tonumber(month),
-            day = tonumber(day),
-            hour = tonumber(hour),
-            min = tonumber(min),
-            sec = tonumber(sec)
-        })
-        
-        ts = ts + (3 * 3600)
-        
-        return os.date("%Y-%m-%d %H:%M:%S", ts)
-    end
-    
-    return date_str
+    if not year then return nil end
+    return utcTableToEpoch({
+        year = tonumber(year), month = tonumber(month), day = tonumber(day),
+        hour = tonumber(hour), min = tonumber(min), sec = tonumber(sec)
+    })
+end
+
+function ToMSK(date_str)
+    local epoch = isoToEpoch(date_str)
+    if not epoch then return "N/A" end
+    return os.date("!%Y-%m-%d %H:%M:%S", epoch + 3 * 3600)
+end
+
+function SecondsSinceISO(date_str)
+    local epoch = isoToEpoch(date_str)
+    if not epoch then return nil end
+    return os.time() - epoch
+end
+
+function FormatElapsedShort(seconds)
+    if not seconds then return nil end
+    if seconds < 0 then seconds = 0 end
+    local mins = math.floor(seconds / 60)
+    if mins < 60 then return mins .. "m" end
+    local hours = math.floor(mins / 60)
+    return hours .. "h " .. (mins % 60) .. "m"
+end
+
+function FormatElapsedPrecise(seconds)
+    if not seconds then return nil end
+    if seconds < 0 then seconds = 0 end
+    seconds = math.floor(seconds)
+    local h = math.floor(seconds / 3600)
+    local m = math.floor((seconds % 3600) / 60)
+    local s = seconds % 60
+    if h > 0 then return string.format("%dh %02dm %02ds", h, m, s) end
+    if m > 0 then return string.format("%dm %02ds", m, s) end
+    return string.format("%ds", s)
 end
 
 function ThemeManager.initialize()
@@ -313,7 +512,6 @@ function BinderManager.initialize()
     end
 
     BinderManager.binds = settings.get('binder_settings', 'binds', {})
-    -- log('BinderManager', log_levels.INFO, 'Loaded binds from config: ' .. json.encode(BinderManager.binds))
 
     for _, sys_def in ipairs(system_bind_definitions) do
         local found = false
@@ -993,32 +1191,54 @@ function requestPasswordChange()
     end)
 end
 
-local alpr_is_wanted_plate = false
+local alpr_state = {
+    alpr_is_wanted_plate = false,
+    alpr_muted = false,
+    alpr_passive_scan_enabled = true,
+    alpr_passive_hud_open = imgui.new.bool(true),
+    alpr_passive_hud_until = 0,
+    alpr_passive_hud_timeout_sec = 8,
+    alpr_hud_style_normal = {
+        bg_col = 0xFF151515,
+        border_col = 0xFF404040,
+        plate_text_col = 0xFF00FF00,
+        info_text_col = 0xFFAAAAAA,
+        model_text_col = 0xFFAAAAAA
+    },
+    alpr_hud_style_alert = {
+        bg_col_base = 0xFF550000,
+        border_col = 0xFFFF0000,
+        plate_text_col = 0xFFFFFFFF,
+        info_text_col = 0xFFFFFFFF,
+        model_text_col = 0xFFFFFFFF
+    },
+    selected_alpr_log_index = nil,
+    last_alpr_scan_time = 0,
+    alpr_debug = {
+        enabled = true,
+        vehicles_checked = 0,
+        vehicles_in_range = 0,
+        found_vehicle = false,
+        found_distance = 0,
+        found_vehicle_id = -1,
+        last_log_time = 0,
+        pool_size = 0,
+        handle_count = 0,
+        source = "pool"
+    },
+    alpr_camera_config = {
+        front = imgui.new.bool(true),
+        rear = imgui.new.bool(true),
+        sides = imgui.new.bool(true)
+    },
+    alpr_interaction_mode = false
+}
 alpr_flash_end_time = os.clock() + 5
 alpr_last_wanted_plate = ""
 alpr_wanted_sound = nil
 panic_sound = nil
-local alpr_muted = false
-local alpr_passive_scan_enabled = true
-local alpr_passive_hud_open = imgui.new.bool(true)
-local alpr_passive_hud_until = 0
-local alpr_passive_hud_timeout_sec = 8
 
-local alpr_hud_style_normal = {
-    bg_col = 0xFF151515,
-    border_col = 0xFF404040,
-    plate_text_col = 0xFF00FF00,
-    info_text_col = 0xFFAAAAAA,
-    model_text_col = 0xFFAAAAAA
-}
 
-local alpr_hud_style_alert = {
-    bg_col_base = 0xFF550000,
-    border_col = 0xFFFF0000,
-    plate_text_col = 0xFFFFFFFF,
-    info_text_col = 0xFFFFFFFF,
-    model_text_col = 0xFFFFFFFF
-}
 
 local function get_data_storage()
     if _G and _G.data_storage then return _G.data_storage end
@@ -1052,13 +1272,13 @@ local function as_array(t)
     end
     return arr
 end
-last_map_window_pos = nil
 
 local threads_started = false
 local is_first_unit_update_after_login = false
 
 local active_notifications = {}
 local notification_sound = nil
+local interface_sound_volume = 1.0
 local calls_snapshot_ready = false
 local known_call_ids = {}
 
@@ -1133,6 +1353,7 @@ function load_single_interface_sound(sound_id)
         return false
     end
 
+    pcall(setAudioStreamVolume, stream, interface_sound_volume)
     interface_sounds[sound_id] = stream
     log('UI', log_levels.INFO, "Interface sound loaded: " .. tostring(sound_id) .. " -> " .. file_name)
     return true
@@ -1142,6 +1363,20 @@ function refresh_interface_sound_aliases()
     alpr_wanted_sound = interface_sounds[interface_sound_triggers.alpr_hit]
     notification_sound = interface_sounds[interface_sound_triggers.notification]
     panic_sound = interface_sounds[interface_sound_triggers.panic_button]
+end
+
+function set_interface_sound_volume(volume)
+    volume = tonumber(volume) or 1.0
+    if volume < 0.0 then volume = 0.0 end
+    if volume > 1.0 then volume = 1.0 end
+    interface_sound_volume = volume
+    for _, stream in pairs(interface_sounds) do
+        pcall(setAudioStreamVolume, stream, interface_sound_volume)
+    end
+    if settings then
+        settings.set('audio_settings', 'master_volume', interface_sound_volume)
+        settings.save()
+    end
 end
 
 function update_interface_sound_init_state(loaded_count)
@@ -1224,6 +1459,7 @@ local function play_interface_sound(sound_id)
     end
 
     local ok_stop = pcall(setAudioStreamState, stream, 0)
+    pcall(setAudioStreamVolume, stream, interface_sound_volume)
     local ok_play = pcall(setAudioStreamState, stream, 1)
     if not ok_stop or not ok_play then
         log('UI', log_levels.WARN, "play_interface_sound: playback failed, reloading stream: " .. tostring(sound_id))
@@ -1286,10 +1522,10 @@ local function make_call_ids_snapshot(calls)
 end
 
 local function should_render_passive_alpr_hud()
-    if not alpr_passive_scan_enabled then return false end
+    if not alpr_state.alpr_passive_scan_enabled then return false end
     if UI and UI.alpr_window and UI.alpr_window[0] then return false end
     if not cadui_module.isPlayerInPatrolCar() then return false end
-    return (alpr_hud_data and alpr_hud_data.is_alert) or (os.clock() < alpr_passive_hud_until)
+    return (alpr_hud_data and alpr_hud_data.is_alert) or (os.clock() < alpr_state.alpr_passive_hud_until)
 end
 
 local UI = {
@@ -1308,6 +1544,10 @@ local UI = {
     unit_mini_hud_dragging = false,
     show_simplex_unit_selector = imgui.new.bool(false)
 }
+
+local shared_alpr_bool = imgui.new.bool(false)
+UI.alpr_manager = shared_alpr_bool
+UI.alpr_log_window = shared_alpr_bool
 
 function updateLastRadioSlotUsed(slot_value, source)
     local slot_num = tonumber(slot_value)
@@ -1446,9 +1686,7 @@ keyBindBuffers = {
 local key_being_bound = nil
 
 alpr_scan_log = {}
-local selected_alpr_log_index = nil
 alpr_log_comment_buffer = imgui.new.char[256]()
-local last_alpr_scan_time = 0
 
 registerBuffers = {
     username = imgui.new.char[64](),
@@ -1468,24 +1706,7 @@ local distance_car_search = 40.0
 alpr_current_scan = { model = "Scanning...", plate = "---", driver = "---", found = false }
 drivers = {}
 
-local alpr_debug = {
-    enabled = true,
-    vehicles_checked = 0,
-    vehicles_in_range = 0,
-    found_vehicle = false,
-    found_distance = 0,
-    found_vehicle_id = -1,
-    last_log_time = 0,
-    pool_size = 0,
-    handle_count = 0,
-    source = "pool"
-}
 
-local alpr_camera_config = {
-    front = imgui.new.bool(true),
-    rear = imgui.new.bool(true),
-    sides = imgui.new.bool(true)
-}
 
 local function normalize_plate(s)
     if not s then return "" end
@@ -1549,9 +1770,9 @@ local function findBoloByPlate(plate_clean)
 end
 
 local function isCameraEnabled(cam_pos)
-    if cam_pos == "FWD" then return alpr_camera_config.front[0] end
-    if cam_pos == "REAR" then return alpr_camera_config.rear[0] end
-    return alpr_camera_config.sides[0]
+    if cam_pos == "FWD" then return alpr_state.alpr_camera_config.front[0] end
+    if cam_pos == "REAR" then return alpr_state.alpr_camera_config.rear[0] end
+    return alpr_state.alpr_camera_config.sides[0]
 end
 
 
@@ -1726,7 +1947,7 @@ function updateALPRData()
         }
     end
 
-    if not alpr_is_wanted_plate then
+    if not alpr_state.alpr_is_wanted_plate then
         alpr_hud_data.is_alert = false
         alpr_hud_data.status = "SCANNING"
         alpr_hud_data.scan_plate = "---"
@@ -1742,7 +1963,7 @@ function updateALPRData()
         alpr_hud_data.status = "OFFLINE"
         alpr_hud_data.scan_plate = "---"
         alpr_hud_data.camera_pos = alpr_last_detected_camera
-        alpr_passive_hud_until = 0
+        alpr_state.alpr_passive_hud_until = 0
         return
     end
 
@@ -1760,7 +1981,7 @@ function updateALPRData()
         alpr_hud_data.status = "OFFLINE"
         alpr_hud_data.scan_plate = "---"
         alpr_hud_data.camera_pos = alpr_last_detected_camera
-        alpr_passive_hud_until = 0
+        alpr_state.alpr_passive_hud_until = 0
         return
     end
 
@@ -1776,7 +1997,7 @@ function updateALPRData()
         alpr_hud_data.status = "STANDBY"
         alpr_hud_data.scan_plate = "---"
         alpr_hud_data.camera_pos = alpr_last_detected_camera
-        alpr_passive_hud_until = 0
+        alpr_state.alpr_passive_hud_until = 0
         return
     end
 
@@ -1784,13 +2005,13 @@ function updateALPRData()
     local pX, pY, pZ = getCharCoordinates(PLAYER_PED)
     local fX, fY, fZ = getOffsetFromCharInWorldCoords(PLAYER_PED, 0.0, 7.0, 0.0)
 
-    alpr_debug.vehicles_checked = 0
-    alpr_debug.vehicles_in_range = 0
-    alpr_debug.found_vehicle = false
-    alpr_debug.found_distance = 0
-    alpr_debug.found_vehicle_id = -1
-    alpr_debug.handle_count = 0
-    alpr_debug.source = "pool"
+    alpr_state.alpr_debug.vehicles_checked = 0
+    alpr_state.alpr_debug.vehicles_in_range = 0
+    alpr_state.alpr_debug.found_vehicle = false
+    alpr_state.alpr_debug.found_distance = 0
+    alpr_state.alpr_debug.found_vehicle_id = -1
+    alpr_state.alpr_debug.handle_count = 0
+    alpr_state.alpr_debug.source = "pool"
 
     local reported_pool_size = -1
     if sampGetVehiclePoolSize then
@@ -1798,12 +2019,12 @@ function updateALPRData()
     end
 
     local max_vehicle_id = math.max(2999, reported_pool_size)
-    alpr_debug.pool_size = reported_pool_size
+    alpr_state.alpr_debug.pool_size = reported_pool_size
 
     for vehicleId = 0, max_vehicle_id do
         local result, vehicleHandle = sampGetCarHandleBySampVehicleId(vehicleId)
         if result and vehicleId ~= player_car_id and doesVehicleExist(vehicleHandle) then
-            alpr_debug.vehicles_checked = alpr_debug.vehicles_checked + 1
+            alpr_state.alpr_debug.vehicles_checked = alpr_state.alpr_debug.vehicles_checked + 1
             local success, data = pcall(function()
                 local cX, cY, cZ = getCarCoordinates(vehicleHandle)
                 local dist = getDistanceBetweenCoords3d(pX, pY, pZ, cX, cY, cZ)
@@ -1811,7 +2032,7 @@ function updateALPRData()
             end)
 
             if success and data.distance < distance_car_search then
-                alpr_debug.vehicles_in_range = alpr_debug.vehicles_in_range + 1
+                alpr_state.alpr_debug.vehicles_in_range = alpr_state.alpr_debug.vehicles_in_range + 1
             end
 
             if success and data.distance < target_car_data.distance then
@@ -1829,9 +2050,9 @@ function updateALPRData()
     end
 
     if target_car_data.vehicleId > -1 then
-        alpr_debug.found_vehicle = true
-        alpr_debug.found_distance = target_car_data.distance
-        alpr_debug.found_vehicle_id = target_car_data.vehicleId
+        alpr_state.alpr_debug.found_vehicle = true
+        alpr_state.alpr_debug.found_distance = target_car_data.distance
+        alpr_state.alpr_debug.found_vehicle_id = target_car_data.vehicleId
 
         local ok_plate, raw_plate = pcall(getplate, target_car_data.vehicleId)
         raw_plate = ok_plate and tostring(raw_plate or "") or ""
@@ -1892,17 +2113,17 @@ function updateALPRData()
         end
 
         if is_wanted or is_bolo then
-            if not alpr_is_wanted_plate then
+            if not alpr_state.alpr_is_wanted_plate then
                 log('ALPR', log_levels.INFO, 'Plate is wanted and was not previously wanted. Playing sound.')
-                if not alpr_muted then
+                if not alpr_state.alpr_muted then
                     play_interface_trigger("alpr_hit")
                 end
                 alpr_flash_end_time = now + 8
             end
-            alpr_is_wanted_plate = true
+            alpr_state.alpr_is_wanted_plate = true
             alpr_hud_data.is_alert = true
             alpr_hud_data.status = "ALARM"
-            alpr_passive_hud_until = now + alpr_passive_hud_timeout_sec
+            alpr_state.alpr_passive_hud_until = now + alpr_state.alpr_passive_hud_timeout_sec
             if is_wanted and is_bolo then
                 alpr_hud_data.alert_type = "WANTED + BOLO"
             elseif is_wanted then
@@ -1911,10 +2132,10 @@ function updateALPRData()
                 alpr_hud_data.alert_type = "BOLO HIT"
             end
         else
-            if alpr_is_wanted_plate and now > alpr_flash_end_time then
-                alpr_is_wanted_plate = false
+            if alpr_state.alpr_is_wanted_plate and now > alpr_flash_end_time then
+                alpr_state.alpr_is_wanted_plate = false
                 alpr_hud_data.is_alert = false
-            elseif not alpr_is_wanted_plate then
+            elseif not alpr_state.alpr_is_wanted_plate then
                 alpr_hud_data.is_alert = false
             end
         end
@@ -1941,13 +2162,13 @@ function updateALPRData()
         alpr_current_scan.plate = "---"
         alpr_current_scan.driver = "---"
         alpr_current_scan.found = false
-        alpr_is_wanted_plate = false
+        alpr_state.alpr_is_wanted_plate = false
         alpr_hud_data.is_alert = false
         alpr_hud_data.status = "SCANNING"
         alpr_hud_data.scan_plate = "---"
         alpr_hud_data.camera_pos = alpr_last_detected_camera
-        if os.clock() > alpr_passive_hud_until then
-            alpr_passive_hud_until = 0
+        if os.clock() > alpr_state.alpr_passive_hud_until then
+            alpr_state.alpr_passive_hud_until = 0
         end
     end
 end
@@ -2141,14 +2362,65 @@ _G.data_storage = data_storage
 local last_known_call_id = 0
 local last_unit_update_timestamp = 0 
 
+local function hexToImVec4(hex)
+    local a = bit.band(bit.rshift(hex, 24), 0xFF) / 255
+    local b = bit.band(bit.rshift(hex, 16), 0xFF) / 255
+    local g = bit.band(bit.rshift(hex, 8), 0xFF) / 255
+    local r = bit.band(hex, 0xFF) / 255
+    return imgui.ImVec4(r, g, b, a)
+end
+
+local STATUS_COLOR_HEX = {
+    GREEN  = 0xFF2ECC71, -- Clear / Resolved / Available
+    BLUE   = 0xFFFF8000, -- En-route / Enroute
+    ORANGE = 0xFF00A5FF, -- Pending / Under Investigation / Busy
+    PURPLE = 0xFFB6599B, -- Claimed
+    RED    = 0xFF0000D0, -- Active
+    CYAN   = 0xFFFFCC00, -- On Scene / Code 4
+    GRAY   = 0xFF808080, -- Default / Out of Service
+}
+
+local STATUS_COLOR = {}
+for name, hex in pairs(STATUS_COLOR_HEX) do
+    STATUS_COLOR[name] = { hex = hex, vec = hexToImVec4(hex) }
+end
+
+local STATUS_LABEL_COLOR = {
+    ['Pending']              = STATUS_COLOR.ORANGE,
+    ['En-route']             = STATUS_COLOR.BLUE,
+    ['Claimed']               = STATUS_COLOR.PURPLE,
+    ['Clear']                  = STATUS_COLOR.GREEN,
+    ['Active']                 = STATUS_COLOR.RED,
+    ['Under Investigation']   = STATUS_COLOR.ORANGE,
+    ['Code 4']                 = STATUS_COLOR.CYAN,
+    ['Resolved']               = STATUS_COLOR.GREEN,
+
+    [0] = STATUS_COLOR.GREEN,  -- Available
+    [1] = STATUS_COLOR.BLUE,   -- Enroute
+    [2] = STATUS_COLOR.CYAN,   -- On Scene
+    [3] = STATUS_COLOR.ORANGE, -- Busy / Panic
+    [4] = STATUS_COLOR.GRAY,   -- Out of Service
+    ['Default'] = STATUS_COLOR.GRAY,
+}
+
+local function getStatusColorHex(status_key)
+    local c = STATUS_LABEL_COLOR[status_key]
+    return c and c.hex or STATUS_COLOR.GRAY.hex
+end
+
+local function getStatusColorVec(status_key)
+    local c = STATUS_LABEL_COLOR[status_key]
+    return c and c.vec or STATUS_COLOR.GRAY.vec
+end
+
 local boloTypes = { "Person", "Vehicle", "Other" }
 local boloStatuses = { "In Progress", "In Custody", "Clear" }
 
 local boloStatusColors = {
-    ["In Progress"] = imgui.ImVec4(1.0, 0.6, 0.0, 1.0), -- Оранжевый
-    ["In Custody"]  = imgui.ImVec4(0.2, 0.6, 0.9, 1.0), -- Синий
-    ["Clear"]       = imgui.ImVec4(0.2, 0.8, 0.2, 1.0), -- Зеленый
-    ["Default"]     = imgui.ImVec4(0.5, 0.5, 0.5, 1.0)
+    ["In Progress"] = getStatusColorVec('Under Investigation'),
+    ["In Custody"]  = getStatusColorVec('En-route'),
+    ["Clear"]       = getStatusColorVec('Clear'),
+    ["Default"]     = getStatusColorVec('Default')
 }
 
 local newBoloData = {
@@ -2169,12 +2441,12 @@ local boloTypes_c = nil
 local boloStatuses_c = nil
 
 local callStatusTypes = { "Pending", "En-route", "Clear" }
-local callStatusColors = { Pending = imgui.ImVec4(1.0, 0.8, 0.0, 1.0), ["En-route"] = imgui.ImVec4(0.0, 0.6, 1.0, 1.0), Clear = imgui.ImVec4(0.2, 0.8, 0.2, 1.0) }
+local callStatusColors = { Pending = STATUS_COLOR.ORANGE.vec, ["En-route"] = STATUS_COLOR.BLUE.vec, Clear = STATUS_COLOR.GREEN.vec }
 local selected_call_index = nil
 local selected_unit_index = nil
 local incidentStatusTypes = { "Active", "Under Investigation", "Code 4", "Resolved" }
-local incidentStatusColors = { Active = imgui.ImVec4(1.0, 0.2, 0.2, 1.0), ["Under Investigation"] = imgui.ImVec4(1.0, 0.6, 0.0, 1.0), ["Code 4"] = imgui.ImVec4(0.2, 0.5, 1.0, 1.0), Resolved = imgui.ImVec4(0.2, 0.8, 0.2, 1.0) }
-local selected_incident_index = nil
+local incidentStatusColors = { Active = STATUS_COLOR.RED.vec, ["Under Investigation"] = STATUS_COLOR.ORANGE.vec, ["Code 4"] = STATUS_COLOR.CYAN.vec, Resolved = STATUS_COLOR.GREEN.vec }
+local selected_incident_id = nil
 
 local function get_current_unit_callsign()
     if core and core.current_unit then
@@ -2295,6 +2567,26 @@ function cadui_module.applyPendingLspdAssignments()
         end
 
         call.assigned_units = units
+    end
+end
+
+function cadui_module.find_incident_by_id(incident_id)
+    if not data_storage or not data_storage.incidents or not incident_id then return nil end
+    for _, inc in ipairs(data_storage.incidents) do
+        if inc.id == incident_id then
+            return inc
+        end
+    end
+    return nil
+end
+
+function cadui_module.handle_incident_action_error(action_label, incident_id, data, err)
+    cadui_module.incident_actions_inflight[incident_id] = nil
+    if err or not (data and data.success) then
+        local err_msg = tostring(err or (data and data.error) or "Unknown error")
+        addNotification(action_label .. " FAILED", err_msg, 8)
+        log('UI', log_levels.WARN, string.format('%s failed for incident #%s: %s', action_label, tostring(incident_id), err_msg))
+        forceDataRefresh()
     end
 end
 
@@ -2585,7 +2877,6 @@ function drawBoloCreatorWindow()
     imgui.PopStyleVar(2) 
 end
 
-local alpr_interaction_mode = false
 
 local function drawStyledInput(label, buffer, size, width, flags, icon)
     imgui.BeginGroup()
@@ -2675,21 +2966,21 @@ end
 
 function renderALPRWindow()
     if not UI.alpr_window[0] then
-        if alpr_interaction_mode then alpr_interaction_mode = false end
+        if alpr_state.alpr_interaction_mode then alpr_state.alpr_interaction_mode = false end
         return
     end
     if wasKeyPressed(vkeys.VK_F2) then
-        alpr_interaction_mode = not alpr_interaction_mode
+        alpr_state.alpr_interaction_mode = not alpr_state.alpr_interaction_mode
     end
 
     imgui.SetNextWindowSize(imgui.new('ImVec2', 450, 280), imgui.Cond.FirstUseEver)
     do
         local sw, _ = getScreenResolution()
-        imgui.SetNextWindowPos(imgui.new('ImVec2', sw - 20, 180), imgui.Cond.FirstUseEver, imgui.new('ImVec2', 1.0, 0.0))
+        imgui.SetNextWindowPos(imgui.ImVec2(sw - 20, 180), imgui.Cond.FirstUseEver, imgui.ImVec2(1.0, 0.0))
     end
 
     local style_pushed = false
-    if alpr_is_wanted_plate then
+    if alpr_state.alpr_is_wanted_plate then
         local time = os.clock()
         local title_color
         local border_color = imgui.ImVec4(0.8, 0.1, 0.1, 1.0)
@@ -2709,9 +3000,9 @@ function renderALPRWindow()
 
     local success, err = pcall(function()
         if imgui.Begin("ALPR Scan", UI.alpr_window, imgui.WindowFlags.NoResize) then
-            if os.clock() * 1000 - last_alpr_scan_time > 1000 then
+            if os.clock() * 1000 - alpr_state.last_alpr_scan_time > 1000 then
                 updateALPRData()
-                last_alpr_scan_time = os.clock() * 1000
+                alpr_state.last_alpr_scan_time = os.clock() * 1000
             end
 
             imgui.PushFont(fonts[22])
@@ -2793,7 +3084,7 @@ function renderALPRHud()
     end
 
     if is_manual_mode and wasKeyPressed(vkeys.VK_F2) then
-        alpr_interaction_mode = not alpr_interaction_mode
+        alpr_state.alpr_interaction_mode = not alpr_state.alpr_interaction_mode
     end
     
 
@@ -2810,28 +3101,28 @@ function renderALPRHud()
 
     local hud_open_ref = UI.alpr_window
     if not is_manual_mode then
-        alpr_passive_hud_open[0] = true
-        hud_open_ref = alpr_passive_hud_open
+        alpr_state.alpr_passive_hud_open[0] = true
+        hud_open_ref = alpr_state.alpr_passive_hud_open
     end
 
     if imgui.Begin("ALPR_HUD_Overlay", hud_open_ref, flags) then
-        if is_manual_mode and os.clock() * 1000 - last_alpr_scan_time > 1000 then
+        if is_manual_mode and os.clock() * 1000 - alpr_state.last_alpr_scan_time > 1000 then
             updateALPRData()
-            last_alpr_scan_time = os.clock() * 1000
+            alpr_state.last_alpr_scan_time = os.clock() * 1000
         end
         local draw_list = imgui.GetWindowDrawList()
         local p = imgui.GetCursorScreenPos()
         local w = imgui.GetContentRegionAvail().x
         
 
-        local is_alarm_visual = alpr_hud_data.is_alert or (alpr_is_wanted_plate and os.clock() <= alpr_flash_end_time)
+        local is_alarm_visual = alpr_hud_data.is_alert or (alpr_state.alpr_is_wanted_plate and os.clock() <= alpr_flash_end_time)
 
-        local bg_col = alpr_hud_style_normal.bg_col
-        local text_col = alpr_hud_style_normal.plate_text_col
+        local bg_col = alpr_state.alpr_hud_style_normal.bg_col
+        local text_col = alpr_state.alpr_hud_style_normal.plate_text_col
         local status_text = alpr_hud_data.status or "SCANNING"
-        local border_col = alpr_hud_style_normal.border_col
-        local info_text_col = alpr_hud_style_normal.info_text_col
-        local model_text_col = alpr_hud_style_normal.model_text_col
+        local border_col = alpr_state.alpr_hud_style_normal.border_col
+        local info_text_col = alpr_state.alpr_hud_style_normal.info_text_col
+        local model_text_col = alpr_state.alpr_hud_style_normal.model_text_col
         local alert_pulse = 0.0
         
         if is_alarm_visual then
@@ -2881,6 +3172,17 @@ function renderALPRHud()
             )
         end
 
+        do
+            local age = os.clock() * 1000 - (alpr_state.last_alpr_scan_time or 0)
+            local dot_col = 0xFF6B6B6B
+            if alpr_current_scan and alpr_current_scan.found then
+                if age < 1500 then dot_col = 0xFF3BD16F
+                elseif age < 4000 then dot_col = 0xFF2FA8E0
+                else dot_col = 0xFF6B6B6B end
+            end
+            draw_list:AddCircleFilled(imgui.new('ImVec2', p.x + 8, p.y + 8), 3, dot_col)
+        end
+
 
         local plate_text = "---"
         if alpr_current_scan and alpr_current_scan.found and alpr_current_scan.plate and alpr_current_scan.plate ~= "" then
@@ -2894,20 +3196,32 @@ function renderALPRHud()
         local txt_size = imgui.CalcTextSize(plate_text)
         local txt_pos_x = p.x + (w - txt_size.x) / 2
         
-        draw_list:AddText(imgui.new('ImVec2', txt_pos_x, p.y + 10), text_col, plate_text)
+        draw_list:AddText(imgui.new('ImVec2', txt_pos_x, p.y + 6), text_col, plate_text)
         imgui.PopFont()
 
+        local driver_name = alpr_current_scan and alpr_current_scan.driver
+        if alpr_current_scan and alpr_current_scan.found and driver_name and driver_name ~= "" and driver_name ~= "---" then
+            local driver_str = tostring(driver_name)
+            if fonts[18] then imgui.PushFont(fonts[18]) end
+            local driver_size = imgui.CalcTextSize(driver_str)
+            if driver_size.x > w - 10 then
+                driver_str = driver_str:sub(1, 24) .. "..."
+                driver_size = imgui.CalcTextSize(driver_str)
+            end
+            draw_list:AddText(imgui.new('ImVec2', p.x + (w - driver_size.x) / 2, p.y + 30), 0xFFCCCCCC, driver_str)
+            if fonts[18] then imgui.PopFont() end
+        end
 
         local model_text = alpr_current_scan and alpr_current_scan.model or "Scanning..."
         if model_text == "" then model_text = "Unknown" end
         local model_str = "MODEL: " .. tostring(model_text)
         local model_size = imgui.CalcTextSize(model_str)
-        draw_list:AddText(imgui.new('ImVec2', p.x + (w - model_size.x)/2, p.y + 45), model_text_col, model_str)
+        draw_list:AddText(imgui.new('ImVec2', p.x + (w - model_size.x)/2, p.y + 48), model_text_col, model_str)
 
         local hud_cam = alpr_hud_data.camera_pos or alpr_last_detected_camera or "FWD"
         local info_str = string.format("CAM: %s  |  %s", hud_cam, status_text)
         local info_size = imgui.CalcTextSize(info_str)
-        draw_list:AddText(imgui.new('ImVec2', p.x + (w - info_size.x)/2, p.y + 62), info_text_col, info_str)
+        draw_list:AddText(imgui.new('ImVec2', p.x + (w - info_size.x)/2, p.y + 66), info_text_col, info_str)
 
         if is_alarm_visual then
             local alert_str = "HIT"
@@ -2933,31 +3247,43 @@ function renderALPRHud()
             
             if alpr_hud_data.is_alert then
                 imgui.PushStyleColor(imgui.Col.Button, imgui.ImVec4(0.8, 0.1, 0.1, 1.0))
-                if imgui.Button("ACCEPT", imgui.new('ImVec2', -1, 20)) then
+                if imgui.Button(fa.ICON_FA_CHECK_SQUARE .. " ACCEPT", imgui.new('ImVec2', -1, 22)) then
                     alpr_hud_data.is_alert = false
-                    alpr_is_wanted_plate = false
+                    alpr_state.alpr_is_wanted_plate = false
                     
                     UI.alpr_manager[0] = true 
                 end
                 imgui.PopStyleColor()
+                if imgui.IsItemHovered() then imgui.SetTooltip("Acknowledge hit and open full ALPR manager") end
             else
-                if imgui.Button("MENU", imgui.new('ImVec2', -1, 20)) then
+                if imgui.Button(fa.ICON_FA_TABLE_LIST .. " MENU", imgui.new('ImVec2', -1, 22)) then
                     UI.alpr_log_window[0] = not UI.alpr_log_window[0]
                 end
+                if imgui.IsItemHovered() then imgui.SetTooltip("Open ALPR scan log / notes") end
             end
             
             imgui.NextColumn()
             
-            local mute_label = alpr_muted and "UNMUTE" or "MUTE"
-            if imgui.Button(mute_label, imgui.new('ImVec2', -1, 20)) then
-                alpr_muted = not alpr_muted
+            local mute_label = alpr_state.alpr_muted and (fa.ICON_FA_VOLUME_XMARK .. " UNMUTE") or (fa.ICON_FA_VOLUME_HIGH .. " MUTE")
+            if alpr_state.alpr_muted then imgui.PushStyleColor(imgui.Col.Button, imgui.ImVec4(0.5, 0.3, 0.0, 1.0)) end
+            if imgui.Button(mute_label, imgui.new('ImVec2', -1, 22)) then
+                alpr_state.alpr_muted = not alpr_state.alpr_muted
             end
+            if alpr_state.alpr_muted then imgui.PopStyleColor() end
             
             imgui.Columns(1)
         else
-            local passive_label = "AUTO MODE"
+            local passive_label = "AUTO"
             local passive_size = imgui.CalcTextSize(passive_label)
-            draw_list:AddText(imgui.new('ImVec2', p.x + w - passive_size.x - 8, p.y + 90), 0xFFAAAAAA, passive_label)
+            local badge_pad = 4
+            local badge_x0 = p.x + w - passive_size.x - 8 - badge_pad * 2
+            local badge_y0 = p.y + 88
+            draw_list:AddRectFilled(
+                imgui.new('ImVec2', badge_x0, badge_y0),
+                imgui.new('ImVec2', badge_x0 + passive_size.x + badge_pad * 2, badge_y0 + passive_size.y + badge_pad),
+                0xFF3A3A3A, 3.0
+            )
+            draw_list:AddText(imgui.new('ImVec2', badge_x0 + badge_pad, badge_y0 + badge_pad / 2), 0xFFCCCCCC, passive_label)
         end
         
     end
@@ -2977,18 +3303,9 @@ function renderUnitMiniHud()
     local fq_text = "Fq 912." .. tostring(tonumber(UI.unit_mini_hud_last_slot) or 1)
     local socket_connected = (cad_websocket and cad_websocket.get_status and tostring(cad_websocket.get_status() or "") == "CONNECTED")
     local socket_dot_color = socket_connected and 0xFF2ECC71 or 0xFFE74C3C
-    local status_color = imgui.ImVec4(0.65, 0.65, 0.65, 1.0)
+    local status_color = getStatusColorVec(status_idx)
     local assignment_text = "STANDBY"
     local assignment_color = imgui.ImVec4(0.65, 0.65, 0.65, 1.0)
-    if status_idx == 0 then
-        status_color = imgui.ImVec4(0.18, 0.80, 0.44, 1.0)
-    elseif status_idx == 1 then
-        status_color = imgui.ImVec4(0.90, 0.30, 0.24, 1.0)
-    elseif status_idx == 2 then
-        status_color = imgui.ImVec4(1.00, 0.80, 0.00, 1.0)
-    elseif status_idx == 3 then
-        status_color = imgui.ImVec4(0.00, 0.50, 1.00, 1.0)
-    end
 
     if callsign ~= "N/A" then
         local callsign_str = tostring(callsign)
@@ -2998,7 +3315,7 @@ function renderUnitMiniHud()
                 for _, assigned in ipairs(assigned_units) do
                     if tostring(assigned) == callsign_str then
                         assignment_text = "INC #" .. tostring(incident.id or "?")
-                        assignment_color = imgui.ImVec4(1.00, 0.45, 0.45, 1.0)
+                        assignment_color = getStatusColorVec('Active')
                         break
                     end
                 end
@@ -3013,7 +3330,7 @@ function renderUnitMiniHud()
                     for _, assigned in ipairs(assigned_units) do
                         if tostring(assigned) == callsign_str then
                             assignment_text = "CALL #" .. tostring(call.server_call_id or call.id or "?")
-                            assignment_color = imgui.ImVec4(1.00, 0.75, 0.35, 1.0)
+                            assignment_color = getStatusColorVec('Pending')
                             break
                         end
                     end
@@ -3092,194 +3409,164 @@ function renderUnitMiniHud()
     imgui.PopStyleVar(2)
 end
 
-function renderALPRLogWindow()
-    if not UI.alpr_log_window[0] then return end
-
-    imgui.SetNextWindowSize(imgui.new('ImVec2', 700, 500), imgui.Cond.FirstUseEver)
-    do
-        local sw, _ = getScreenResolution()
-        imgui.SetNextWindowPos(imgui.new('ImVec2', sw - 20, 180), imgui.Cond.FirstUseEver, imgui.new('ImVec2', 1.0, 0.0))
-    end
-    if imgui.Begin("ALPR Scan Log", UI.alpr_log_window) then
-        if imgui.Button("Clear Log") then
-            alpr_scan_log = {}
-            selected_alpr_log_index = nil
-        end
-        imgui.Separator()
-
-        imgui.Columns(2)
-        imgui.SetColumnWidth(0, 250)
-
-        imgui.BeginChild("ScanList")
-        for i, scan in ipairs(alpr_scan_log) do
-            local is_hit_entry = (scan.alert == true) or (type(scan.match) == "string" and scan.match ~= "")
-            local label = string.format("%s (%s)", scan.plate, scan.model)
-            if is_hit_entry then
-                label = "[HIT] " .. label
-                imgui.PushStyleColor(imgui.Col.Text, imgui.ImVec4(1, 0.35, 0.35, 1))
-            end
-            if imgui.Selectable(label, selected_alpr_log_index == i) then
-                selected_alpr_log_index = i
-                safe_copy(alpr_log_comment_buffer, scan.notes or "")
-            end
-            if is_hit_entry then
-                imgui.PopStyleColor()
-            end
-        end
-        imgui.EndChild()
-
-        imgui.NextColumn()
-
-        imgui.BeginChild("ScanDetails")
-        if selected_alpr_log_index and alpr_scan_log[selected_alpr_log_index] then
-            local scan = alpr_scan_log[selected_alpr_log_index] 
-            
-            imgui.Text("Scan Details")
-            imgui.Separator() 
-            
-                        renderLabeledText("Timestamp:", os.date("%Y-%m-%d %H:%M:%S", scan.timestamp), imgui.ImVec4(1,1,0,1), imgui.ImVec4(1,1,1,1))
-            renderLabeledText("Vehicle Model:", scan.model, imgui.ImVec4(1,1,0,1), imgui.ImVec4(1,1,1,1))
-            renderLabeledText("License Plate:", scan.plate, imgui.ImVec4(1,1,0,1), imgui.ImVec4(1,1,1,1))
-            renderLabeledText("Driver:", scan.driver, imgui.ImVec4(1,1,0,1), imgui.ImVec4(1,1,1,1))
-            
-            if imgui.Button("Copy Plate") then setClipboardText(scan.plate) end
-            imgui.SameLine()
-            if imgui.Button("Copy Driver") then setClipboardText(scan.driver) end
-            
-            imgui.Separator()
-            imgui.Text("Notes:")
-            imgui.InputTextMultiline("##alpr_notes", alpr_log_comment_buffer, ffi.sizeof(alpr_log_comment_buffer), imgui.new('ImVec2', -1, 100))
-            
-            if imgui.Button("Save Notes") then
-                scan.notes = safe_str(alpr_log_comment_buffer)
-            end
-        else
-            imgui.Text("Select a scan from the list to see details.")
-        end
-        imgui.EndChild()
-
-        imgui.Columns(1)
-        
-    end
-    imgui.End()
-end
-
-
-function renderALPRManager()
+function renderALPRCombined()
     if not UI.alpr_manager[0] then return end
 
-    imgui.SetNextWindowSize(imgui.new('ImVec2', 600, 450), imgui.Cond.FirstUseEver)
-    
+    imgui.SetNextWindowSize(imgui.ImVec2(900, 700), imgui.Cond.FirstUseEver)
+    do
+        local sw, _ = getScreenResolution()
+        imgui.SetNextWindowPos(imgui.ImVec2(sw - 20, 180), imgui.Cond.FirstUseEver, imgui.ImVec2(1.0, 0.0))
+    end
 
-    imgui.PushStyleColor(imgui.Col.WindowBg, imgui.ImVec4(0.08, 0.08, 0.10, 0.98))
-    imgui.PushStyleColor(imgui.Col.TitleBgActive, imgui.ImVec4(0.08, 0.08, 0.10, 1.0))
-    
-    if imgui.Begin("ALPR System Manager", UI.alpr_manager) then
-        
+    imgui.PushStyleColor(imgui.Col.WindowBg, imgui.ImVec4(1.0, 1.0, 1.0, 1.0))
+    imgui.PushStyleColor(imgui.Col.TitleBg,              imgui.ImVec4(0.0, 0.4, 0.8, 1.0))
+    imgui.PushStyleColor(imgui.Col.TitleBgActive,        imgui.ImVec4(0.0, 0.4, 0.8, 1.0))
+    imgui.PushStyleColor(imgui.Col.Text,                 imgui.ImVec4(0.0, 0.0, 0.0, 1.0))
+    imgui.PushStyleVarFloat(imgui.StyleVar.WindowBorderSize, 0.0)
 
-        imgui.PushFont(fonts[22])
-        imgui.TextColored(imgui.ImVec4(0.4, 0.7, 1.0, 1), "ALPR CONTROL PANEL")
-        imgui.PopFont()
-        imgui.Separator()
-        
-        if imgui.BeginTabBar("ALPRTabs") then
-            
-
-            if imgui.BeginTabItem(" READ HISTORY ") then
-                imgui.BeginChild("HistoryList", imgui.new('ImVec2', 0, -40), true)
-                    
-
-                    imgui.Columns(4, "HistCols", false)
-                    imgui.SetColumnWidth(0, 80)  -- Time
-                    imgui.SetColumnWidth(1, 100) -- Plate
-                    imgui.SetColumnWidth(2, 60)  -- Cam
-                    
-                    imgui.TextDisabled("TIME")
-                    imgui.NextColumn()
-                    imgui.TextDisabled("PLATE")
-                    imgui.NextColumn()
-                    imgui.TextDisabled("CAM")
-                    imgui.NextColumn()
-                    imgui.TextDisabled("VEHICLE INFO")
-                    imgui.NextColumn()
-                    imgui.Separator()
-                    
-
-                    for i, scan in ipairs(alpr_scan_log) do
-                        local time_str = os.date("%H:%M:%S", scan.timestamp)
-                        local col = imgui.ImVec4(1,1,1,1)
-                        if scan.alert or (type(scan.match) == "string" and scan.match ~= "") then
-                            col = imgui.ImVec4(1, 0.3, 0.3, 1)
-                        end
-                        
-                        imgui.TextColored(col, time_str)
-                        imgui.NextColumn()
-                        
-                        imgui.PushFont(fonts[18])
-                        imgui.TextColored(col, scan.plate)
-                        imgui.PopFont()
-                        imgui.NextColumn()
-                        
-                        imgui.TextColored(imgui.ImVec4(0.6,0.6,0.6,1), scan.cam or "FWD")
-                        imgui.NextColumn()
-                        
-                        imgui.TextColored(col, scan.model)
-                        imgui.NextColumn()
-                        
-                        imgui.Separator()
-                    end
-                    imgui.Columns(1)
-                    
-                imgui.EndChild()
-                
-                if imgui.Button("CLEAR HISTORY", imgui.new('ImVec2', 150, 30)) then
+    if imgui.Begin("ALPR System", UI.alpr_manager) then
+        if imgui.BeginTabBar("##ALPRTabs", imgui.TabBarFlags_NoTooltip) then
+            if imgui.BeginTabItem("Log") then
+                if imgui.Button("Clear Log") then
                     alpr_scan_log = {}
+                    alpr_state.selected_alpr_log_index = nil
                 end
-                
+                imgui.SameLine()
+                imgui.Text("(Click a log entry to view details)")
+                imgui.Separator()
+
+                imgui.Columns(2)
+                imgui.SetColumnWidth(0, 300)
+
+                imgui.BeginChild("##LogList", imgui.ImVec2(0, 0), true)
+                for i, scan in ipairs(alpr_scan_log) do
+                    local is_hit = (scan.alert == true) or (type(scan.match) == "string" and scan ~= "" and scan.match ~= "")
+                    local time_str = os.date("%H:%M:%S", scan.timestamp)
+                    local cam_str = scan.cam or "FWD"
+                    local label = string.format("%s | %s | %s | %s", time_str, scan.plate, scan.model, cam_str)
+                    if is_hit then
+                        label = "[HIT] " .. label
+                        imgui.PushStyleColor(imgui.Col.Text, imgui.ImVec4(1.0, 0.3, 0.3, 1))
+                    end
+                    if imgui.Selectable(label, alpr_state.selected_alpr_log_index == i, imgui.SelectableFlags_SpanAllColumns) then
+                        alpr_state.selected_alpr_log_index = i
+                        safe_copy(alpr_log_comment_buffer, scan.notes or "")
+                    end
+                    if is_hit then
+                        imgui.PopStyleColor()
+                    end
+                end
+                imgui.EndChild()
+
+                imgui.NextColumn()
+
+                imgui.BeginChild("##LogDetails", imgui.ImVec2(0, 0), true)
+                if alpr_state.selected_alpr_log_index and alpr_scan_log[alpr_state.selected_alpr_log_index] then
+                    local scan = alpr_scan_log[alpr_state.selected_alpr_log_index]
+
+                    imgui.Text("Scan Details")
+                    imgui.Separator()
+
+                    local function labelled(label, value, labelCol, textCol)
+                        if renderLabeledText then
+                            renderLabeledText(label, value, labelCol, textCol)
+                        else
+                            imgui.TextColored(labelCol, label); imgui.SameLine()
+                            imgui.TextColored(textCol, value)
+                        end
+                    end
+
+                    labelled("Timestamp:", os.date("%Y-%m-%d %H:%M:%S", scan.timestamp), imgui.ImVec4(0.3,0.3,0.3,1.0), imgui.ImVec4(0,0,0,1))
+                    labelled("Vehicle Model:", scan.model, imgui.ImVec4(0.3,0.3,0.3,1.0), imgui.ImVec4(0,0,0,1))
+                    labelled("License Plate:", scan.plate, imgui.ImVec4(0.3,0.3,0.3,1.0), imgui.ImVec4(0,0,0,1))
+                    labelled("Driver:", scan.driver, imgui.ImVec4(0.3,0.3,0.3,1.0), imgui.ImVec4(0,0,0,1))
+                    labelled("Owner:", scan.owner, imgui.ImVec4(0.3,0.3,0.3,1.0), imgui.ImVec4(0,0,0,1))
+                    labelled("Registration:", scan.registration, imgui.ImVec4(0.3,0.3,0.3,1.0), imgui.ImVec4(0,0,0,1))
+                    labelled("Driving Licence:", scan.drivingLicense, imgui.ImVec4(0.3,0.3,0.3,1.0), imgui.ImVec4(0,0,0,1))
+                    labelled("Weapon Licence:", scan.weaponLicense, imgui.ImVec4(0.3,0.3,0.3,1.0), imgui.ImVec4(0,0,0,1))
+
+                    if #scan.fines > 0 then
+                        local finesText = ""
+                        for i, f in ipairs(scan.fines) do
+                            finesText = finesText .. string.format("%s$%s (%s)  ", f.date or "??", f.amount or "0", f.reason or "??")
+                        end
+                        labelled("Fines:", finesText, imgui.ImVec4(0.3,0.3,0.3,1.0), imgui.ImVec4(0,0,0,1))
+                    else
+                        labelled("Fines:", "None", imgui.ImVec4(0.3,0.3,0.3,1.0), imgui.ImVec4(0,0,0,1))
+                    end
+
+                    if #scan.comments > 0 then
+                        local commentsText = ""
+                        for i, c in ipairs(scan.comments) do
+                            commentsText = commentsText .. string.format("[%s] %s: %s  ", c.date or "??", c.author or "??", c.text or "??")
+                        end
+                        labelled("Comments:", commentsText, imgui.ImVec4(0.3,0.3,0.3,1.0), imgui.ImVec4(0,0,0,1))
+                    else
+                        labelled("Comments:", "None", imgui.ImVec4(0.3,0.3,0.3,1.0), imgui.ImVec4(0,0,0,1))
+                    end
+
+                    imgui.Separator()
+
+                    if imgui.Button("Copy Plate") then setClipboardText(scan.plate) end
+                    imgui.SameLine()
+                    if imgui.Button("Copy Driver") then setClipboardText(scan.driver) end
+
+                    imgui.Separator()
+                    imgui.Text("Notes:")
+                    imgui.InputTextMultiline("##NoteInput", alpr_log_comment_buffer, ffi.sizeof(alpr_log_comment_buffer), imgui.new('ImVec2', -1, 100))
+                    if imgui.Button("Save Notes##SaveNotes") then
+                        scan.notes = safe_str(alpr_log_comment_buffer)
+                    end
+                else
+                    imgui.Text("Select a log entry to view details.")
+                end
+                imgui.EndChild()
+
+                imgui.Columns(1)
                 imgui.EndTabItem()
             end
-            
 
-            if imgui.BeginTabItem(" SYSTEM SETTINGS ") then
+            if imgui.BeginTabItem("Settings") then
                 imgui.Dummy(imgui.new('ImVec2', 0, 10))
-                
+
                 imgui.TextDisabled("AUDIO CONFIGURATION")
 
                 imgui.Checkbox("Play Alert Sound", imgui.new.bool(true))
                 imgui.Checkbox("Voice Announcement (TTS)", imgui.new.bool(false))
-                
+
                 imgui.Dummy(imgui.new('ImVec2', 0, 10))
                 imgui.Separator()
                 imgui.Dummy(imgui.new('ImVec2', 0, 10))
-                
+
                 imgui.TextDisabled("CAMERA CONFIGURATION")
-                if imgui.Checkbox("Front Camera", alpr_camera_config.front) then
+                if imgui.Checkbox("Front Camera", alpr_state.alpr_camera_config.front) then
                     if settings then
-                        settings.set('alpr_settings', 'cam_front', alpr_camera_config.front[0])
+                        settings.set('alpr_settings', 'cam_front', alpr_state.alpr_camera_config.front[0])
                         settings.save()
                     end
                 end
-                if imgui.Checkbox("Rear Camera", alpr_camera_config.rear) then
+                if imgui.Checkbox("Rear Camera", alpr_state.alpr_camera_config.rear) then
                     if settings then
-                        settings.set('alpr_settings', 'cam_rear', alpr_camera_config.rear[0])
+                        settings.set('alpr_settings', 'cam_rear', alpr_state.alpr_camera_config.rear[0])
                         settings.save()
                     end
                 end
-                if imgui.Checkbox("Side Cameras", alpr_camera_config.sides) then
+                if imgui.Checkbox("Side Cameras", alpr_state.alpr_camera_config.sides) then
                     if settings then
-                        settings.set('alpr_settings', 'cam_sides', alpr_camera_config.sides[0])
+                        settings.set('alpr_settings', 'cam_sides', alpr_state.alpr_camera_config.sides[0])
                         settings.save()
                     end
                 end
-                
+
                 imgui.EndTabItem()
             end
-            
+
             imgui.EndTabBar()
         end
     end
     imgui.End()
-    imgui.PopStyleColor(2)
+    imgui.PopStyleVar(1)
+    imgui.PopStyleColor(4)
 end
 
 local function renderUnitTable(title, unit_list)
@@ -3587,28 +3874,151 @@ function renderUnitMiniMap(unit)
 end
 
 local status_colors_modern = {
-    [0] = 0xFF2ECC71, -- Available
-    [1] = 0xFFE74C3C, -- Enroute
-    [2] = 0xFFFFCC00, -- On Scene
-    [3] = 0xFF0080FF, -- Busy/Panic
-    [4] = 0xFF95A5A6  -- Out of Service
+    [0] = STATUS_COLOR.GREEN.hex,  -- Available
+    [1] = STATUS_COLOR.BLUE.hex,   -- Enroute
+    [2] = STATUS_COLOR.CYAN.hex,   -- On Scene
+    [3] = STATUS_COLOR.ORANGE.hex, -- Busy/Panic
+    [4] = STATUS_COLOR.GRAY.hex    -- Out of Service
 }
 
 
 local call_status_colors_hex = {
-    ['Pending']  = 0xFF00A5FF,
-    ['En-route'] = 0xFFFF8000, -- Синий
-    ['Clear']    = 0xFF2ECC71, -- Зеленый
-    ['Default']  = 0xFF808080  -- Серый
+    ['Pending']  = STATUS_COLOR.ORANGE.hex,
+    ['En-route'] = STATUS_COLOR.BLUE.hex,
+    ['Claimed']  = STATUS_COLOR.PURPLE.hex,
+    ['Clear']    = STATUS_COLOR.GREEN.hex,
+    ['Default']  = STATUS_COLOR.GRAY.hex
 }
 
 local incident_status_colors_hex = {
-    ['Active']              = 0xFF0000D0, -- Красный (Активный)
-    ['Under Investigation'] = 0xFF0080FF, -- Оранжевый
-    ['Code 4']              = 0xFFFFCC00,
-    ['Resolved']            = 0xFF2ECC71, -- Зеленый
-    ['Default']             = 0xFF808080
+    ['Active']              = STATUS_COLOR.RED.hex,
+    ['Under Investigation'] = STATUS_COLOR.ORANGE.hex,
+    ['Code 4']              = STATUS_COLOR.CYAN.hex,
+    ['Resolved']            = STATUS_COLOR.GREEN.hex,
+    ['Default']             = STATUS_COLOR.GRAY.hex
 }
+
+local status_monet_cache = {}
+
+local function monet_u32_to_imvec4(u32)
+    local a = bit.band(bit.rshift(u32, 24), 0xFF) / 255.0
+    local r = bit.band(bit.rshift(u32, 16), 0xFF) / 255.0
+    local g = bit.band(bit.rshift(u32, 8), 0xFF) / 255.0
+    local b = bit.band(u32, 0xFF) / 255.0
+    return imgui.ImVec4(r, g, b, a)
+end
+
+local function monet_u32_to_imgui_packed(u32, alpha_override)
+    local a = alpha_override or bit.band(bit.rshift(u32, 24), 0xFF)
+    local r = bit.band(bit.rshift(u32, 16), 0xFF)
+    local g = bit.band(bit.rshift(u32, 8), 0xFF)
+    local b = bit.band(u32, 0xFF)
+    return bit.bor(bit.lshift(a, 24), bit.lshift(b, 16), bit.lshift(g, 8), r)
+end
+
+local function packed_abgr_to_imvec4(u32)
+    local a = bit.band(bit.rshift(u32, 24), 0xFF) / 255.0
+    local b = bit.band(bit.rshift(u32, 16), 0xFF) / 255.0
+    local g = bit.band(bit.rshift(u32, 8), 0xFF) / 255.0
+    local r = bit.band(u32, 0xFF) / 255.0
+    return imgui.ImVec4(r, g, b, a)
+end
+
+local function get_monet_palette_for(status_key, seed_map, cache, default_key)
+    default_key = default_key or 'Default'
+    status_key = status_key or default_key
+    local cached = cache[status_key]
+    if cached then return cached end
+
+    local seed = seed_map[status_key] or seed_map[default_key]
+    local palette = {
+        bg          = 0xFF252A33,
+        bg_hover    = 0xFF353A45,
+        bg_selected = 0xFF454545,
+        accent      = seed,
+        accent_vec  = packed_abgr_to_imvec4(seed),
+        accent_soft = imgui.ImVec4(0.7, 0.7, 0.7, 1),
+    }
+
+    if MoonMonet then
+        local ok, monet = pcall(MoonMonet.buildColors, seed, 1.0, true)
+        if ok and monet then
+            palette.bg          = monet_u32_to_imgui_packed(monet.neutral1.color_900, 0xFF)
+            palette.bg_hover    = monet_u32_to_imgui_packed(monet.neutral1.color_800, 0xFF)
+            palette.bg_selected = monet_u32_to_imgui_packed(monet.neutral1.color_700, 0xFF)
+            palette.accent      = monet_u32_to_imgui_packed(monet.accent1.color_500, 0xFF)
+            palette.accent_vec  = monet_u32_to_imvec4(monet.accent1.color_500)
+            palette.accent_soft = monet_u32_to_imvec4(monet.accent1.color_300)
+        else
+            log('UI', log_levels.WARN, 'MoonMonet.buildColors failed for status ' .. tostring(status_key) .. ': ' .. tostring(monet))
+        end
+    end
+
+    cache[status_key] = palette
+    return palette
+end
+
+local function get_status_monet_palette(status_key)
+    return get_monet_palette_for(status_key, incident_status_colors_hex, status_monet_cache, 'Active')
+end
+
+local call_status_monet_cache = {}
+local function get_call_status_monet_palette(status_key)
+    return get_monet_palette_for(status_key, call_status_colors_hex, call_status_monet_cache, 'Default')
+end
+
+local function beginModernChild(str_id, size, bg_color)
+    imgui.PushStyleVarVec2(imgui.StyleVar.WindowPadding, imgui.new('ImVec2', 8, 8))
+    imgui.PushStyleColor(imgui.Col.ChildBg, bg_color or imgui.ImVec4(0.1, 0.1, 0.12, 1.0))
+    imgui.BeginChild(str_id, size, false, imgui.WindowFlags.NoScrollbar)
+end
+
+local function endModernChild(border_color)
+    local p = imgui.GetWindowPos()
+    local sz = imgui.GetWindowSize()
+    imgui.GetWindowDrawList():AddRect(p, imgui.new('ImVec2', p.x + sz.x, p.y + sz.y), border_color or 0xFF3A3F48, 8.0, 0, 1.0)
+    imgui.EndChild()
+    imgui.PopStyleColor()
+    imgui.PopStyleVar()
+end
+
+local function drawAcceptPill(row_id, w, h, is_urgent)
+    local draw_list = imgui.GetWindowDrawList()
+    local p = imgui.GetCursorScreenPos()
+    local clicked = imgui.InvisibleButton("##accept_pill_" .. row_id, imgui.new('ImVec2', w, h))
+    local hovered = imgui.IsItemHovered()
+    local active = hovered and imgui.IsMouseDown(0)
+
+    local function packABGR(r, g, b, a)
+        return bit.bor(bit.lshift(a or 255, 24), bit.lshift(b, 16), bit.lshift(g, 8), r)
+    end
+
+    local base_col   = packABGR(0, 115, 179)
+    local hover_col  = packABGR(38, 140, 204)
+    local active_col = packABGR(0, 89, 153)
+    local bg = active and active_col or (hovered and hover_col or base_col)
+    local rounding = h / 2
+
+    if is_urgent then
+        local pulse = (math.sin(os.clock() * 4.0) + 1.0) * 0.5
+        local ring_alpha = math.floor(90 + pulse * 120)
+        draw_list:AddRect(
+            imgui.new('ImVec2', p.x - 3, p.y - 3),
+            imgui.new('ImVec2', p.x + w + 3, p.y + h + 3),
+            packABGR(70, 160, 255, ring_alpha), rounding + 3, 15, 2.0
+        )
+    end
+
+    draw_list:AddRectFilled(p, imgui.new('ImVec2', p.x + w, p.y + h), bg, rounding)
+
+    local label = fa.ICON_FA_CHECK_SQUARE .. " ACCEPT"
+    if fonts[18] then imgui.PushFont(fonts[18]) end
+    local text_size = imgui.CalcTextSize(label)
+    draw_list:AddText(imgui.new('ImVec2', p.x + (w - text_size.x) / 2, p.y + (h - text_size.y) / 2), 0xFFFFFFFF, label)
+    if fonts[18] then imgui.PopFont() end
+
+    return clicked
+end
 
 local function drawModernIncidentCard(incident, is_selected)
     local draw_list = imgui.GetWindowDrawList()
@@ -3677,6 +4087,37 @@ local function drawModernIncidentCard(incident, is_selected)
 end
 
 
+local function drawIncidentChip(incident, is_selected)
+    local palette = get_status_monet_palette(incident.status)
+    local draw_list = imgui.GetWindowDrawList()
+    local p = imgui.GetCursorScreenPos()
+    local width, height = 240, 52
+    local rounding = 8.0
+
+    local clicked = imgui.InvisibleButton("##inc_chip_" .. tostring(incident.id), imgui.new('ImVec2', width, height))
+    local is_hovered = imgui.IsItemHovered()
+
+    local bg = is_selected and palette.bg_selected or (is_hovered and palette.bg_hover or palette.bg)
+    draw_list:AddRectFilled(p, imgui.new('ImVec2', p.x + width, p.y + height), bg, rounding)
+    draw_list:AddRectFilled(p, imgui.new('ImVec2', p.x + 4, p.y + height), palette.accent, rounding, bit.bor(1, 8))
+    if is_selected then
+        draw_list:AddRect(p, imgui.new('ImVec2', p.x + width, p.y + height), palette.accent, rounding, 0, 2.0)
+    end
+
+    local id_text = "#" .. tostring(incident.id)
+    draw_list:AddText(imgui.new('ImVec2', p.x + 14, p.y + 6), 0xFFFFFFFF, id_text)
+
+    local status_txt = (incident.status or ""):upper()
+    local st_size = imgui.CalcTextSize(status_txt)
+    draw_list:AddText(imgui.new('ImVec2', p.x + width - st_size.x - 12, p.y + 6), palette.accent, status_txt)
+
+    local summary = incident.summary or "No summary"
+    if #summary > 26 then summary = summary:sub(1, 23) .. "..." end
+    draw_list:AddText(imgui.new('ImVec2', p.x + 14, p.y + 28), 0xFFAAAAAA, summary)
+
+    return clicked
+end
+
 local function drawModernCallCard(call, is_selected)
     local draw_list = imgui.GetWindowDrawList()
     local p = imgui.GetCursorScreenPos()
@@ -3743,10 +4184,6 @@ local function drawModernCallCard(call, is_selected)
     local st_size = imgui.CalcTextSize(status_txt)
     draw_list:AddText(imgui.new('ImVec2', p.x + width - st_size.x - 10, p.y + height - 18), color, status_txt)
 
-
-
-
-    
     return clicked
 end
 
@@ -3756,7 +4193,7 @@ local function drawModernUnitCard(unit, is_selected)
     local p = imgui.GetCursorScreenPos()
     local width = imgui.GetColumnWidth() - 10 
     local height = 40 
-    local rounding = 4.0
+    local rounding = 6.0
 
 
     local status_idx = tonumber(unit.status) or 4
@@ -3765,16 +4202,19 @@ local function drawModernUnitCard(unit, is_selected)
 
 
 
-
     local btn_unique_name = "##unit_card_" .. tostring(unit.id)
     local clicked = imgui.InvisibleButton(btn_unique_name, imgui.new('ImVec2', width, height))
-    
+    local hovered = imgui.IsItemHovered()
 
     local bg_color = is_selected and 0xFF3A4149 or 0xFF252A33 
-    if imgui.IsItemHovered() then bg_color = 0xFF2F3640 end 
+    if hovered then bg_color = 0xFF2F3640 end 
     
 
     draw_list:AddRectFilled(p, imgui.new('ImVec2', p.x + width, p.y + height), bg_color, rounding)
+    if is_selected or hovered then
+        local ring_col = is_selected and 0xFFFF9900 or 0x55FFFFFF
+        draw_list:AddRect(p, imgui.new('ImVec2', p.x + width, p.y + height), ring_col, rounding, 0, 1.5)
+    end
 
 
     local badge_width = 60
@@ -3813,6 +4253,15 @@ local function drawModernUnitCard(unit, is_selected)
     end
 
     local location_text = tostring(unit.location or "N/A")
+    if unit.pos_x and unit.pos_y and not is_unit_for_current_user(unit) then
+        local ok, px, py, pz = pcall(getCharCoordinates, PLAYER_PED)
+        if ok and px then
+            local ok2, dist = pcall(getDistanceBetweenCoords3d, px, py, pz, unit.pos_x, unit.pos_y, unit.pos_z or pz)
+            if ok2 and dist then
+                location_text = location_text .. "  ·  " .. string.format("%.0fm", dist)
+            end
+        end
+    end
     if #location_text > 35 then location_text = string.sub(location_text, 1, 32) .. "..." end
     draw_list:AddText(imgui.new('ImVec2', info_x, p.y + 22), 0xFFAAAAAA, location_text)
 
@@ -3873,7 +4322,13 @@ local nav_tabs = {
 }
 
 
-local current_mdt_tab = 1 
+local current_mdt_tab = 1
+local call_details_popup_open = false
+local call_details_popup_call_id = nil
+local call_details_popup_pos = nil
+local calls_sort_field = 'time'
+local calls_sort_asc = false 
+
 
 local function renderNavButton(icon, label, tab_id, selected_id)
     local is_selected = (tab_id == selected_id)
@@ -3918,14 +4373,16 @@ local function renderNavButton(icon, label, tab_id, selected_id)
     return result
 end
 
-local function drawInfoCard(label, value, width, icon)
+local function drawInfoCard(label, value, width, icon, no_border, height_override)
     local draw_list = imgui.GetWindowDrawList()
     local p = imgui.GetCursorScreenPos()
-    local height = 45
+    local height = height_override or 45
     
 
     draw_list:AddRectFilled(p, imgui.new('ImVec2', p.x + width, p.y + height), 0xFF1E2228, 6.0)
-    draw_list:AddRect(p, imgui.new('ImVec2', p.x + width, p.y + height), 0xFF353A45, 6.0)
+    if not no_border then
+        draw_list:AddRect(p, imgui.new('ImVec2', p.x + width, p.y + height), 0xFF353A45, 6.0)
+    end
 
 
     local content_offset = 10
@@ -3948,20 +4405,124 @@ local function drawInfoCard(label, value, width, icon)
     draw_list:AddText(imgui.new('ImVec2', p.x + content_offset, p.y + 20), 0xFFFFFFFF, val_str)
     if fonts[18] then imgui.PopFont() end
 
+    local function hexToVec4(hex)
+        local a = bit.band(bit.rshift(hex, 24), 0xFF) / 255
+        local b = bit.band(bit.rshift(hex, 16), 0xFF) / 255
+        local g = bit.band(bit.rshift(hex, 8), 0xFF) / 255
+        local r = bit.band(hex, 0xFF) / 255
+        return imgui.ImVec4(r, g, b, a)
+    end    
 
     imgui.Dummy(imgui.new('ImVec2', width, height))
 end
 
 
+local priority_force_3_texts = {
+    "Происходит что-то неладное!",
+    "Зафиксирована стрельба",
+}
+
+local function utf8Len(str)
+    local len, i, n = 0, 1, #str
+    while i <= n do
+        local b = str:byte(i)
+        if b < 0x80 then i = i + 1
+        elseif b >= 0xF0 then i = i + 4
+        elseif b >= 0xE0 then i = i + 3
+        elseif b >= 0xC0 then i = i + 2
+        else i = i + 1 end
+        len = len + 1
+    end
+    return len
+end
+
+local function autoDetectPriority(call)
+    local details = call.description or {}
+    local text = details.incident_details or ""
+    local lower = string.lower(text)
+
+    for _, forced in ipairs(priority_force_3_texts) do
+        if text == forced then
+            return 4
+        end
+    end
+
+    local len = utf8Len(text)
+    local felonyKeywords = {"убийство", "убийств", "убить", "убийца", "убийц"}
+    local isFelony = false
+    for _, kw in ipairs(felonyKeywords) do
+        if string.find(lower, kw, 1, true) then
+            isFelony = true
+            break
+        end
+    end
+
+    if len < 20 then
+        if isFelony then
+            return 2
+        else
+            return 3
+        end
+    else
+        if isFelony then
+            return 1
+        else
+            return 3
+        end
+    end
+end
+
+local function getCallDistanceMeters(call)
+    local details = call.description or {}
+    local cx = details.location_x or call.location_x
+    local cy = details.location_y or call.location_y
+    local cz = details.location_z or call.location_z or 0
+    if not (cx and cy) then return nil end
+    local ok, px, py, pz = pcall(getCharCoordinates, PLAYER_PED)
+    if not ok or not px then return nil end
+    local ok2, dist = pcall(getDistanceBetweenCoords3d, px, py, pz, cx, cy, cz)
+    if not ok2 then return nil end
+    return dist
+end
+
+local function getCallEffectiveStatus(call)
+    return call.status or 'Pending'
+end
+
 local function renderCallsTab()
     local main_w, main_h = imgui.GetContentRegionAvail().x, imgui.GetContentRegionAvail().y
     
+    local function hexToVec4(hex)
+        local a = bit.band(bit.rshift(hex, 24), 0xFF) / 255
+        local b = bit.band(bit.rshift(hex, 16), 0xFF) / 255
+        local g = bit.band(bit.rshift(hex, 8), 0xFF) / 255
+        local r = bit.band(hex, 0xFF) / 255
+        return imgui.ImVec4(r, g, b, a)
+    end        
+
+    local function truncateToWidth(text, max_w)
+        if imgui.CalcTextSize(text).x <= max_w then return text end
+        local ellipsis = "..."
+        local lo, hi = 0, #text
+        while lo < hi do
+            local mid = math.ceil((lo + hi) / 2)
+            local candidate = text:sub(1, mid) .. ellipsis
+            if imgui.CalcTextSize(candidate).x <= max_w then
+                lo = mid
+            else
+                hi = mid - 1
+            end
+        end
+        if lo <= 0 then return ellipsis end
+        return text:sub(1, lo) .. ellipsis
+    end
+
     imgui.Columns(2, "CallsTabColumns", false)
-    imgui.SetColumnWidth(0, 420) 
+    imgui.SetColumnWidth(0, 840) 
 
+    imgui.BeginChild("CallList", imgui.new('ImVec2', 0, 0), true, imgui.WindowFlags.NoScrollbar)
+        local list_hovered = imgui.IsWindowHovered()
 
-    imgui.BeginChild("CallList", imgui.new('ImVec2', 0, 0), true)
-        
         local calls_to_display = {}
         local should_hide_placeholders = settings.get('ui_settings', 'hide_placeholder_calls', false)
         local placeholder_text = "Происходит что-то неладное!"
@@ -3978,245 +4539,545 @@ local function renderCallsTab()
         imgui.TextDisabled("АКТИВНЫЕ ВЫЗОВЫ (" .. #calls_to_display .. ")")
         imgui.Separator()
 
+        local function getCallPriority(call)
+            return tonumber(call.priority) or autoDetectPriority(call)
+        end
+        local priority_colors = { [1] = 0xFFE74C3B, [2] = 0xFF00A5FF, [3] = 0xFF00A5FF, [4] = 0xFF808080 }
+        local ROW_SELECTED_BG = 0x59D98C40
+        local ROW_HOVER_BG    = 0x19FFFFFF
+        table.sort(calls_to_display, function(a, b)
+            local va, vb
+            if calls_sort_field == 'priority' then va, vb = getCallPriority(a), getCallPriority(b)
+            elseif calls_sort_field == 'id' then va, vb = tostring(a.id), tostring(b.id)
+            elseif calls_sort_field == 'status' then va, vb = tostring(a.status or ''), tostring(b.status or '')
+            elseif calls_sort_field == 'time' then va, vb = tostring(a.created_at or ''), tostring(b.created_at or '')
+            else va, vb = getCallPriority(a), getCallPriority(b) end
+            if calls_sort_asc then return va < vb else return va > vb end
+        end)
+
+        local function sortHeaderBtn(label, field, width)
+            local arrow = ""
+            if calls_sort_field == field then arrow = calls_sort_asc and " ^" or " v" end
+            if imgui.Button(label .. arrow .. "##sort_" .. field, imgui.new('ImVec2', width, 20)) then
+                if calls_sort_field == field then calls_sort_asc = not calls_sort_asc
+                else calls_sort_field = field; calls_sort_asc = true end
+            end
+        end
+
         if #calls_to_display == 0 then
             imgui.Text("No active calls.")
         else
-            for i, call in ipairs(calls_to_display) do
-                local is_selected = selected_call_index and data_storage.calls[selected_call_index] and data_storage.calls[selected_call_index].id == call.id
-                
-                if drawModernCallCard(call, is_selected) then
-                    for original_idx, original_call in ipairs(data_storage.calls) do
-                        if original_call.id == call.id then
-                            selected_call_index = original_idx
+            local avail_w = imgui.GetContentRegionAvail().x
+            local col_prio_w   = 34
+            local col_id_w     = 96
+            local col_code_w   = 50
+            local col_status_w = 130
+            local col_time_w   = 80
+            local col_accept_w = 100
+            local col_loc_w    = avail_w - (col_prio_w + col_id_w + col_code_w + col_status_w + col_time_w + col_accept_w)
+            local click_w = avail_w - col_accept_w
+
+            do
+                local row_start_x = imgui.GetCursorPosX()
+                imgui.SetCursorPosX(row_start_x + col_prio_w + col_id_w + col_loc_w)
+                if imgui.Button(fa.ICON_FA_CIRCLE_QUESTION .. "", imgui.new('ImVec2', col_code_w - 4, 20)) then
+                    code_help_open[0] = not code_help_open[0]
+                    if code_help_open[0] then
+                        imgui.OpenPopup("CodeHelp##popup")
+                    end
+                end
+            end
+
+            imgui.Columns(7, "CallsHeaderCols", false)
+            imgui.SetColumnWidth(0, col_prio_w)
+            imgui.SetColumnWidth(1, col_id_w)
+            imgui.SetColumnWidth(2, col_loc_w)
+            imgui.SetColumnWidth(3, col_code_w)
+            imgui.SetColumnWidth(4, col_status_w)
+            imgui.SetColumnWidth(5, col_time_w)
+            imgui.SetColumnWidth(6, col_accept_w)
+
+            sortHeaderBtn(fa.ICON_FA_SORT, "priority", col_prio_w - 4); imgui.NextColumn()
+            sortHeaderBtn("ID", "id", col_id_w - 4); imgui.NextColumn()
+            imgui.TextDisabled("LOCATION"); imgui.NextColumn()
+            imgui.TextDisabled("CODE"); imgui.NextColumn()
+            sortHeaderBtn("STATUS", "status", col_status_w - 4); imgui.NextColumn()
+            sortHeaderBtn("TIME", "time", col_time_w - 4); imgui.NextColumn()
+            imgui.TextDisabled(""); imgui.NextColumn()
+            imgui.Columns(1)
+            imgui.Separator()
+
+            imgui.Columns(7, "CallsBodyCols", false)
+            imgui.SetColumnWidth(0, col_prio_w)
+            imgui.SetColumnWidth(1, col_id_w)
+            imgui.SetColumnWidth(2, col_loc_w)
+            imgui.SetColumnWidth(3, col_code_w)
+            imgui.SetColumnWidth(4, col_status_w)
+            imgui.SetColumnWidth(5, col_time_w)
+            imgui.SetColumnWidth(6, col_accept_w)
+
+            for _, call in ipairs(calls_to_display) do
+                local details = call.description or {}
+                if not call._code_checked then getCallCode(call) end
+                local prio = getCallPriority(call)
+                local eff_status = getCallEffectiveStatus(call)
+                local call_palette = get_call_status_monet_palette(eff_status)
+                local is_selected = selected_call_index and data_storage.calls[selected_call_index]
+                    and data_storage.calls[selected_call_index].id == call.id
+
+                local row_id = tostring(call.id)
+                local row_h = 24
+
+                local draw_list = imgui.GetWindowDrawList()
+                local row_top = imgui.GetCursorScreenPos()
+                local mouse = imgui.GetMousePos()
+                local row_hovered = list_hovered
+                    and mouse.x >= row_top.x and mouse.x < row_top.x + click_w
+                    and mouse.y >= row_top.y and mouse.y < row_top.y + row_h
+
+                if is_selected then
+                    draw_list:AddRectFilled(row_top, imgui.new('ImVec2', row_top.x + click_w, row_top.y + row_h), ROW_SELECTED_BG, 3.0)
+                elseif row_hovered then
+                    draw_list:AddRectFilled(row_top, imgui.new('ImVec2', row_top.x + click_w, row_top.y + row_h), ROW_HOVER_BG, 3.0)
+                end
+
+                if row_hovered and imgui.IsMouseClicked(0) then
+                    for idx, c in ipairs(data_storage.calls) do
+                        if c.id == call.id then selected_call_index = idx; break end
+                    end
+                    local mp = imgui.GetMousePos()
+                    call_details_popup_pos = { x = mp.x + 15, y = mp.y - 10 }
+                    call_details_popup_call_id = call.id
+                    call_details_popup_open = true
+                end
+
+                imgui.Dummy(imgui.new('ImVec2', col_prio_w - 8, row_h))
+
+                local badge_w = col_prio_w - 8                draw_list:AddRectFilled(row_top, imgui.new('ImVec2', row_top.x + badge_w, row_top.y + row_h), priority_colors[prio] or priority_colors[3], 3.0)
+                local prio_text = tostring(prio)
+                local prio_size = imgui.CalcTextSize(prio_text)
+                draw_list:AddText(imgui.new('ImVec2', row_top.x + (badge_w - prio_size.x) / 2, row_top.y + (row_h - prio_size.y) / 2), 0xFF000000, prio_text)
+                imgui.NextColumn()
+
+                imgui.Text("#" .. row_id)
+                local serverID = tostring(call.server_call_id or "")
+                if serverID ~= "" and serverID ~= "0" then
+                    imgui.SameLine()
+                    imgui.TextDisabled(" (" .. serverID .. ")")
+                end
+                imgui.NextColumn()
+                local loc_col_w = col_loc_w - 10
+                local loc_txt = details.location or "Unknown"
+                imgui.Text(truncateToWidth(loc_txt, col_loc_w))
+                imgui.NextColumn()
+
+                local code_col_w = col_code_w - 10
+                local code_display = (call.code and tostring(call.code) ~= "") and ("" .. tostring(call.code)) or ""
+                imgui.Text(truncateToWidth(code_display, code_col_w))
+                imgui.NextColumn()
+
+                imgui.TextColored(call_palette.accent_vec, eff_status:upper())
+                imgui.NextColumn()
+
+                local time_str = call.created_at and ToMSK(call.created_at):match("(%d+:%d+:%d+)$") or ""
+                imgui.TextDisabled(time_str)
+                imgui.NextColumn()
+
+                if eff_status == 'Pending' or not call.status then
+                    if drawAcceptPill(row_id, col_accept_w - 10, row_h, prio == 1) then
+                        updateCallStatus(call.id, "accept", safe_str(unitInfoBuffers.unitID))
+                        sampSendChat('/accept ' .. tostring(call.server_call_id))
+                        cadui_module.setPendingCheckpointForCall(call.id)
+                        unitInfoBuffers.status[0] = 1
+                        if call.tactical_channel and tonumber(call.tactical_channel) then
+                            setRadioChannel(tonumber(call.tactical_channel))
+                        end
+                        broadcastUnitStatus()
+                        if core.fetchAbasData then core.fetchAbasData() end
+                    end
+                else
+                    imgui.TextDisabled("--")
+                end
+                imgui.NextColumn()
+                imgui.Separator()
+            end
+            imgui.Columns(1)
+        end
+    imgui.EndChild()
+    if code_help_open[0] then
+        imgui.OpenPopup("CodeHelp##popup")
+    end
+    imgui.PushStyleColor(imgui.Col.ModalWindowDimBg, imgui.ImVec4(0.0, 0.0, 0.0, 0.45))
+    imgui.SetNextWindowSize(imgui.new('ImVec2', 420, 460), imgui.Cond.FirstUseEver)
+    if imgui.BeginPopupModal("CodeHelp##popup", code_help_open, imgui.WindowFlags.NoCollapse) then
+        imgui.TextDisabled("СПРАВОЧНИК КОДОВ ВЫЗОВОВ")
+        imgui.Separator()
+
+        imgui.PushItemWidth(-1)
+        imgui.InputText("##code_help_search", code_help_search_buf, ffi.sizeof(code_help_search_buf))
+        imgui.PopItemWidth()
+        if ffi.string(code_help_search_buf) == "" then
+            imgui.SameLine()
+            imgui.TextDisabled("(поиск: код или слово)")
+        end
+        imgui.Separator()
+
+        local query = string.lower(ffi.string(code_help_search_buf))
+        local shown = 0
+
+        imgui.BeginChild("CodeHelpListChild", imgui.new('ImVec2', 0, -34), false)
+        for _, entry in ipairs(callCodeReference) do
+            local matches = query == ""
+                or string.find(string.lower(entry.code), query, 1, true)
+                or string.find(string.lower(entry.desc), query, 1, true)
+            if matches then
+                shown = shown + 1
+                imgui.TextColored(imgui.ImVec4(1.0, 0.8, 0.2, 1.0), entry.code)
+                imgui.SameLine(75)
+                imgui.TextWrapped(entry.desc)
+            end
+        end
+        if shown == 0 then
+            imgui.TextDisabled("Ничего не найдено.")
+        end
+        imgui.EndChild()
+
+        imgui.Separator()
+        if imgui.Button("Закрыть", imgui.new('ImVec2', 120, 0)) then
+            code_help_open[0] = false
+            imgui.CloseCurrentPopup()
+        end
+        imgui.EndPopup()
+    end
+    imgui.PopStyleColor(1)
+
+    imgui.NextColumn()
+
+beginModernChild("UnitsMiniList", imgui.new('ImVec2', 0, 0))
+        imgui.TextDisabled("UNITS (" .. #(data_storage.units or {}) .. ")")
+        imgui.Separator()
+
+        if data_storage.units and #data_storage.units > 0 then
+            local sorted_units = {}
+            for _, u in ipairs(data_storage.units) do table.insert(sorted_units, u) end
+            table.sort(sorted_units, function(a, b)
+                local sa, sb = tonumber(a.status) or 4, tonumber(b.status) or 4
+                if sa == sb then return tostring(a.unitID) < tostring(b.unitID) end
+                return sa < sb
+            end)
+
+            local unit_status_abbrev = {
+                [0] = "10-8",
+                [1] = "10-97",
+                [2] = "C6",
+                [3] = "10-6",
+                [4] = "10-7",
+            }
+
+            local draw_list = imgui.GetWindowDrawList()
+            for _, unit in ipairs(sorted_units) do
+                local status_idx = tonumber(unit.status) or 4
+                local col = status_colors_modern[status_idx] or status_colors_modern[4]
+                local abbrev = unit_status_abbrev[status_idx] or "N/A"
+                local row_w = imgui.GetContentRegionAvail().x
+                local row_h = 34
+
+                local p = imgui.GetCursorScreenPos()
+                imgui.InvisibleButton("##unit_row_" .. tostring(unit.id or unit.unitID), imgui.new('ImVec2', row_w, row_h))
+                local row_hovered = imgui.IsItemHovered()
+
+                draw_list:AddRectFilled(p, imgui.new('ImVec2', p.x + row_w, p.y + row_h), col, 5.0)
+                if row_hovered then
+                    draw_list:AddRect(p, imgui.new('ImVec2', p.x + row_w, p.y + row_h), 0x66FFFFFF, 5.0, 0, 1.0)
+                end
+
+                local callsign_text = tostring(unit.unitID or "?")
+                draw_list:AddText(imgui.new('ImVec2', p.x + 8, p.y + 4), 0xFF000000, callsign_text)
+
+                local abbrev_size = imgui.CalcTextSize(abbrev)
+                draw_list:AddText(imgui.new('ImVec2', p.x + row_w - abbrev_size.x - 8, p.y + 4), 0xFF000000, abbrev)
+
+                local sub_bits = {}
+                local slot_num = tonumber(unit.current_channel_id)
+                if slot_num and slot_num > 0 then
+                    table.insert(sub_bits, "912." .. tostring(slot_num))
+                end
+                if unit.location and unit.location ~= "" then
+                    table.insert(sub_bits, tostring(unit.location))
+                end
+                local sub_text = table.concat(sub_bits, "  ·  ")
+                if #sub_text > 42 then sub_text = sub_text:sub(1, 39) .. "..." end
+                if sub_text ~= "" then
+                    draw_list:AddText(imgui.new('ImVec2', p.x + 8, p.y + 19), 0x99000000, sub_text)
+                end
+
+                imgui.Dummy(imgui.new('ImVec2', 0, 3))
+            end
+        else
+            imgui.TextDisabled("No units online.")
+        end
+    endModernChild(0x00000000)
+    imgui.Columns(1)
+    end
+
+function renderCallDetailsPopup()
+    if not call_details_popup_open or not call_details_popup_call_id then return end
+
+    local call = nil
+    local call_idx = nil
+    for idx, c in ipairs(data_storage.calls) do
+        if c.id == call_details_popup_call_id then call = c; call_idx = idx; break end
+    end
+
+    if not call then
+        call_details_popup_open = false
+        return
+    end
+
+    if call_details_popup_pos then
+        imgui.SetNextWindowPos(imgui.new('ImVec2', call_details_popup_pos.x, call_details_popup_pos.y), imgui.Cond.Appearing)
+    end
+    imgui.SetNextWindowSize(imgui.new('ImVec2', 560, 600), imgui.Cond.Appearing)
+
+    imgui.PushStyleVarFloat(imgui.StyleVar.WindowBorderSize, 0.0)
+    imgui.PushStyleVarVec2(imgui.StyleVar.WindowPadding, imgui.new('ImVec2', 14, 12))
+
+    local window_flags = bit.bor(imgui.WindowFlags.NoCollapse, imgui.WindowFlags.NoTitleBar)
+    imgui.Begin("Call #" .. tostring(call.id) .. "##call_details_popup", nil, window_flags)
+
+        local details = call.description or {}
+        local width = imgui.GetContentRegionAvail().x
+
+        imgui.BeginGroup()
+            imgui.PushFont(fonts[22])
+            imgui.TextColored(imgui.ImVec4(1, 1, 1, 1), "CALL #" .. tostring(call.id))
+            imgui.PopFont()
+
+            local offset_applied = false
+            if call.server_call_id then
+                imgui.SameLine()
+                imgui.SetCursorPosY(imgui.GetCursorPosY() + 5)
+                imgui.TextDisabled("(SERVER ID: " .. tostring(call.server_call_id) .. ")")
+                offset_applied = true
+            end
+
+            local date_str = ToMSK(call.created_at or call.timestamp)
+            if date_str ~= "N/A" then
+                imgui.SameLine()
+                if not offset_applied then imgui.SetCursorPosY(imgui.GetCursorPosY() + 5) end
+                imgui.TextDisabled(date_str)
+            end
+
+            local elapsed_seconds = SecondsSinceISO(call.created_at or call.timestamp)
+            if elapsed_seconds then
+                local elapsed_color = imgui.ImVec4(0.6, 0.6, 0.6, 1.0)
+                if call.status ~= 'Clear' then
+                    if elapsed_seconds > 1200 then
+                        elapsed_color = imgui.ImVec4(1.0, 0.3, 0.3, 1.0)
+                    elseif elapsed_seconds > 600 then
+                        elapsed_color = imgui.ImVec4(1.0, 0.75, 0.2, 1.0)
+                    end
+                end
+                imgui.SameLine()
+                imgui.TextColored(elapsed_color, "  ·  " .. FormatElapsedPrecise(elapsed_seconds) .. " ago")
+            end
+        imgui.EndGroup()
+
+        local status_w, status_h = 100, 28
+        local close_w, close_h = status_w, status_h
+
+        local status_txt = (call.status or "Pending"):upper()
+        local st_col = getStatusColorVec(call.status)
+
+        imgui.PushStyleColor(imgui.Col.Button, st_col)
+        imgui.PushStyleColor(imgui.Col.ButtonHovered, st_col)
+        imgui.PushStyleColor(imgui.Col.ButtonActive, st_col)
+        imgui.Button(status_txt, imgui.new('ImVec2', status_w, status_h))
+        imgui.PopStyleColor(3)
+
+        imgui.SameLine(width - close_w)
+        imgui.PushStyleColor(imgui.Col.Button, imgui.ImVec4(0.32, 0.14, 0.14, 1.0))
+        imgui.PushStyleColor(imgui.Col.ButtonHovered, imgui.ImVec4(0.5, 0.16, 0.16, 1.0))
+        imgui.PushStyleColor(imgui.Col.ButtonActive, imgui.ImVec4(0.22, 0.08, 0.08, 1.0))
+        if imgui.Button("CLOSE##close_call_popup", imgui.new('ImVec2', close_w, close_h)) then
+            call_details_popup_open = false
+        end
+        imgui.PopStyleColor(3)
+
+        imgui.Dummy(imgui.new('ImVec2', 0, 6))
+
+        drawInfoCard("Location", details.location or "Unknown", width, fa.ICON_FA_LOCATION_DOT, true, 38)
+        imgui.Dummy(imgui.new('ImVec2', 0, 4))
+
+        local third_w = (width - 20) / 3
+        drawInfoCard("Caller", details.caller_name or "Anonymous", third_w, fa.ICON_FA_USER, true, 38)
+        imgui.SameLine()
+        local phone_local_x = imgui.GetCursorPosX()
+        drawInfoCard("Phone", details.phone_number or "N/A", third_w, fa.ICON_FA_PHONE, true, 38)
+        imgui.SameLine()
+        drawInfoCard("Distance", format_distance_label(getCallDistanceMeters(call)), third_w, fa.ICON_FA_LOCATION_DOT, true, 38)
+
+        imgui.Dummy(imgui.new('ImVec2', 0, 4))
+        imgui.SetCursorPosX(phone_local_x)
+        local raw_phone = details.phone_number and tostring(details.phone_number) or ""
+        local phone_clean = raw_phone:gsub("%D", "")
+        if phone_clean ~= "" then
+            imgui.PushStyleColor(imgui.Col.Button, imgui.ImVec4(0.0, 0.45, 0.25, 1.0))
+            imgui.PushStyleColor(imgui.Col.ButtonHovered, imgui.ImVec4(0.0, 0.58, 0.32, 1.0))
+            imgui.PushStyleColor(imgui.Col.ButtonActive, imgui.ImVec4(0.0, 0.35, 0.19, 1.0))
+            if imgui.Button(fa.ICON_FA_PHONE .. " CALL BACK##callback_" .. tostring(call.id), imgui.new('ImVec2', third_w, 26)) then
+                sampSendChat('/call ' .. phone_clean)
+            end
+            imgui.PopStyleColor(3)
+            if imgui.IsItemHovered() then
+                imgui.SetTooltip("/call " .. phone_clean)
+            end
+        else
+            imgui.Dummy(imgui.new('ImVec2', third_w, 26))
+        end
+
+        imgui.Dummy(imgui.new('ImVec2', 0, 10))
+
+        imgui.TextDisabled("INCIDENT DETAILS")
+        imgui.PushStyleColor(imgui.Col.ChildBg, imgui.ImVec4(0.15, 0.15, 0.18, 1.0))
+        imgui.BeginChild("DescBlockPopup", imgui.new('ImVec2', 0, 70), false)
+            imgui.PushFont(fonts[18])
+            imgui.TextWrapped(details.incident_details or "No description provided.")
+            imgui.PopFont()
+        imgui.EndChild()
+        imgui.PopStyleColor()
+
+        imgui.Dummy(imgui.new('ImVec2', 0, 8))
+
+        local btn_w = (width - 10) / 3
+
+        imgui.PushStyleColor(imgui.Col.Button, imgui.ImVec4(0.0, 0.45, 0.7, 1.0))
+        imgui.PushStyleColor(imgui.Col.ButtonHovered, imgui.ImVec4(0.1, 0.55, 0.8, 1.0))
+        imgui.PushStyleColor(imgui.Col.ButtonActive, imgui.ImVec4(0.0, 0.35, 0.6, 1.0))
+        if imgui.Button("ASSIGN ME", imgui.new('ImVec2', btn_w, 38)) then
+            updateCallStatus(call.id, "accept", safe_str(unitInfoBuffers.unitID))
+            sampSendChat('/accept ' .. tostring(call.server_call_id))
+            cadui_module.setPendingCheckpointForCall(call.id)
+            unitInfoBuffers.status[0] = 1
+            if call.tactical_channel and tonumber(call.tactical_channel) then
+                setRadioChannel(tonumber(call.tactical_channel))
+            end
+            broadcastUnitStatus()
+            if core.fetchAbasData then core.fetchAbasData() end
+        end
+        imgui.PopStyleColor(3)
+        imgui.SameLine()
+
+        imgui.PushStyleColor(imgui.Col.Button, imgui.ImVec4(0.8, 0.4, 0.0, 1.0))
+        imgui.PushStyleColor(imgui.Col.ButtonHovered, imgui.ImVec4(0.9, 0.5, 0.1, 1.0))
+        imgui.PushStyleColor(imgui.Col.ButtonActive, imgui.ImVec4(0.7, 0.3, 0.0, 1.0))
+        if imgui.Button("NEW EVENT", imgui.new('ImVec2', btn_w, 38)) then
+             arm_pending_incident_marker_seed("create_from_call", 25)
+             send_ws_request('incident', 'create_from_call', { call_id = call.id }, function(data, err)
+                if not err and data and data.success then
+                    local new_incident = data.payload and data.payload.incident or nil
+                    local new_id = (new_incident and new_incident.id) or (data.payload and data.payload.id)
+                    if new_id then
+                        send_ws_request('tactical', 'accept_assist', { incident_id = new_id })
+                        cadui_module.touchIncidentWaypoint(new_id, 'create_from_call_accept')
+                        consume_pending_incident_marker_seed()
+                        addNotification(
+                            "NEW EVENT CREATED",
+                            string.format("Incident #%s was created from call #%s.", tostring(new_id), tostring(call.server_call_id or call.id)),
+                            8, nil, "incident_created"
+                        )
+                    else
+                        addNotification("NEW EVENT", "Event was created, but incident ID was not returned.", 8)
+                    end
+                else
+                    addNotification("NEW EVENT FAILED", tostring(err or (data and data.error) or "Unknown error"), 10)
+                end
+             end)
+             call_details_popup_open = false
+             selected_call_index = nil
+        end
+        imgui.PopStyleColor(3)
+        imgui.SameLine()
+
+        imgui.PushStyleColor(imgui.Col.Button, imgui.ImVec4(0.2, 0.6, 0.2, 1.0))
+        imgui.PushStyleColor(imgui.Col.ButtonHovered, imgui.ImVec4(0.25, 0.7, 0.25, 1.0))
+        imgui.PushStyleColor(imgui.Col.ButtonActive, imgui.ImVec4(0.15, 0.5, 0.15, 1.0))
+        if imgui.Button("RESOLVE", imgui.new('ImVec2', btn_w, 38)) then
+            updateCallStatus(call.id, "clear", safe_str(unitInfoBuffers.unitID))
+            call_details_popup_open = false
+        end
+        imgui.PopStyleColor(3)
+
+        imgui.Dummy(imgui.new('ImVec2', 0, 8))
+
+        imgui.TextDisabled("ASSIGNED UNITS")
+        if call.assigned_units and #call.assigned_units > 0 then
+            local call_x = details.location_x or call.location_x
+            local call_y = details.location_y or call.location_y
+
+            for _, u in ipairs(call.assigned_units) do
+                local unit_label = tostring(u)
+                local is_lspd = unit_label:find("LSPD", 1, true) ~= nil
+                local btn_color = is_lspd and imgui.ImVec4(0.2, 0.5, 0.8, 1.0) or imgui.ImVec4(0.25, 0.25, 0.3, 1.0)
+                local caption = is_lspd and "LSPD" or unit_label
+
+                if call_x and call_y and data_storage.units then
+                    for _, unit_data in ipairs(data_storage.units) do
+                        if tostring(unit_data.unitID) == unit_label and unit_data.pos_x and unit_data.pos_y then
+                            local ok, dist = pcall(getDistanceBetweenCoords3d, unit_data.pos_x, unit_data.pos_y, 0, call_x, call_y, 0)
+                            if ok and dist then caption = caption .. string.format("  ·  %.0fm", dist) end
                             break
                         end
                     end
                 end
-                imgui.Dummy(imgui.new('ImVec2', 0, 5))
+
+                imgui.PushStyleColor(imgui.Col.Button, btn_color)
+                imgui.PushStyleColor(imgui.Col.ButtonHovered, btn_color)
+                imgui.PushStyleColor(imgui.Col.ButtonActive, btn_color)
+                imgui.Button(fa.ICON_FA_CAR_SIDE .. " " .. caption .. "##popup_unit_" .. unit_label)
+                imgui.PopStyleColor(3)
+                imgui.SameLine()
             end
-        end
-    imgui.EndChild()
-
-    imgui.NextColumn()
-
-
-    imgui.PushStyleColor(imgui.Col.ChildBg, imgui.ImVec4(0.1, 0.1, 0.12, 1.0))
-    imgui.BeginChild("CallDetails", imgui.new('ImVec2', 0, 0), true)
-        if selected_call_index and data_storage.calls[selected_call_index] then
-            local call = data_storage.calls[selected_call_index]
-            local details = call.description or {}
-            local width = imgui.GetContentRegionAvail().x
-
-            --[[imgui.BeginGroup()
-                imgui.PushFont(fonts[22])
-                imgui.TextColored(imgui.ImVec4(1, 1, 1, 1), "CALL #" .. tostring(call.id))
-                imgui.PopFont()
-
-                local date_str = ToMSK(call.created_at or call.timestamp)
-                if date_str ~= "N/A" then
-                    imgui.SameLine()
-                    imgui.SetCursorPosY(imgui.GetCursorPosY() + 5)
-                    imgui.TextDisabled(date_str)
-                end
-            imgui.EndGroup()]]
-            imgui.BeginGroup()
-                imgui.PushFont(fonts[22])
-                imgui.TextColored(imgui.ImVec4(1, 1, 1, 1), "CALL #" .. tostring(call.id))
-                imgui.PopFont()
-
-                local offset_applied = false
-
-
-                if call.server_call_id then
-                    imgui.SameLine()
-                    imgui.SetCursorPosY(imgui.GetCursorPosY() + 5)
-                    imgui.TextDisabled("(SERVER ID: " .. tostring(call.server_call_id) .. ")")
-                    offset_applied = true
-                end
-
-                local date_str = ToMSK(call.created_at or call.timestamp)
-                if date_str ~= "N/A" then
-                    imgui.SameLine()
-
-                    if not offset_applied then
-                        imgui.SetCursorPosY(imgui.GetCursorPosY() + 5)
-                    end
-                    imgui.TextDisabled(date_str)
-                end
-            imgui.EndGroup()
-
-            imgui.SameLine()
-            
-
-            local status_txt = (call.status or "Pending"):upper()
-            local status_w = 100
-            imgui.SetCursorPosX(width - status_w)
-            
-            local st_col = imgui.ImVec4(0.5, 0.5, 0.5, 1)
-            if call.status == 'Pending' then st_col = imgui.ImVec4(1.0, 0.6, 0.0, 1.0) end
-            if call.status == 'En-route' then st_col = imgui.ImVec4(0.0, 0.5, 1.0, 1.0) end
-            if call.status == 'Clear' then st_col = imgui.ImVec4(0.2, 0.8, 0.2, 1.0) end
-
-            imgui.PushStyleColor(imgui.Col.Button, st_col)
-            imgui.PushStyleColor(imgui.Col.ButtonHovered, st_col)
-            imgui.PushStyleColor(imgui.Col.ButtonActive, st_col)
-            imgui.Button(status_txt, imgui.new('ImVec2', status_w, 30))
-            imgui.PopStyleColor(3)
-
-            imgui.Separator()
-            imgui.Dummy(imgui.new('ImVec2', 0, 10))
-
-
-
-            drawInfoCard("Location", details.location or "Unknown", width, fa.ICON_FA_LOCATION_DOT)
-            imgui.Dummy(imgui.new('ImVec2', 0, 5))
-            
-
-            local half_w = (width - 10) / 2
-            drawInfoCard("Caller", details.caller_name or "Anonymous", half_w, fa.ICON_FA_USER)
-            imgui.SameLine()
-            drawInfoCard("Phone", details.phone_number or "N/A", half_w, fa.ICON_FA_PHONE)
-            
-            imgui.Dummy(imgui.new('ImVec2', 0, 15))
-
-
-            imgui.TextDisabled("INCIDENT DETAILS")
-            imgui.PushStyleColor(imgui.Col.ChildBg, imgui.ImVec4(0.15, 0.15, 0.18, 1.0))
-            imgui.BeginChild("DescBlock", imgui.new('ImVec2', 0, 80), true)
-                imgui.PushFont(fonts[18])
-                imgui.TextWrapped(details.incident_details or "No description provided.")
-                imgui.PopFont()
-            imgui.EndChild()
-            imgui.PopStyleColor()
-
-            imgui.Dummy(imgui.new('ImVec2', 0, 10))
-
-
-            local btn_w = (width - 10) / 3
-            
-
-            imgui.PushStyleColor(imgui.Col.Button, imgui.ImVec4(0.0, 0.45, 0.7, 1.0))
-            imgui.PushStyleColor(imgui.Col.ButtonHovered, imgui.ImVec4(0.1, 0.55, 0.8, 1.0))
-            if imgui.Button("ASSIGN ME", imgui.new('ImVec2', btn_w, 40)) then
-                updateCallStatus(call.id, "accept", safe_str(unitInfoBuffers.unitID))
-                sampSendChat('/accept ' .. tostring(call.server_call_id))
-                cadui_module.setPendingCheckpointForCall(call.id)
-                unitInfoBuffers.status[0] = 1
-
-                if call.tactical_channel and tonumber(call.tactical_channel) then
-                    setRadioChannel(tonumber(call.tactical_channel))
-                end
-
-                broadcastUnitStatus()
-                if core.fetchAbasData then
-                    core.fetchAbasData()
-                end
-            end
-            imgui.PopStyleColor(2)
-            imgui.SameLine()
-
-
-            imgui.PushStyleColor(imgui.Col.Button, imgui.ImVec4(0.8, 0.4, 0.0, 1.0))
-            imgui.PushStyleColor(imgui.Col.ButtonHovered, imgui.ImVec4(0.9, 0.5, 0.1, 1.0))
-            if imgui.Button("NEW EVENT", imgui.new('ImVec2', btn_w, 40)) then
-                 arm_pending_incident_marker_seed("create_from_call", 25)
-                 send_ws_request('incident', 'create_from_call', { call_id = call.id }, function(data, err)
-                    if not err and data and data.success then
-                        local new_incident = data.payload and data.payload.incident or nil
-                        local new_id = (new_incident and new_incident.id) or (data.payload and data.payload.id)
-                        if new_id then
-                            send_ws_request('tactical', 'accept_assist', { incident_id = new_id })
-                            cadui_module.touchIncidentWaypoint(new_id, 'create_from_call_accept')
-                            consume_pending_incident_marker_seed()
-                            addNotification(
-                                "NEW EVENT CREATED",
-                                string.format("Incident #%s was created from call #%s.", tostring(new_id), tostring(call.server_call_id or call.id)),
-                                8,
-                                nil,
-                                "incident_created"
-                            )
-                        else
-                            addNotification("NEW EVENT", "Event was created, but incident ID was not returned.", 8)
-                        end
-                    else
-                        addNotification("NEW EVENT FAILED", tostring(err or (data and data.error) or "Unknown error"), 10)
-                    end
-                 end)
-                 selected_call_index = nil
-            end
-            imgui.PopStyleColor(2)
-            imgui.SameLine()
-
-
-            imgui.PushStyleColor(imgui.Col.Button, imgui.ImVec4(0.2, 0.6, 0.2, 1.0))
-            if imgui.Button("RESOLVE", imgui.new('ImVec2', btn_w, 40)) then
-                updateCallStatus(call.id, "clear", safe_str(unitInfoBuffers.unitID))
-            end
-            imgui.PopStyleColor(1)
-
-            imgui.Dummy(imgui.new('ImVec2', 0, 10))
-
-
-            imgui.TextDisabled("ASSIGNED UNITS")
-            if call.assigned_units and #call.assigned_units > 0 then
-                for _, u in ipairs(call.assigned_units) do
-                    local unit_label = tostring(u)
-                    local is_lspd = unit_label:find("LSPD", 1, true) ~= nil
-                    local btn_color = is_lspd and imgui.ImVec4(0.2, 0.5, 0.8, 1.0) or imgui.ImVec4(0.25, 0.25, 0.3, 1.0)
-                    local caption = is_lspd and "LSPD" or unit_label
-                    imgui.PushStyleColor(imgui.Col.Button, btn_color)
-                    imgui.Button(fa.ICON_FA_CAR_SIDE .. " " .. caption)
-                    imgui.PopStyleColor()
-                    imgui.SameLine()
-                end
-                imgui.NewLine()
-            else
-                imgui.TextColored(imgui.ImVec4(0.5, 0.5, 0.5, 1), "No units assigned.")
-            end
-
-            imgui.Dummy(imgui.new('ImVec2', 0, 5))
-            imgui.Separator()
-
-
-
-            if imgui.BeginTabBar("CallBottomTabs") then
-                if imgui.BeginTabItem("Events Log") then
-                    imgui.BeginChild("LogScroll", imgui.new('ImVec2', 0, 120), true)
-                    if call.event_log then
-                        for _, event in ipairs(call.event_log) do
-                            imgui.TextDisabled(event.time or "")
-                            imgui.SameLine()
-                            imgui.Text(event.event or "")
-                        end
-                    end
-                    imgui.EndChild()
-                    imgui.EndTabItem()
-                end
-                
-                if imgui.BeginTabItem("Notes") then
-                    imgui.InputTextMultiline("##call_note", call_note_buffer, ffi.sizeof(call_note_buffer), imgui.new('ImVec2', -1, 80))
-                    if imgui.Button("Add Note", imgui.new('ImVec2', 100, 30)) then
-                        local note_text = safe_str(call_note_buffer)
-                        if note_text ~= "" then
-                            addCallLogEntry(call.id, note_text)
-                            ffi.copy(call_note_buffer, "")
-                        end
-                    end
-                    imgui.EndTabItem()
-                end
-                imgui.EndTabBar()
-            end
-
+            imgui.NewLine()
         else
-
-            local center_x = imgui.GetContentRegionAvail().x / 2
-            local center_y = imgui.GetContentRegionAvail().y / 2
-            imgui.SetCursorPos(imgui.new('ImVec2', center_x - 80, center_y - 20))
-            imgui.TextDisabled("Select a call to view details")
+            imgui.TextColored(imgui.ImVec4(0.5, 0.5, 0.5, 1), "No units assigned.")
         end
-    imgui.EndChild()
-    imgui.PopStyleColor() -- ChildBg
-    end
+
+        imgui.Dummy(imgui.new('ImVec2', 0, 4))
+        imgui.Separator()
+
+        if imgui.BeginTabBar("CallBottomTabsPopup") then
+            if imgui.BeginTabItem("Events Log") then
+                imgui.BeginChild("LogScrollPopup", imgui.new('ImVec2', 0, 90), false)
+                if call.event_log then
+                    for _, event in ipairs(call.event_log) do
+                        imgui.TextDisabled(event.time or "")
+                        imgui.SameLine()
+                        imgui.Text(event.event or "")
+                    end
+                end
+                imgui.EndChild()
+                imgui.EndTabItem()
+            end
+
+            if imgui.BeginTabItem("Notes") then
+                imgui.InputTextMultiline("##call_note_popup", call_note_buffer, ffi.sizeof(call_note_buffer), imgui.new('ImVec2', -1, 80))
+                if imgui.Button("Add Note##popup") then
+                    local note_text = safe_str(call_note_buffer)
+                    if note_text ~= "" then
+                        addCallLogEntry(call.id, note_text)
+                        ffi.copy(call_note_buffer, "")
+                    end
+                end
+                imgui.EndTabItem()
+            end
+            imgui.EndTabBar()
+        end
+
+    imgui.End()
+    imgui.PopStyleVar(2)
+end    
+
 local session_start_time = os.time()
 local session_stats = {
     calls_accepted = 0,
@@ -4236,46 +5097,123 @@ consume_pending_incident_marker_seed = function()
     pending_incident_marker_seed.reason = nil
 end
 
-local function renderIncidentsTab()
-    local main_w = imgui.GetContentRegionAvail().x
-    
-    imgui.Columns(2, "IncidentsTabCols", false)
-    imgui.SetColumnWidth(0, 420)
+local function normalize_incident_units(val)
+    if type(val) == "table" then return val end
+    if type(val) == "string" then
+        local ok, decoded = pcall(json.decode, val)
+        if ok and type(decoded) == "table" then return decoded end
+        return { val }
+    end
+    if type(val) == "number" then return { tostring(val) } end
+    return {}
+end
 
+local function normalize_incident_event_log(val)
+    if type(val) == "table" then return val end
+    if type(val) == "string" then
+        local ok, decoded = pcall(json.decode, val)
+        if ok and type(decoded) == "table" then return decoded end
+    end
+    return {}
+end
 
-    imgui.BeginChild("IncidentList", imgui.new('ImVec2', 0, 0), true)
-        local incidents_to_display = {}
-        if data_storage.incidents then
-            for _, inc in ipairs(data_storage.incidents) do
-                if inc.status ~= "Resolved" then table.insert(incidents_to_display, inc) end
-            end
-        end
+local function get_incident_distance_meters(incident)
+    local marker = find_incident_dispatch_marker(incident.id)
+    if not marker then return nil end
+    local px, py, pz = get_local_officer_position()
+    if not px then return nil end
+    local ok, dist = pcall(getDistanceBetweenCoords3d, px, py, pz, marker.x, marker.y, pz)
+    if not ok then return nil end
+    return dist
+end
 
-        imgui.TextDisabled("ACTIVE INCIDENTS (" .. #incidents_to_display .. ")")
-        imgui.Separator()
+function format_distance_label(distance_m)
+    if not distance_m then return "Unknown" end
+    local dist_txt = distance_m >= 1000 and string.format("%.1f km", distance_m / 1000) or string.format("%.0f m", distance_m)
+    return dist_txt .. "  " .. estimate_eta_label(distance_m)
+end
 
+local function classify_incident_event(event_text)
+    local t = (event_text or ""):lower()
+    if t:find("resolved") or t:find("code 4") then
+        return fa.ICON_FA_CHECK_SQUARE, 0xFF2ECC71, "RESOLVED"
+    elseif t:find("accept") then
+        return fa.ICON_FA_CAR_SIDE, 0xFF2ECC71, "ACCEPT"
+    elseif t:find("declin") then
+        return fa.ICON_FA_XMARK, 0xFFE74C3C, "DECLINE"
+    elseif t:find("joined") or t:find("assigned") then
+        return fa.ICON_FA_CAR_SIDE, 0xFF4FA8E0, "UNIT"
+    elseif t:find("status") then
+        return fa.ICON_FA_GEARS, 0xFFFFCC00, "STATUS"
+    elseif t:find("creat") or t:find("dispatch") then
+        return fa.ICON_FA_TRIANGLE_EXCLAMATION, 0xFFE0A030, "CREATED"
+    else
+        return fa.ICON_FA_CIRCLE_QUESTION, 0xFF808080, "EVENT"
+    end
+end
+
+local function renderIncidentChipStrip(incidents_to_display)
+    imgui.PushStyleVarVec2(imgui.StyleVar.ItemSpacing, imgui.new('ImVec2', 10, 4))
+    imgui.BeginChild("IncidentChipStrip", imgui.new('ImVec2', 0, 62), true, imgui.WindowFlags.NoScrollbar)
         if #incidents_to_display == 0 then
-            imgui.Text("No active incidents.")
+            imgui.Dummy(imgui.new('ImVec2', 4, 18))
+            imgui.SameLine()
+            imgui.TextDisabled("No active incidents.")
         else
             for i, incident in ipairs(incidents_to_display) do
-                local is_selected = (selected_incident_index == i)
-                
-
-                if drawModernIncidentCard(incident, is_selected) then
-                    selected_incident_index = i
+                if i > 1 then imgui.SameLine() end
+                local is_selected = (selected_incident_id ~= nil and selected_incident_id == incident.id)
+                if drawIncidentChip(incident, is_selected) then
+                    selected_incident_id = incident.id
                 end
-                imgui.Dummy(imgui.new('ImVec2', 0, 5))
             end
         end
     imgui.EndChild()
+    imgui.PopStyleVar()
+end
 
-    imgui.NextColumn()
+local function renderIncidentsTab()
+    local incidents_to_display = {}
+    if data_storage.incidents then
+        for _, inc in ipairs(data_storage.incidents) do
+            if inc.status ~= "Resolved" then table.insert(incidents_to_display, inc) end
+        end
+    end
 
+    imgui.TextDisabled("ACTIVE INCIDENTS (" .. #incidents_to_display .. ")")
+    renderIncidentChipStrip(incidents_to_display)
+    imgui.Dummy(imgui.new('ImVec2', 0, 8))
+
+    local selected_incident = nil
+    if selected_incident_id then
+        for _, inc in ipairs(incidents_to_display) do
+            if inc.id == selected_incident_id then
+                selected_incident = inc
+                break
+            end
+        end
+    end
+
+    if not selected_incident then
+        imgui.BeginChild("IncidentDetailsEmpty", imgui.new('ImVec2', 0, 0), true)
+            local avail = imgui.GetContentRegionAvail()
+            imgui.SetCursorPos(imgui.new('ImVec2', avail.x / 2 - 110, avail.y / 2 - 10))
+            imgui.TextDisabled("Select an incident above to view details")
+        imgui.EndChild()
+        return
+    end
+
+    local incident = selected_incident
+    local palette = get_status_monet_palette(incident.status)
+
+    local total_w = imgui.GetContentRegionAvail().x
+    local map_col_w = 320
+    imgui.Columns(2, "IncidentDetailCols", false)
+    imgui.SetColumnWidth(0, math.max(total_w - map_col_w, 400))
 
     imgui.PushStyleColor(imgui.Col.ChildBg, imgui.ImVec4(0.1, 0.1, 0.12, 1.0))
     imgui.BeginChild("IncidentDetails", imgui.new('ImVec2', 0, 0), true)
-        if selected_incident_index and incidents_to_display[selected_incident_index] then
-            local incident = incidents_to_display[selected_incident_index]
+        do
             local width = imgui.GetContentRegionAvail().x
 
 
@@ -4295,6 +5233,20 @@ local function renderIncidentsTab()
                      imgui.SameLine() 
                      imgui.TextDisabled(date_str)
                 end
+
+                local elapsed_seconds = SecondsSinceISO(incident.created_at)
+                if elapsed_seconds then
+                    local elapsed_color = imgui.ImVec4(0.6, 0.6, 0.6, 1.0)
+                    if incident.status ~= 'Resolved' and incident.status ~= 'Code 4' then
+                        if elapsed_seconds > 1200 then
+                            elapsed_color = imgui.ImVec4(1.0, 0.3, 0.3, 1.0)
+                        elseif elapsed_seconds > 600 then
+                            elapsed_color = imgui.ImVec4(1.0, 0.75, 0.2, 1.0)
+                        end
+                    end
+                    imgui.SameLine()
+                    imgui.TextColored(elapsed_color, "  ·  " .. FormatElapsedPrecise(elapsed_seconds) .. " ago")
+                end
             imgui.EndGroup()
 
             imgui.SameLine()
@@ -4304,10 +5256,8 @@ local function renderIncidentsTab()
             local status_w = 140
             imgui.SetCursorPosX(width - status_w)
             
-            local st_col = incident_status_colors_hex[incident.status] or incident_status_colors_hex['Default']
+            local vec_col = palette.accent_vec
 
-            local vec_col = incidentStatusColors[incident.status] or imgui.ImVec4(0.5,0.5,0.5,1)
-            
             imgui.PushStyleColor(imgui.Col.Button, vec_col)
             imgui.PushStyleColor(imgui.Col.ButtonHovered, vec_col)
             imgui.PushStyleColor(imgui.Col.ButtonActive, vec_col)
@@ -4320,16 +5270,22 @@ local function renderIncidentsTab()
 
 
             local half_w = (width - 10) / 2
-            
+            local third_w = (width - 20) / 3
+
+            local distance_label = format_distance_label(get_incident_distance_meters(incident))
 
             if incident.tactical_channel then
-                drawInfoCard("Location", incident.location or "Unknown", half_w, fa.ICON_FA_LOCATION_DOT)
+                drawInfoCard("Location", incident.location or "Unknown", third_w, fa.ICON_FA_LOCATION_DOT)
                 imgui.SameLine()
-                drawInfoCard("Radio Freq", "912." .. incident.tactical_channel, half_w, fa.ICON_FA_walkie_talkie or "R") 
+                drawInfoCard("Radio Freq", "912." .. incident.tactical_channel, third_w, fa.ICON_FA_walkie_talkie or "R") 
+                imgui.SameLine()
+                drawInfoCard("Distance", distance_label, third_w, fa.ICON_FA_LOCATION_DOT)
 
             else
 
-                drawInfoCard("Location", incident.location or "Unknown", width, fa.ICON_FA_LOCATION_DOT)
+                drawInfoCard("Location", incident.location or "Unknown", half_w, fa.ICON_FA_LOCATION_DOT)
+                imgui.SameLine()
+                drawInfoCard("Distance", distance_label, half_w, fa.ICON_FA_LOCATION_DOT)
             end
             
             imgui.Dummy(imgui.new('ImVec2', 0, 15))
@@ -4346,25 +5302,30 @@ local function renderIncidentsTab()
 
             imgui.Dummy(imgui.new('ImVec2', 0, 10))
 
-
             local btn_w = (width - 10) / 3
             local can_accept = incident.status ~= 'Code 4' and incident.status ~= 'Resolved'
-
+            local action_pending = cadui_module.incident_actions_inflight[incident.id] == true
 
             if can_accept then
                 imgui.PushStyleColor(imgui.Col.Button, imgui.ImVec4(0.0, 0.45, 0.7, 1.0))
                 imgui.PushStyleColor(imgui.Col.ButtonHovered, imgui.ImVec4(0.1, 0.55, 0.8, 1.0))
-                if imgui.Button("ACCEPT ASSIST", imgui.new('ImVec2', btn_w, 40)) then
-                    send_ws_request('tactical', 'accept_assist', { incident_id = incident.id })
-                    
+                if action_pending then imgui.PushStyleVarFloat(imgui.StyleVar.Alpha, 0.5) end
+                if imgui.Button("ACCEPT ASSIST", imgui.new('ImVec2', btn_w, 40)) and not action_pending then
+                    local target_id = incident.id
+                    cadui_module.incident_actions_inflight[target_id] = true
+                    send_ws_request('tactical', 'accept_assist', { incident_id = target_id }, function(data, err)
+                        cadui_module.handle_incident_action_error("ACCEPT", target_id, data, err)
+                    end)
+
                     if incident.tactical_channel and tonumber(incident.tactical_channel) then
                         setRadioChannel(tonumber(incident.tactical_channel))
                     end
 
-                    optimistic_accept_assist(incident.id)
-                    cadui_module.touchIncidentWaypoint(incident.id, 'incident_tab_accept')
-                    addUnitLogEntry("INCIDENT", "Accepted assist for #" .. incident.id)
+                    optimistic_accept_assist(target_id)
+                    cadui_module.touchIncidentWaypoint(target_id, 'incident_tab_accept')
+                    addUnitLogEntry("INCIDENT", "Accepted assist for #" .. target_id)
                 end
+                if action_pending then imgui.PopStyleVar() end
                 imgui.PopStyleColor(2)
             else
                 imgui.PushStyleVarFloat(imgui.StyleVar.Alpha, 0.5)
@@ -4386,10 +5347,14 @@ local function renderIncidentsTab()
                 imgui.TextDisabled("Set Status:")
                 for _, st in ipairs(incidentStatusTypes) do
                     if st ~= "Resolved" then
-                        if imgui.Selectable(st) then
-                            send_ws_request('tactical', 'update_incident_status', { incident_id = incident.id, status = st })
-                            optimistic_set_incident_status(incident.id, st)
-                            cadui_module.touchIncidentWaypoint(incident.id, 'status_' .. tostring(st))
+                        if imgui.Selectable(st) and not cadui_module.incident_actions_inflight[incident.id] then
+                            local target_id = incident.id
+                            cadui_module.incident_actions_inflight[target_id] = true
+                            send_ws_request('tactical', 'update_incident_status', { incident_id = target_id, status = st }, function(data, err)
+                                cadui_module.handle_incident_action_error("UPDATE STATUS", target_id, data, err)
+                            end)
+                            optimistic_set_incident_status(target_id, st)
+                            cadui_module.touchIncidentWaypoint(target_id, 'status_' .. tostring(st))
                         end
                     end
                 end
@@ -4399,48 +5364,51 @@ local function renderIncidentsTab()
 
 
             imgui.PushStyleColor(imgui.Col.Button, imgui.ImVec4(0.2, 0.6, 0.2, 1.0))
-            if imgui.Button("RESOLVE / CODE 4", imgui.new('ImVec2', btn_w, 40)) then
-                 send_ws_request('tactical', 'update_incident_status', { incident_id = incident.id, status = 'Resolved' })
-                 optimistic_set_incident_status(incident.id, 'Resolved')
-                 send_map_request('close_dispatch_marker', { dedupe_key = "dispatch:incident_call:" .. tostring(incident.id) })
+            if imgui.Button("CODE 14", imgui.new('ImVec2', btn_w, 40)) and not cadui_module.incident_actions_inflight[incident.id] then
+                 local target_id = incident.id
+                 cadui_module.incident_actions_inflight[target_id] = true
+                 send_ws_request('tactical', 'update_incident_status', { incident_id = target_id, status = 'Resolved' }, function(data, err)
+                    cadui_module.handle_incident_action_error("RESOLVE", target_id, data, err)
+                 end)
+                 optimistic_set_incident_status(target_id, 'Resolved')
+                 send_map_request('close_dispatch_marker', { dedupe_key = "dispatch:incident_call:" .. tostring(target_id) })
                  revertToBaseRadioSlot()
-                 selected_incident_index = nil
+                 selected_incident_id = nil
             end
+
             imgui.PopStyleColor(1)
 
             imgui.Dummy(imgui.new('ImVec2', 0, 10))
 
 
-            local function normalize_units(val)
-                if type(val) == "table" then return val end
-                if type(val) == "string" then
-                    local ok, decoded = pcall(json.decode, val)
-                    if ok and type(decoded) == "table" then return decoded end
-                    return { val }
-                end
-                if type(val) == "number" then return { tostring(val) } end
-                return {}
-            end
-
-            local function normalize_event_log(val)
-                if type(val) == "table" then return val end
-                if type(val) == "string" then
-                    local ok, decoded = pcall(json.decode, val)
-                    if ok and type(decoded) == "table" then return decoded end
-                end
-                return {}
-            end
-
-            local assigned_units = normalize_units(incident.assigned_units)
-            local event_log = normalize_event_log(incident.event_log)
+            local assigned_units = normalize_incident_units(incident.assigned_units)
+            local event_log = normalize_incident_event_log(incident.event_log)
 
             imgui.TextDisabled("ASSIGNED UNITS")
             if assigned_units and #assigned_units > 0 then
+                local incident_marker = find_incident_dispatch_marker(incident.id)
+                local my_unit_id = get_current_unit_callsign()
+
                 for _, u in ipairs(assigned_units) do
                     local unit_label = tostring(u)
                     local is_lspd = unit_label:find("LSPD", 1, true) ~= nil
-                    local btn_color = is_lspd and imgui.ImVec4(0.2, 0.5, 0.8, 1.0) or imgui.ImVec4(0.25, 0.25, 0.3, 1.0)
+                    local is_me = my_unit_id and tostring(my_unit_id) == unit_label
+                    local btn_color = is_me and palette.accent_vec or (is_lspd and imgui.ImVec4(0.2, 0.5, 0.8, 1.0) or imgui.ImVec4(0.25, 0.25, 0.3, 1.0))
                     local caption = is_lspd and "LSPD" or unit_label
+                    if is_me then caption = caption .. " (YOU)" end
+
+                    if incident_marker and data_storage.units then
+                        for _, unit_data in ipairs(data_storage.units) do
+                            if tostring(unit_data.unitID) == unit_label and unit_data.pos_x and unit_data.pos_y then
+                                local ok, dist = pcall(getDistanceBetweenCoords3d, unit_data.pos_x, unit_data.pos_y, 0, incident_marker.x, incident_marker.y, 0)
+                                if ok and dist then
+                                    caption = caption .. string.format("  ·  %.0fm", dist)
+                                end
+                                break
+                            end
+                        end
+                    end
+
                     imgui.PushStyleColor(imgui.Col.Button, btn_color)
                     imgui.Button(fa.ICON_FA_CAR_SIDE .. " " .. caption)
                     imgui.PopStyleColor()
@@ -4457,29 +5425,73 @@ local function renderIncidentsTab()
 
             if imgui.BeginTabBar("IncBottomTabs") then
                 if imgui.BeginTabItem("Events Log") then
-                    imgui.BeginChild("IncLogScroll", imgui.new('ImVec2', 0, 120), true)
+                    imgui.TextDisabled(string.format("%d EVENTS  ·  NEWEST FIRST", #event_log))
+                    imgui.Dummy(imgui.new('ImVec2', 0, 4))
+                    imgui.BeginChild("IncLogScroll", imgui.new('ImVec2', 0, 150), true)
                     if event_log and #event_log > 0 then
-                        for _, event in ipairs(event_log) do
-                            imgui.TextDisabled(event.time or "")
-                            imgui.SameLine()
-                            imgui.Text(event.event or "")
+                        local log_draw_list = imgui.GetWindowDrawList()
+                        local row_h = 36
+                        local total = #event_log
+                        for pos = 1, total do
+                            local i = total - pos + 1
+                            local event = event_log[i]
+                            local icon, icon_color, cat_label = classify_incident_event(event.event)
+                            local row_p = imgui.GetCursorScreenPos()
+                            local row_w = imgui.GetContentRegionAvail().x
+
+                            if pos % 2 == 0 then
+                                log_draw_list:AddRectFilled(row_p, imgui.new('ImVec2', row_p.x + row_w, row_p.y + row_h), 0x14FFFFFF, 2.0)
+                            end
+                            log_draw_list:AddRectFilled(row_p, imgui.new('ImVec2', row_p.x + 3, row_p.y + row_h), icon_color, 1.0)
+
+                            local badge_text = icon .. " " .. cat_label
+                            local badge_size = imgui.CalcTextSize(badge_text)
+                            local badge_x, badge_y = row_p.x + 12, row_p.y + 4
+                            log_draw_list:AddRectFilled(
+                                imgui.new('ImVec2', badge_x, badge_y),
+                                imgui.new('ImVec2', badge_x + badge_size.x + 10, badge_y + badge_size.y + 4),
+                                bit.band(icon_color, 0x40FFFFFF), 3.0
+                            )
+                            log_draw_list:AddText(imgui.new('ImVec2', badge_x + 5, badge_y + 2), 0xFFFFFFFF, badge_text)
+
+                            local time_str = event.time or ""
+                            local time_size = imgui.CalcTextSize(time_str)
+                            log_draw_list:AddText(imgui.new('ImVec2', row_p.x + row_w - time_size.x - 8, badge_y + 2), 0xFF888888, time_str)
+
+                            local desc = event.event or ""
+                            local max_desc_w = row_w - 20
+                            if imgui.CalcTextSize(desc).x > max_desc_w then
+                                while #desc > 4 and imgui.CalcTextSize(desc .. "...").x > max_desc_w do
+                                    desc = desc:sub(1, #desc - 1)
+                                end
+                                desc = desc .. "..."
+                            end
+                            log_draw_list:AddText(imgui.new('ImVec2', row_p.x + 12, row_p.y + badge_size.y + 10), 0xFFDDDDDD, desc)
+
+                            imgui.Dummy(imgui.new('ImVec2', row_w, row_h))
                         end
+                    else
+                        imgui.TextDisabled("No activity recorded yet.")
                     end
                     imgui.EndChild()
                     imgui.EndTabItem()
                 end
                 imgui.EndTabBar()
             end
-
-        else
-
-            local center_x = imgui.GetContentRegionAvail().x / 2
-            local center_y = imgui.GetContentRegionAvail().y / 2
-            imgui.SetCursorPos(imgui.new('ImVec2', center_x - 90, center_y - 20))
-            imgui.TextDisabled("Select an incident to view details")
         end
     imgui.EndChild()
     imgui.PopStyleColor()
+
+    imgui.NextColumn()
+
+    imgui.PushStyleColor(imgui.Col.ChildBg, imgui.ImVec4(0.08, 0.08, 0.09, 1.0))
+    imgui.BeginChild("IncidentMapCol", imgui.new('ImVec2', 0, 0), true)
+        imgui.TextDisabled("LOCATION")
+        imgui.Separator()
+        renderIncidentMiniMap(incident, palette)
+    imgui.EndChild()
+    imgui.PopStyleColor()
+
     imgui.Columns(1)
 end
 
@@ -4491,7 +5503,7 @@ local function renderUnitsTab()
     imgui.SetColumnWidth(0, 360)
 
 
-    imgui.BeginChild("UnitListLeft", imgui.new('ImVec2', 0, 0), true)
+    beginModernChild("UnitListLeft", imgui.new('ImVec2', 0, 0))
         imgui.TextDisabled("ACTIVE UNITS (" .. #data_storage.units .. ")")
         imgui.Separator()
         
@@ -4506,13 +5518,13 @@ local function renderUnitsTab()
                 imgui.Dummy(imgui.new('ImVec2', 0, 5))
             end
         end
-    imgui.EndChild()
+    endModernChild()
 
     imgui.NextColumn()
 
 
-    imgui.PushStyleColor(imgui.Col.ChildBg, imgui.ImVec4(0.1, 0.1, 0.12, 1.0))
-    imgui.BeginChild("UnitDetailsRight", imgui.new('ImVec2', 0, 0), true)
+
+    beginModernChild("UnitDetailsRight", imgui.new('ImVec2', 0, 0), imgui.ImVec4(0.1, 0.1, 0.12, 1.0))
         if selected_unit_index and data_storage.units[selected_unit_index] then
             local unit = data_storage.units[selected_unit_index]
             local width = imgui.GetContentRegionAvail().x
@@ -4534,12 +5546,7 @@ local function renderUnitsTab()
             local status_idx = (tonumber(unit.status) or 4)
             local status_text = comboBoxData.status[status_idx + 1] or "UNKNOWN"
             
-            local st_col = imgui.ImVec4(0.5, 0.5, 0.5, 1)
-            if status_idx == 0 then st_col = imgui.ImVec4(0.2, 0.8, 0.2, 1) 
-            elseif status_idx == 1 then st_col = imgui.ImVec4(0.0, 0.4, 0.8, 1) 
-            elseif status_idx == 2 then st_col = imgui.ImVec4(0.0, 0.7, 0.7, 1) 
-            elseif status_idx == 3 then st_col = imgui.ImVec4(0.8, 0.3, 0.0, 1) 
-            end
+            local st_col = getStatusColorVec(status_idx)
 
             local status_w = 160
             imgui.SetCursorPosX(width - status_w)
@@ -4738,8 +5745,8 @@ local function renderUnitsTab()
             imgui.SetCursorPos(imgui.new('ImVec2', center_x - 80, center_y - 20))
             imgui.TextDisabled("Select a unit to view details")
         end
-    imgui.EndChild()
-    imgui.PopStyleColor()
+    endModernChild()
+
     imgui.Columns(1)
 end
 
@@ -5457,6 +6464,20 @@ local function renderSettingsTab()
 
         imgui.TextDisabled("INTERFACE & BEHAVIOR")
         imgui.Dummy(imgui.new('ImVec2', 0, 5))
+
+        do
+            local vol_icon = interface_sound_volume <= 0.0 and fa.ICON_FA_VOLUME_XMARK
+                or (interface_sound_volume < 0.5 and fa.ICON_FA_VOLUME_LOW or fa.ICON_FA_VOLUME_HIGH)
+            imgui.Text(vol_icon .. "  ГРОМКОСТЬ ЗВУКОВ СИСТЕМЫ")
+
+            local vol_pct_ptr = imgui.new.float(interface_sound_volume * 100)
+            imgui.SetNextItemWidth(imgui.GetContentRegionAvail().x)
+            if imgui.SliderFloat("##sys_sound_volume", vol_pct_ptr, 0.0, 100.0, "%.0f%%") then
+                set_interface_sound_volume(vol_pct_ptr[0] / 100.0)
+            end
+        end
+
+        imgui.Dummy(imgui.new('ImVec2', 0, 15))
         imgui.Columns(2, "CheckboxesCols", false)
         
         local show_notif = imgui.new.bool(settings.get('ui_settings', 'show_notifications', true))
@@ -5471,13 +6492,13 @@ local function renderSettingsTab()
             settings.save()
         end
 
-        local alpr_auto_passive = imgui.new.bool(alpr_passive_scan_enabled)
+        local alpr_auto_passive = imgui.new.bool(alpr_state.alpr_passive_scan_enabled)
         if drawStyledCheckbox("Auto ALPR (passive)", alpr_auto_passive) then
-            alpr_passive_scan_enabled = alpr_auto_passive[0]
-            settings.set('alpr_settings', 'passive_scan', alpr_passive_scan_enabled)
+            alpr_state.alpr_passive_scan_enabled = alpr_auto_passive[0]
+            settings.set('alpr_settings', 'passive_scan', alpr_state.alpr_passive_scan_enabled)
             settings.save()
-            if not alpr_passive_scan_enabled then
-                alpr_passive_hud_until = 0
+            if not alpr_state.alpr_passive_scan_enabled then
+                alpr_state.alpr_passive_hud_until = 0
             end
         end
 
@@ -5883,18 +6904,22 @@ function renderMDTWindow()
                     end
                 end) 
             end; imgui.SameLine()
-            if selected_incident_index and data_storage.incidents[selected_incident_index] then
-                if imgui.Button("INCIDENT", imgui.new('ImVec2', btn_w, btn_h)) then
-                    local inc = data_storage.incidents[selected_incident_index]
-                    addUnitLogEntry("REQUEST", "Incident assist req #" .. inc.id)
+            local selected_incident_for_request = cadui_module.find_incident_by_id(selected_incident_id)
+            imgui.PushStyleColor(imgui.Col.Button, imgui.ImVec4(0.8, 0.4, 0.0, 1.0))
+            imgui.PushStyleColor(imgui.Col.ButtonHovered, imgui.ImVec4(0.9, 0.5, 0.1, 1.0))
+            imgui.PushStyleColor(imgui.Col.ButtonActive, imgui.ImVec4(0.7, 0.3, 0.0, 1.0))
+            if imgui.Button("NEW EVENT", imgui.new('ImVec2', btn_w, btn_h)) then
+                local inc = selected_incident_for_request
+                if inc then
+                    addUnitLogEntry("REQUEST", "New event assist req #" .. inc.id)
                     send_ws_request('tactical', 'request_incident_assist', { incident_id = inc.id })
                     cadui_module.touchIncidentWaypoint(inc.id, 'request_incident_assist')
+                else
+                    addUnitLogEntry("REQUEST", "New event assist requested (no selected incident)")
+                    send_ws_request('tactical', 'request_incident_assist', { incident_id = 0 })
                 end
-            else
-                imgui.PushStyleVarFloat(imgui.StyleVar.Alpha, 0.5)
-                imgui.Button("INCIDENT", imgui.new('ImVec2', btn_w, btn_h))
-                imgui.PopStyleVar()
-            end; imgui.SameLine()
+            end
+            imgui.PopStyleColor(3); imgui.SameLine()
             if imgui.Button("AIR UNIT", imgui.new('ImVec2', btn_w, btn_h)) then
                 addUnitLogEntry("REQUEST", "Air support requested.")
                 arm_pending_incident_marker_seed("request_assist_air_support", 25)
@@ -5928,7 +6953,7 @@ function renderMDTWindow()
             imgui.PopStyleVar()
         imgui.EndChild()
 
-        imgui.BeginChild("LeftSidebar", imgui.new('ImVec2', left_sidebar_width, content_height), true)
+        imgui.BeginChild("LeftSidebar", imgui.new('ImVec2', left_sidebar_width, content_height), true, imgui.WindowFlags.NoScrollbar)
             imgui.PushStyleColor(imgui.Col.ChildBg, imgui.ImVec4(0.10, 0.10, 0.12, 1.0))
             
             imgui.SetCursorPos(imgui.new('ImVec2', 12, 10)) 
@@ -5968,81 +6993,93 @@ function renderMDTWindow()
 
             imgui.Dummy(imgui.new('ImVec2', 0, 15))
             imgui.SetCursorPosX(12)
-            
-            imgui.TextDisabled("ACTIVE INCIDENTS")
-            imgui.Separator()
-            imgui.SetCursorPosX(12)
-            imgui.BeginChild("SidebarIncidents", imgui.new('ImVec2', sidebar_inner_w, 180), false)
-                local count_inc = 0
-                if data_storage.incidents then
-                    for i, inc in ipairs(data_storage.incidents) do
-                        if inc.status ~= "Resolved" then
-                            local col_u32 = 0xFF808080
-                            if inc.status == 'Active' then col_u32 = 0xFF0000D0 end 
-                            if inc.status == 'Code 4' then col_u32 = 0xFF00CCFF end
-                            
-                            local sub_text = inc.location or "Unknown"
-                            if inc.tactical_channel then
-                                sub_text = "CH 912." .. tostring(inc.tactical_channel) .. " | " .. sub_text
-                            end
-                            
-                            if drawMiniListCard(tostring(inc.id), inc.summary or "Incident", sub_text, col_u32) then
-                                current_mdt_tab = 2 
-                                selected_incident_index = i 
-                            end
-                            imgui.Dummy(imgui.new('ImVec2', 0, 2))
-                            count_inc = count_inc + 1
-                        end
-                    end
+
+            local count_inc = 0
+            if data_storage.incidents then
+                for _, inc in ipairs(data_storage.incidents) do
+                    if inc.status ~= "Resolved" then count_inc = count_inc + 1 end
                 end
-                if count_inc == 0 then imgui.TextDisabled("No active incidents") end
-            imgui.EndChild()
+            end
+            local pending_count, enroute_count = 0, 0
+            for _, c in ipairs(data_storage.calls) do
+                if c.status == 'Pending' or not c.status then pending_count = pending_count + 1 end
+                if c.status == 'En-route' then enroute_count = enroute_count + 1 end
+            end
 
-            imgui.Dummy(imgui.new('ImVec2', 0, 10))
-            imgui.SetCursorPosX(12)
+            local function drawFeedHeader(label, count, color_vec)
+                imgui.SetCursorPosX(12)
+                imgui.TextColored(color_vec, label .. " (" .. count .. ")")
+            end
 
-            imgui.TextDisabled("RECENT 911")
-            imgui.Separator()
-            imgui.SetCursorPosX(12)
-            
-            imgui.BeginChild("SidebarCalls", imgui.new('ImVec2', sidebar_inner_w, 225), false, imgui.WindowFlags.NoScrollbar)
-                local count_calls = 0
-                for i = 1, math.min(#data_storage.calls, 5) do 
-                    local call = data_storage.calls[i]
-                    if call then
-                        local col_u32 = 0xFF00A5FF 
+            local function drawCallsFeedList(status_filter)
+                local shown = 0
+                local col_u32 = getStatusColorHex(status_filter)
+                for _, call in ipairs(data_storage.calls) do
+                    local cs = call.status or 'Pending'
+                    if cs == status_filter and cs ~= 'HandledOther' then
                         local desc = (call.description and call.description.incident_details) or "Call"
                         local loc_txt = (call.description and call.description.location) or "Unknown"
-                        
+
                         if drawMiniListCard(tostring(call.id), desc, loc_txt, col_u32) then
-                            current_mdt_tab = 1 
+                            current_mdt_tab = 1
                             for idx, c in ipairs(data_storage.calls) do
                                 if c.id == call.id then selected_call_index = idx; break end
                             end
                         end
                         imgui.Dummy(imgui.new('ImVec2', 0, 2))
-                        count_calls = count_calls + 1
+                        shown = shown + 1
                     end
                 end
-                if count_calls == 0 then imgui.TextDisabled("No recent calls") end
+                if shown == 0 then imgui.TextDisabled("Нет вызовов") end
+            end
+
+            local block_gap = 8
+            local header_h = 18
+            local remaining_h = imgui.GetContentRegionAvail().y
+            local block_h = (remaining_h - block_gap * 2 - header_h * 3) / 3
+            if block_h < 40 then block_h = 40 end
+
+            drawFeedHeader("INCIDENT", count_inc, getStatusColorVec('Active'))
+            imgui.SetCursorPosX(12)
+            imgui.BeginChild("SidebarIncidentsBlock", imgui.new('ImVec2', sidebar_inner_w, block_h), false, imgui.WindowFlags.NoScrollbar)
+                local shown_inc = 0
+                if data_storage.incidents then
+                    for _, inc in ipairs(data_storage.incidents) do
+                        if inc.status ~= "Resolved" then
+                            local col_u32 = getStatusColorHex(inc.status)
+                            local sub_text = inc.location or "Unknown"
+                            if inc.tactical_channel then
+                                sub_text = "CH 912." .. tostring(inc.tactical_channel) .. " | " .. sub_text
+                            end
+
+                            if drawMiniListCard(tostring(inc.id), inc.summary or "Incident", sub_text, col_u32) then
+                                current_mdt_tab = 2
+                                selected_incident_id = inc.id
+                            end
+                            imgui.Dummy(imgui.new('ImVec2', 0, 2))
+                            shown_inc = shown_inc + 1
+                        end
+                    end
+                end
+                if shown_inc == 0 then imgui.TextDisabled("No active incidents") end
             imgui.EndChild()
 
-            local avail_y = imgui.GetContentRegionAvail().y
-            if avail_y > 50 then
-                imgui.SetCursorPosY(imgui.GetCursorPosY() + avail_y - 50)
-            end
-            
+            imgui.Dummy(imgui.new('ImVec2', 0, block_gap))
+
+            drawFeedHeader("RECENT", pending_count, getStatusColorVec('Pending'))
             imgui.SetCursorPosX(12)
-            imgui.PushStyleColor(imgui.Col.Button, imgui.ImVec4(0.8, 0.1, 0.1, 1.0))
-            imgui.PushStyleColor(imgui.Col.ButtonHovered, imgui.ImVec4(0.9, 0.2, 0.2, 1.0))
-            imgui.PushStyleColor(imgui.Col.ButtonActive, imgui.ImVec4(0.6, 0.0, 0.0, 1.0))
-            if imgui.Button("PANIC", imgui.new('ImVec2', sidebar_inner_w, 45)) then
-                play_interface_trigger("panic_button")
-                addUnitLogEntry("STATUS", "PANIC BUTTON ACTIVATED")
-                sampSendChat("/bk")
-            end
-            imgui.PopStyleColor(3)
-            
+            imgui.BeginChild("SidebarRecentBlock", imgui.new('ImVec2', sidebar_inner_w, block_h), false, imgui.WindowFlags.NoScrollbar)
+                drawCallsFeedList('Pending')
+            imgui.EndChild()
+
+            imgui.Dummy(imgui.new('ImVec2', 0, block_gap))
+
+            drawFeedHeader("EN-ROUTE", enroute_count, getStatusColorVec('En-route'))
+            imgui.SetCursorPosX(12)
+            imgui.BeginChild("SidebarEnrouteBlock", imgui.new('ImVec2', sidebar_inner_w, block_h), false, imgui.WindowFlags.NoScrollbar)
+                drawCallsFeedList('En-route')
+            imgui.EndChild()
+
             imgui.PopStyleColor()
         imgui.EndChild()
         
@@ -6070,13 +7107,14 @@ function renderMDTWindow()
 
             imgui.PushStyleVarVec2(imgui.StyleVar.WindowPadding, imgui.new('ImVec2', 10, 10))
             local content_body_h = imgui.GetContentRegionAvail().y
-            imgui.BeginChild("ContentBody", imgui.new('ImVec2', center_width, content_body_h), true)
+            imgui.BeginChild("ContentBody", imgui.new('ImVec2', center_width, content_body_h), true, imgui.WindowFlags.NoScrollbar)
                 if current_mdt_tab == 1 then renderCallsTab() 
                 elseif current_mdt_tab == 2 then renderIncidentsTab()
                 elseif current_mdt_tab == 3 then renderUnitsTab()
                 elseif current_mdt_tab == 4 then renderMyInfoTab()
                 elseif current_mdt_tab == 5 then renderSettingsTab()
                 end
+                renderCallDetailsPopup()
             imgui.EndChild()
             imgui.PopStyleVar()
         imgui.EndGroup()
@@ -6599,26 +7637,27 @@ imgui.OnInitialize(function()
 end)
 
 
-local unit_marker_texture = nil
-local next_marker_id = 1
-local context_marker = nil
-local show_marker_edit_modal = imgui.new.bool(false)
-local marker_edit_buffer = {
-    text = imgui.new.char[128](),
-    radius = imgui.new.float(100.0)
+local map_state = {
+    unit_marker_texture = nil,
+    next_marker_id = 1,
+    context_marker = nil,
+    show_marker_edit_modal = imgui.new.bool(false),
+    marker_edit_buffer = {
+        text = imgui.new.char[128](),
+        radius = imgui.new.float(100.0)
+    },
+    last_map_window_pos = nil,
+    map_data_loaded = false,
+    map_fetch_state = { in_flight = false, retry_at = 0 },
+    map_markers = {},
+    map_lines = {},
+    map_interaction_mode = "pan",
+    map_context_menu_unit = nil,
+    map_context_menu_pos = nil,
+    latched_hovered_item = nil,
+    is_context_menu_open = false,
+    active_line_points = {}
 }
-
-local last_map_window_pos = nil
-local map_data_loaded = false
-local map_fetch_state = { in_flight = false, retry_at = 0 }
-local map_markers = {}
-local map_lines = {}
-local map_interaction_mode = "pan"
-local map_context_menu_unit = nil
-local map_context_menu_pos = nil
-local latched_hovered_item = nil
-local is_context_menu_open = false
-local active_line_points = {}
 
 function send_map_request(action, payload, callback)
     log('UI', log_levels.DEBUG, string.format("Sending map request: %s", action))
@@ -6632,25 +7671,25 @@ local function upsert_local_map_marker(marker)
         if type(marker.points_data) == 'string' then
             marker.points_data = json.decode(marker.points_data)
         end
-        for i, line in ipairs(map_lines) do
+        for i, line in ipairs(map_state.map_lines) do
             if tonumber(line.id) == tonumber(marker.id) then
-                map_lines[i] = marker
+                map_state.map_lines[i] = marker
                 return
             end
         end
-        table.insert(map_lines, marker)
+        table.insert(map_state.map_lines, marker)
         return
     end
 
-    for i, m in ipairs(map_markers) do
+    for i, m in ipairs(map_state.map_markers) do
         local same_id = (tonumber(m.id) == tonumber(marker.id))
         local same_dedupe = marker.dedupe_key and m.dedupe_key and tostring(marker.dedupe_key) == tostring(m.dedupe_key)
         if same_id or same_dedupe then
-            map_markers[i] = marker
+            map_state.map_markers[i] = marker
             return
         end
     end
-    table.insert(map_markers, marker)
+    table.insert(map_state.map_markers, marker)
 end
 
 function handle_map_update(response)
@@ -6667,31 +7706,31 @@ function handle_map_update(response)
         if checkpoint_tracker.marker_id and tonumber(checkpoint_tracker.marker_id) == tonumber(id_to_remove) then
             clear_checkpoint_tracker()
         end
-        for i = #map_markers, 1, -1 do
-            if map_markers[i].id == id_to_remove then
-                table.remove(map_markers, i)
+        for i = #map_state.map_markers, 1, -1 do
+            if map_state.map_markers[i].id == id_to_remove then
+                table.remove(map_state.map_markers, i)
             end
         end
-        for i = #map_lines, 1, -1 do
-            if map_lines[i].id == id_to_remove then
-                table.remove(map_lines, i)
+        for i = #map_state.map_lines, 1, -1 do
+            if map_state.map_lines[i].id == id_to_remove then
+                table.remove(map_state.map_lines, i)
             end
         end
     elseif action == 'all_markers_cleared' and payload.type == 'temporary' then
         local remaining_markers = {}
         local remaining_lines = {}
-        for _, marker in ipairs(map_markers) do
+        for _, marker in ipairs(map_state.map_markers) do
             if marker.is_permanent == 1 or marker.marker_type == 'dispatch_waypoint' then
                 table.insert(remaining_markers, marker)
             end
         end
-        for _, line in ipairs(map_lines) do
+        for _, line in ipairs(map_state.map_lines) do
             if line.is_permanent == 1 then
                 table.insert(remaining_lines, line)
             end
         end
-        map_markers = remaining_markers
-        map_lines = remaining_lines
+        map_state.map_markers = remaining_markers
+        map_state.map_lines = remaining_lines
     elseif action == 'marker_updated' then
         upsert_local_map_marker(payload)
     elseif action == 'markers_removed_stale' then
@@ -6706,7 +7745,7 @@ function handle_map_update(response)
         end
         local remaining_markers = {}
         local remaining_lines = {}
-        for _, marker in ipairs(map_markers) do
+        for _, marker in ipairs(map_state.map_markers) do
             local should_keep = true
             for _, id in ipairs(ids_to_remove) do
                 if marker.id == id then
@@ -6716,7 +7755,7 @@ function handle_map_update(response)
             end
             if should_keep then table.insert(remaining_markers, marker) end
         end
-        for _, line in ipairs(map_lines) do
+        for _, line in ipairs(map_state.map_lines) do
             local should_keep = true
             for _, id in ipairs(ids_to_remove) do
                 if line.id == id then
@@ -6726,9 +7765,114 @@ function handle_map_update(response)
             end
             if should_keep then table.insert(remaining_lines, line) end
         end
-        map_markers = remaining_markers
-        map_lines = remaining_lines
+        map_state.map_markers = remaining_markers
+        map_state.map_lines = remaining_lines
     end
+end
+
+function find_incident_dispatch_marker(incident_id)
+    if not incident_id then return nil end
+    local key = "dispatch:incident_call:" .. tostring(incident_id)
+    for _, m in ipairs(map_state.map_markers) do
+        if m.marker_type == 'dispatch_waypoint' and m.dedupe_key and tostring(m.dedupe_key) == key then
+            local points = m.points_data
+            if type(points) == 'string' then
+                local ok, decoded = pcall(json.decode, points)
+                points = ok and decoded or nil
+            end
+            if type(points) == 'table' and points[1] and points[1].x and points[1].y then
+                return { x = points[1].x, y = points[1].y }
+            end
+            return nil
+        end
+    end
+    return nil
+end
+
+function renderIncidentMiniMap(incident, palette)
+    local avail = imgui.GetContentRegionAvail()
+    local minimap_width = avail.x
+    local minimap_height = math.max(avail.y - 4, 160)
+
+    local marker = find_incident_dispatch_marker(incident.id)
+    if not marker then
+        imgui.Dummy(imgui.new('ImVec2', 0, minimap_height / 2 - 20))
+        imgui.TextWrapped("No map position yet for this incident.")
+        imgui.TextDisabled(incident.location or "Unknown location")
+        return
+    end
+
+    ensure_map_textures_loaded()
+
+    local draw_list = imgui.GetWindowDrawList()
+    local widget_pos = imgui.GetCursorScreenPos()
+
+    local world_view_height = 500.0
+    local world_view_width = world_view_height * (minimap_width / minimap_height)
+
+    local world_x_start = marker.x - world_view_width / 2
+    local world_y_start = marker.y + world_view_height / 2
+
+    for y_tile = 0, 3 do
+        for x_tile = 0, 3 do
+            local tile_index = y_tile * 4 + x_tile + 1
+            local texture = map_tile_textures.standard[tile_index]
+
+            if texture then
+                local tile_world_x0 = -3000.0 + x_tile * 1500.0
+                local tile_world_y1 = 3000.0 - y_tile * 1500.0
+                local tile_world_x1 = tile_world_x0 + 1500.0
+                local tile_world_y0 = tile_world_y1 - 1500.0
+
+                local intersect_x0 = math.max(world_x_start, tile_world_x0)
+                local intersect_y1 = math.min(world_y_start, tile_world_y1)
+                local intersect_x1 = math.min(world_x_start + world_view_width, tile_world_x1)
+                local intersect_y0 = math.max(world_y_start - world_view_height, tile_world_y0)
+
+                if intersect_x1 > intersect_x0 and intersect_y1 > intersect_y0 then
+                    local u0 = (intersect_x0 - tile_world_x0) / 1500.0
+                    local v0 = (tile_world_y1 - intersect_y1) / 1500.0
+                    local u1 = (intersect_x1 - tile_world_x0) / 1500.0
+                    local v1 = (tile_world_y1 - intersect_y0) / 1500.0
+
+                    local screen_x0 = widget_pos.x + ((intersect_x0 - world_x_start) / world_view_width) * minimap_width
+                    local screen_y0 = widget_pos.y + ((world_y_start - intersect_y1) / world_view_height) * minimap_height
+                    local screen_x1 = widget_pos.x + ((intersect_x1 - world_x_start) / world_view_width) * minimap_width
+                    local screen_y1 = widget_pos.y + ((world_y_start - intersect_y0) / world_view_height) * minimap_height
+
+                    draw_list:AddImage(texture, imgui.new('ImVec2', screen_x0, screen_y0), imgui.new('ImVec2', screen_x1, screen_y1), imgui.new('ImVec2', u0, v0), imgui.new('ImVec2', u1, v1))
+                end
+            end
+        end
+    end
+
+    local pin_x = widget_pos.x + minimap_width / 2
+    local pin_y = widget_pos.y + minimap_height / 2
+    local pin_color = (palette and palette.accent) or 0xFF0000D0
+    draw_list:AddCircleFilled(imgui.new('ImVec2', pin_x, pin_y), 7, 0xFF000000)
+    draw_list:AddCircleFilled(imgui.new('ImVec2', pin_x, pin_y), 6, pin_color)
+    draw_list:AddCircle(imgui.new('ImVec2', pin_x, pin_y), 9, 0xFFFFFFFF, 16, 1.5)
+
+    if data_storage and data_storage.units then
+        local assigned_units = normalize_incident_units(incident.assigned_units)
+        for _, unit in ipairs(data_storage.units) do
+            if unit.pos_x and unit.pos_y then
+                for _, label in ipairs(assigned_units) do
+                    if tostring(unit.unitID) == tostring(label) then
+                        local ux = widget_pos.x + ((unit.pos_x - world_x_start) / world_view_width) * minimap_width
+                        local uy = widget_pos.y + ((world_y_start - unit.pos_y) / world_view_height) * minimap_height
+                        if ux >= widget_pos.x and ux <= widget_pos.x + minimap_width and uy >= widget_pos.y and uy <= widget_pos.y + minimap_height then
+                            draw_list:AddCircleFilled(imgui.new('ImVec2', ux, uy), 4, 0xFF2ECC71)
+                            draw_list:AddText(imgui.new('ImVec2', ux + 7, uy - 7), 0xFFFFFFFF, tostring(unit.unitID))
+                        end
+                        break
+                    end
+                end
+            end
+        end
+    end
+
+    imgui.Dummy(imgui.new('ImVec2', minimap_width, minimap_height))
 end
 
 function screenToWorld(screen_x, screen_y, window_pos)
@@ -7021,7 +8165,7 @@ end
 function cadui_module.touchIncidentWaypoint(incident_id, reason)
     if not incident_id then return false end
     local dedupe_key = "dispatch:incident_call:" .. tostring(incident_id)
-    for _, marker in ipairs(map_markers or {}) do
+    for _, marker in ipairs(map_state.map_markers or {}) do
         if marker and marker.marker_type == 'dispatch_waypoint' and marker.dedupe_key and tostring(marker.dedupe_key) == dedupe_key then
             log('UI', log_levels.DEBUG, string.format('Incident waypoint already exists for #%s; skipping position update (%s)', tostring(incident_id), tostring(reason or 'event')))
             return true
@@ -7054,7 +8198,6 @@ function cadui_module.toggleALPR()
     end
 
     if cadui_module.isPlayerInPatrolCar() then
-        UI.alpr_manager[0] = true
         UI.alpr_window[0] = true
     end
 end
@@ -7062,27 +8205,27 @@ end
 
 
 function renderMarkerEditModal()
-    if not show_marker_edit_modal[0] or not context_marker then return end
+    if not map_state.show_marker_edit_modal[0] or not map_state.context_marker then return end
 
     imgui.SetNextWindowSize(imgui.new('ImVec2', 300, 200), imgui.Cond.FirstUseEver)
     local sw, sh = getScreenResolution()
     local window_pos = imgui.new('ImVec2', sw / 2, sh / 2)
     imgui.SetNextWindowPos(window_pos, imgui.Cond.FirstUseEver, imgui.new('ImVec2', 0.5, 0.5))
     
-    if imgui.Begin("Edit Marker##marker_edit_modal", show_marker_edit_modal) then
-        imgui.InputText("Label", marker_edit_buffer.text, ffi.sizeof(marker_edit_buffer.text))
+    if imgui.Begin("Edit Marker##marker_edit_modal", map_state.show_marker_edit_modal) then
+        imgui.InputText("Label", map_state.marker_edit_buffer.text, ffi.sizeof(map_state.marker_edit_buffer.text))
         
-        if context_marker.marker_type == 'circle' then
-            imgui.InputFloat("Radius", marker_edit_buffer.radius, 10.0, 50.0, '%.1f')
+        if map_state.context_marker.marker_type == 'circle' then
+            imgui.InputFloat("Radius", map_state.marker_edit_buffer.radius, 10.0, 50.0, '%.1f')
         end
 
         if imgui.Button("Save", imgui.new('ImVec2', -1, 0)) then
-            context_marker.label = safe_str(marker_edit_buffer.text)
-            if context_marker.marker_type == 'circle' then
-                context_marker.radius = marker_edit_buffer.radius[0]
+            map_state.context_marker.label = safe_str(map_state.marker_edit_buffer.text)
+            if map_state.context_marker.marker_type == 'circle' then
+                map_state.context_marker.radius = map_state.marker_edit_buffer.radius[0]
             end
-            send_map_request('update_marker', context_marker)
-            show_marker_edit_modal[0] = false
+            send_map_request('update_marker', map_state.context_marker)
+            map_state.show_marker_edit_modal[0] = false
         end
     end
     imgui.End()
@@ -7133,7 +8276,7 @@ end
 
 function renderMapWindow()
     if not UI.map_window[0] then 
-        map_data_loaded = false
+        map_state.map_data_loaded = false
         return
     end
 
@@ -7151,38 +8294,38 @@ function renderMapWindow()
         return nil
     end
 
-    if not map_data_loaded then
+    if not map_state.map_data_loaded then
         local now = os.clock()
-        if (not map_fetch_state.in_flight) and now >= map_fetch_state.retry_at then
-            map_fetch_state.in_flight = true
+        if (not map_state.map_fetch_state.in_flight) and now >= map_state.map_fetch_state.retry_at then
+            map_state.map_fetch_state.in_flight = true
             send_map_request('fetch_markers', {}, function(data, err)
-                map_fetch_state.in_flight = false
+                map_state.map_fetch_state.in_flight = false
                 if err then
                     if tostring(err) == "Request timeout" then
                         log('UI', log_levels.WARN, "Map fetch timeout, will retry shortly.")
-                        map_fetch_state.retry_at = os.clock() + 3.0
+                        map_state.map_fetch_state.retry_at = os.clock() + 3.0
                     else
                         log('UI', log_levels.ERROR, "Failed to fetch map markers: " .. tostring(err))
-                        map_fetch_state.retry_at = os.clock() + 2.0
+                        map_state.map_fetch_state.retry_at = os.clock() + 2.0
                     end
                     return
                 end
                 if data and data.payload then
                     log('UI', log_levels.INFO, "Successfully fetched " .. #data.payload .. " markers.")
-                    map_markers = {}
-                    map_lines = {}
+                    map_state.map_markers = {}
+                    map_state.map_lines = {}
                     for _, marker in ipairs(data.payload) do
                         if marker.marker_type == 'line' then
                             marker.points_data = json.decode(marker.points_data)
-                            table.insert(map_lines, marker)
+                            table.insert(map_state.map_lines, marker)
                         else
-                            table.insert(map_markers, marker)
+                            table.insert(map_state.map_markers, marker)
                         end
                     end
-                    map_data_loaded = true
-                    map_fetch_state.retry_at = 0
+                    map_state.map_data_loaded = true
+                    map_state.map_fetch_state.retry_at = 0
                 else
-                    map_fetch_state.retry_at = os.clock() + 2.0
+                    map_state.map_fetch_state.retry_at = os.clock() + 2.0
                 end
             end)
         end
@@ -7204,10 +8347,10 @@ function renderMapWindow()
         imgui.PopStyleVar()
 
         if imgui.BeginMenuBar() then
-            if imgui.Button("Select") then map_interaction_mode = "pan"; active_line_points = {} end
-            if imgui.Button("Place Point") then map_interaction_mode = "point"; active_line_points = {} end
-            if imgui.Button("Place Circle") then map_interaction_mode = "circle"; active_line_points = {} end
-            if imgui.Button("Draw Line") then map_interaction_mode = "line"; active_line_points = {} end
+            if imgui.Button("Select") then map_state.map_interaction_mode = "pan"; map_state.active_line_points = {} end
+            if imgui.Button("Place Point") then map_state.map_interaction_mode = "point"; map_state.active_line_points = {} end
+            if imgui.Button("Place Circle") then map_state.map_interaction_mode = "circle"; map_state.active_line_points = {} end
+            if imgui.Button("Draw Line") then map_state.map_interaction_mode = "line"; map_state.active_line_points = {} end
             imgui.EndMenuBar()
         end
 
@@ -7319,7 +8462,7 @@ function renderMapWindow()
             end
         end
 
-        for _, marker in ipairs(map_markers) do
+        for _, marker in ipairs(map_state.map_markers) do
             if marker and marker.points_data then
                 local points = json.decode(marker.points_data)
                 if not points or not points[1] then goto continue end
@@ -7408,7 +8551,7 @@ function renderMapWindow()
             ::continue::
         end
         
-        for _, line in ipairs(map_lines) do
+        for _, line in ipairs(map_state.map_lines) do
             if #line.points_data >= 2 then
                 for i = 1, #line.points_data - 1 do
                     local p1 = line.points_data[i]
@@ -7426,11 +8569,11 @@ function renderMapWindow()
             end
         end
 
-        if map_interaction_mode == "line" and #active_line_points > 0 then
-            if #active_line_points >= 2 then
-                for i = 1, #active_line_points - 1 do
-                    local p1 = active_line_points[i]
-                    local p2 = active_line_points[i+1]
+        if map_state.map_interaction_mode == "line" and #map_state.active_line_points > 0 then
+            if #map_state.active_line_points >= 2 then
+                for i = 1, #map_state.active_line_points - 1 do
+                    local p1 = map_state.active_line_points[i]
+                    local p2 = map_state.active_line_points[i+1]
                     local map_x1_unzoomed = (p1.x + 3000) / 6000 * (205 * 4)
                     local map_y1_unzoomed = (-p1.y + 3000) / 6000 * (205 * 4)
                     local final_map_x1 = canvas_pos.x + map_offset_x + map_x1_unzoomed * map_zoom
@@ -7442,7 +8585,7 @@ function renderMapWindow()
                     draw_list:AddLine(imgui.new('ImVec2', final_map_x1, final_map_y1), imgui.new('ImVec2', final_map_x2, final_map_y2), 0xFF00FF00, 2.0)
                 end
             end
-            local last_point = active_line_points[#active_line_points]
+            local last_point = map_state.active_line_points[#map_state.active_line_points]
             local map_x_unzoomed = (last_point.x + 3000) / 6000 * (205 * 4)
             local map_y_unzoomed = (-last_point.y + 3000) / 6000 * (205 * 4)
             local final_map_x = canvas_pos.x + map_offset_x + map_x_unzoomed * map_zoom
@@ -7453,47 +8596,47 @@ function renderMapWindow()
         imgui.SetCursorPos(imgui.new('ImVec2', 0, 0))
         imgui.InvisibleButton("MapInteractionLayer", canvas_size)
 
-        if imgui.IsItemActive() and map_interaction_mode == "pan" and imgui.IsMouseDragging(0) then
+        if imgui.IsItemActive() and map_state.map_interaction_mode == "pan" and imgui.IsMouseDragging(0) then
             map_offset_x = map_offset_x + io.MouseDelta.x
             map_offset_y = map_offset_y + io.MouseDelta.y
         end
 
-        if map_interaction_mode == 'line' then
+        if map_state.map_interaction_mode == 'line' then
             if imgui.IsItemHovered() and imgui.IsMouseClicked(1) then
-                if #active_line_points >= 2 then
-                    send_map_request('add_marker', { marker_type = 'line', points_data = active_line_points, is_permanent = 0 })
+                if #map_state.active_line_points >= 2 then
+                    send_map_request('add_marker', { marker_type = 'line', points_data = map_state.active_line_points, is_permanent = 0 })
                 end
-                active_line_points = {}
+                map_state.active_line_points = {}
             end
         else
             if imgui.BeginPopupContextItem("MapContextMenu") then
-                if not is_context_menu_open then
-                    latched_hovered_item = hovered_item
-                    is_context_menu_open = true
+                if not map_state.is_context_menu_open then
+                    map_state.latched_hovered_item = hovered_item
+                    map_state.is_context_menu_open = true
                 end
 
-                if latched_hovered_item then
-                    if latched_hovered_item.type == 'marker' then
-                        context_marker = latched_hovered_item.data
-                        imgui.Text("Edit Marker #" .. tostring(context_marker.id or '?')); imgui.Separator()
+                if map_state.latched_hovered_item then
+                    if map_state.latched_hovered_item.type == 'marker' then
+                        map_state.context_marker = map_state.latched_hovered_item.data
+                        imgui.Text("Edit Marker #" .. tostring(map_state.context_marker.id or '?')); imgui.Separator()
                         if imgui.Selectable("Edit...") then
-                            safe_copy(marker_edit_buffer.text, context_marker.label or "")
-                            marker_edit_buffer.radius[0] = context_marker.radius or 100.0
-                            show_marker_edit_modal[0] = true
+                            safe_copy(map_state.marker_edit_buffer.text, map_state.context_marker.label or "")
+                            map_state.marker_edit_buffer.radius[0] = map_state.context_marker.radius or 100.0
+                            map_state.show_marker_edit_modal[0] = true
                         end
-                        local toggle_text = context_marker.is_permanent == 1 and "Make Temporary" or "Make Permanent"
+                        local toggle_text = map_state.context_marker.is_permanent == 1 and "Make Temporary" or "Make Permanent"
                         if imgui.Selectable(toggle_text) then
-                            context_marker.is_permanent = 1 - (context_marker.is_permanent or 0)
-                            send_map_request('update_marker', context_marker)
+                            map_state.context_marker.is_permanent = 1 - (map_state.context_marker.is_permanent or 0)
+                            send_map_request('update_marker', map_state.context_marker)
                         end
                         if imgui.Selectable("Delete") then
-                            send_map_request('remove_marker', { id = context_marker.id })
+                            send_map_request('remove_marker', { id = map_state.context_marker.id })
                         end
-                    elseif latched_hovered_item.type == 'unit' then
-                        map_context_menu_unit = latched_hovered_item.data
-                        imgui.Text("Unit: " .. (map_context_menu_unit.unitID or "N/A")); imgui.Separator()
-                        if map_context_menu_unit.pos_x and map_context_menu_unit.pos_y and imgui.Selectable("Copy Coords") then 
-                            setClipboardText(string.format("%.2f, %.2f", map_context_menu_unit.pos_x, map_context_menu_unit.pos_y)) 
+                    elseif map_state.latched_hovered_item.type == 'unit' then
+                        map_state.map_context_menu_unit = map_state.latched_hovered_item.data
+                        imgui.Text("Unit: " .. (map_state.map_context_menu_unit.unitID or "N/A")); imgui.Separator()
+                        if map_state.map_context_menu_unit.pos_x and map_state.map_context_menu_unit.pos_y and imgui.Selectable("Copy Coords") then 
+                            setClipboardText(string.format("%.2f, %.2f", map_state.map_context_menu_unit.pos_x, map_state.map_context_menu_unit.pos_y)) 
                         end
                     end
                 else
@@ -7503,19 +8646,19 @@ function renderMapWindow()
                 end
                 imgui.EndPopup()
             else
-                is_context_menu_open = false
-                latched_hovered_item = nil
+                map_state.is_context_menu_open = false
+                map_state.latched_hovered_item = nil
             end
         end
 
-        if imgui.IsItemHovered() and imgui.IsMouseClicked(0) and not is_context_menu_open then
+        if imgui.IsItemHovered() and imgui.IsMouseClicked(0) and not map_state.is_context_menu_open then
             local world_x, world_y = screenToWorld(mouse_pos.x, mouse_pos.y, canvas_pos)
-            if map_interaction_mode == "point" then
+            if map_state.map_interaction_mode == "point" then
                 send_map_request('add_marker', { marker_type = 'point', label = 'Marker', points_data = {{x=world_x, y=world_y}}, is_permanent = 0 })
-            elseif map_interaction_mode == "circle" then
+            elseif map_state.map_interaction_mode == "circle" then
                 send_map_request('add_marker', { marker_type = 'circle', label = 'Area', points_data = {{x=world_x, y=world_y}}, radius = 100.0, is_permanent = 0 })
-            elseif map_interaction_mode == "line" then
-                table.insert(active_line_points, {x=world_x, y=world_y})
+            elseif map_state.map_interaction_mode == "line" then
+                table.insert(map_state.active_line_points, {x=world_x, y=world_y})
             end
         end
 
@@ -7528,14 +8671,15 @@ function renderMapWindow()
     renderMarkerEditModal()
 end
 
-function addNotification(title, message, duration, actions, sound_trigger)
+function addNotification(title, message, duration, actions, sound_trigger, distance)
     duration = duration or 15
     table.insert(active_notifications, 1, {
         id = os.clock(),
         title = title,
         message = message,
         expiry_time = os.clock() + duration,
-        actions = actions or {}
+        actions = actions or {},
+        distance = distance
     })
 
     local trigger_to_play = resolve_notification_sound_trigger(title, sound_trigger)
@@ -7571,8 +8715,111 @@ function renderNotifications(is_cursor_visible)
 
     local sw, sh = getScreenResolution()
     local padding = 15
-    local window_width = 380
-    local window_height = 140
+    local window_width = 450
+    local window_height = 340
+    local start_x = sw - window_width - padding
+    local start_y = padding + 60
+
+    local current_time = os.clock()
+
+    local i = 1
+    while i <= #active_notifications do
+        if current_time >= active_notifications[i].expiry_time then
+            table.remove(active_notifications, i)
+        else
+            i = i + 1
+        end
+    end
+
+    for index, notif in ipairs(active_notifications) do
+        local window_pos_y = start_y + ((index - 1) * (window_height + padding))
+        
+        imgui.SetNextWindowPos(imgui.ImVec2(start_x, window_pos_y))
+        imgui.SetNextWindowSize(imgui.ImVec2(window_width, window_height))
+
+        imgui.PushStyleColor(imgui.Col.WindowBg, imgui.ImVec4(0.08, 0.08, 0.10, 1.0))
+        imgui.PushStyleVarFloat(imgui.StyleVar.WindowRounding, 0.0)
+        imgui.PushStyleVarFloat(imgui.StyleVar.FrameRounding, 0.0)
+
+        local window_flags = bit.bor(
+            imgui.WindowFlags.NoResize, imgui.WindowFlags.NoMove,
+            imgui.WindowFlags.NoCollapse, imgui.WindowFlags.NoTitleBar,
+            imgui.WindowFlags.NoFocusOnAppearing
+        )
+        if not is_cursor_visible then
+            window_flags = bit.bor(window_flags, imgui.WindowFlags.NoMouseInputs)
+        end
+
+        if imgui.Begin("Notification##" .. notif.id, nil, window_flags) then
+            local draw = imgui.GetWindowDrawList()
+            local pos = imgui.GetWindowPos()
+            local header_h = 26
+            
+            local header_vec = imgui.ImVec4(0.12, 0.33, 0.61, 1.0) -- Дефолтный Синий
+            if notif.priority == "HIGH" then
+                header_vec = imgui.ImVec4(0.67, 0.10, 0.10, 1.0) -- Красный
+            elseif notif.priority == "MEDIUM" then
+                header_vec = imgui.ImVec4(0.78, 0.43, 0.04, 1.0) -- Оранжевый
+            end
+            
+            local header_color = imgui.ColorConvertFloat4ToU32(header_vec)
+            draw:AddRectFilled(
+                imgui.ImVec2(pos.x, pos.y),
+                imgui.ImVec2(pos.x + window_width, pos.y + header_h),
+                header_color
+            )
+            
+            imgui.SetCursorPos(imgui.ImVec2(10, (header_h - 16) / 2))
+            imgui.PushFont(fonts[16])
+            imgui.TextColored(imgui.ImVec4(1, 1, 1, 1), string.upper(notif.title))
+            imgui.PopFont()
+            
+            imgui.SetCursorPos(imgui.ImVec2(10, header_h + 8))
+            imgui.PushFont(fonts[14])
+            
+            imgui.TextWrapped(notif.message)
+            imgui.PopFont()
+
+            if notif.actions and #notif.actions > 0 then
+                local btn_size = imgui.ImVec2(90, 26)
+                local spacing = 8
+                local total_width = btn_size.x * #notif.actions + spacing * (#notif.actions - 1)
+                
+                imgui.SetCursorPosY(window_height - btn_size.y - 8)
+                imgui.SetCursorPosX(window_width - total_width - 10)
+                
+                imgui.PushStyleColor(imgui.Col.Button, imgui.ImVec4(0.70, 0.35, 0.0, 1.0))
+                imgui.PushStyleColor(imgui.Col.ButtonHovered, imgui.ImVec4(0.85, 0.45, 0.0, 1.0))
+                imgui.PushStyleColor(imgui.Col.ButtonActive, imgui.ImVec4(0.55, 0.25, 0.0, 1.0))
+
+                for _, act in ipairs(notif.actions) do
+                    if imgui.Button(string.upper(act.label), btn_size) then
+                        if is_cursor_visible then
+                            local ok, err = pcall(act.callback)
+                            if not ok then
+                                log('UI', log_levels.ERROR, "CAD Error: " .. tostring(err))
+                            end
+                            notif.expiry_time = 0
+                        end
+                    end
+                    imgui.SameLine(0, spacing)
+                end
+                imgui.PopStyleColor(3)
+            end
+        end
+        imgui.End()
+        imgui.PopStyleColor(1)
+        imgui.PopStyleVar(2)
+    end
+end
+
+function renderNotificationsNew(is_cursor_visible)
+    if #active_notifications == 0 then return end
+
+    local sw, sh = getScreenResolution()
+    local padding = 10
+    local window_width = 340
+    local window_height = 178
     local start_x = sw - window_width - padding
     local start_y = padding + 50
 
@@ -7587,74 +8834,193 @@ function renderNotifications(is_cursor_visible)
         end
     end
 
-    for i, notif in ipairs(active_notifications) do
-        local window_pos_y = start_y + (i - 1) * (window_height + padding)
-        imgui.SetNextWindowPos(imgui.new('ImVec2', start_x, window_pos_y))
-        imgui.SetNextWindowSize(imgui.new('ImVec2', window_width, window_height))
+    for idx, notif in ipairs(active_notifications) do
+        local window_pos_y = start_y + ((idx - 1) * (window_height + padding))
+        imgui.SetNextWindowPos(imgui.ImVec2(start_x, window_pos_y))
+        imgui.SetNextWindowSize(imgui.ImVec2(window_width, window_height))
 
-        imgui.PushStyleColor(imgui.Col.WindowBg, imgui.ImVec4(0.1, 0.1, 0.15, 0.95))
-        imgui.PushStyleVarFloat(imgui.StyleVar.WindowRounding, 5.0)
+        imgui.PushStyleColor(imgui.Col.WindowBg, imgui.ImVec4(0.09, 0.10, 0.13, 0.97))
+        imgui.PushStyleColor(imgui.Col.Border, imgui.ImVec4(0.0, 0.45, 0.85, 0.35))
+        imgui.PushStyleVarFloat(imgui.StyleVar.WindowRounding, 6.0)
+        imgui.PushStyleVarFloat(imgui.StyleVar.WindowBorderSize, 1.0)
 
-        local window_flags = imgui.WindowFlags.NoResize + imgui.WindowFlags.NoMove + imgui.WindowFlags.NoCollapse + imgui.WindowFlags.NoTitleBar + imgui.WindowFlags.NoFocusOnAppearing
-
+        local window_flags = bit.bor(
+            imgui.WindowFlags.NoResize,
+            imgui.WindowFlags.NoMove,
+            imgui.WindowFlags.NoCollapse,
+            imgui.WindowFlags.NoTitleBar,
+            imgui.WindowFlags.NoFocusOnAppearing
+        )
         if not is_cursor_visible then
-            window_flags = window_flags + imgui.WindowFlags.NoMouseInputs
+            window_flags = bit.bor(window_flags, imgui.WindowFlags.NoMouseInputs)
         end
-        
+
         if imgui.Begin("Notification##" .. notif.id, nil, window_flags) then
+            local draw = imgui.GetWindowDrawList()
+            local pos = imgui.GetWindowPos()
+            local header_h = 32
+
+            local location = "N/A"
+            local details = "N/A"
+            if notif.message then
+                local loc_part, details_part = notif.message:match("^Location: (.-)\nDetails: (.*)$")
+                if loc_part then location = loc_part end
+                if details_part then details = details_part end
+            end
+
+            local incident_id = tonumber(notif.title:match("#(%d+)"))
+            local incident = nil
+            if incident_id and data_storage.incidents then
+                for _, inc in ipairs(data_storage.incidents) do
+                    if inc.id == incident_id then
+                        incident = inc
+                        break
+                    end
+                end
+            end
+
+            local distance_m = nil
+            if incident then
+                distance_m = get_incident_distance_meters(incident)
+            end
+
+            local channel = "N/A"
+            if incident then
+                channel = tostring(incident.channel or incident.tactical_channel or "N/A")
+            end
+
+            local callsign = "UNKNOWN"
+            if unitInfoBuffers and unitInfoBuffers.unitID then
+                callsign = safe_str(unitInfoBuffers.unitID)
+                if callsign == "" then callsign = "UNKNOWN" end
+            end
+
+            local dist_txt, dist_color = "N/A", imgui.ImVec4(0.7, 0.7, 0.7, 1.0)
+            if distance_m then
+                if distance_m >= 1000 then
+                    dist_txt = string.format("%.1f km", distance_m / 1000)
+                else
+                    dist_txt = string.format("%d m", math.floor(distance_m))
+                end
+                local eta = estimate_eta_label(distance_m) or ""
+                if eta ~= "" then dist_txt = dist_txt .. "  " .. eta end
+
+                if distance_m <= 300 then
+                    dist_color = imgui.ImVec4(0.35, 0.85, 0.45, 1.0)
+                elseif distance_m <= 1000 then
+                    dist_color = imgui.ImVec4(0.95, 0.75, 0.25, 1.0)
+                else
+                    dist_color = imgui.ImVec4(0.95, 0.4, 0.35, 1.0)
+                end
+            end
+
+            local header_color = imgui.ColorConvertFloat4ToU32(imgui.ImVec4(0.08, 0.42, 0.82, 1.0))
+            local rounding_flags = imgui.DrawFlags and imgui.DrawFlags.RoundCornersTop or nil
+            if rounding_flags then
+                draw:AddRectFilled(
+                    imgui.ImVec2(pos.x, pos.y),
+                    imgui.ImVec2(pos.x + window_width, pos.y + header_h),
+                    header_color, 6.0, rounding_flags
+                )
+            else
+                draw:AddRectFilled(
+                    imgui.ImVec2(pos.x, pos.y),
+                    imgui.ImVec2(pos.x + window_width, pos.y + header_h),
+                    header_color
+                )
+            end
+
+            imgui.SetCursorPos(imgui.ImVec2(padding, 6))
             imgui.PushFont(fonts[22])
-            imgui.TextColored(imgui.ImVec4(1.0, 0.65, 0.0, 1.0), notif.title)
+            imgui.TextColored(imgui.ImVec4(1, 1, 1, 1), notif.title)
             imgui.PopFont()
-            imgui.Separator()
 
-            imgui.TextWrapped(notif.message)
-            
-            local cursor_y = imgui.GetWindowHeight() - 40
-            imgui.SetCursorPosY(cursor_y)
-            imgui.Separator()
+            local dist_size = imgui.CalcTextSize(dist_txt)
+            imgui.SetCursorPos(imgui.ImVec2(window_width - padding - dist_size.x, 9))
+            imgui.TextColored(dist_color, dist_txt)
 
-            if notif.actions and #notif.actions > 0 then
-                local num_buttons = #notif.actions
-                local button_width = (window_width - (padding * (num_buttons + 1))) / num_buttons
-                local button_size = imgui.new('ImVec2', button_width, 25)
-                
-                for _, action in ipairs(notif.actions) do
-                    local key_name = "N/A"
-                    if action.bind_id then
-                        local bind_keys = get_bind_keys_by_id(action.bind_id)
-                        if bind_keys and #bind_keys > 0 then
-                            key_name = BinderManager.keysToString(bind_keys)
-                        end
-                    elseif action.key then
-                        key_name = vkeys.tostring and vkeys.tostring(action.key) or "N/A"
-                        key_name = key_name:gsub("VK_", "")
-                    end
-                    
-                    if imgui.Button(string.format("%s [%s]", action.label, key_name), button_size) then
-                        if is_cursor_visible then
-                            local ok, err = pcall(action.callback)
-                            if not ok then
-                                log('UI', log_levels.ERROR, "Notification action callback failed: " .. tostring(err))
-                            end
-                            notif.expiry_time = 0 
-                        end
-                    end
+            imgui.SetCursorPosY(header_h + 8)
 
-                    if action.key and imgui.IsKeyPressed(action.key, false) then
-                        local ok, err = pcall(action.callback)
+            imgui.SetCursorPosX(padding)
+            imgui.TextColored(imgui.ImVec4(0.72, 0.75, 0.8, 1.0),
+                string.format("%s   |   Ch: %s", callsign, channel))
+
+            imgui.Dummy(imgui.ImVec2(0, 4))
+
+            imgui.SetCursorPosX(padding)
+            imgui.PushTextWrapPos(window_width - padding)
+            imgui.TextColored(imgui.ImVec4(0.92, 0.93, 0.95, 1.0), details)
+            imgui.PopTextWrapPos()
+
+            imgui.Dummy(imgui.ImVec2(0, 6))
+
+            imgui.SetCursorPosX(padding)
+            imgui.PushFont(fonts[18])
+            imgui.TextColored(imgui.ImVec4(0.55, 0.58, 0.65, 1.0), string.format("Location: %s", location))
+            imgui.PopFont()
+
+            if notif.actions and #notif.actions >= 1 then
+                local button_height = 32
+                local spacing = 8
+                local total_button_width = window_width - 2 * padding
+                local button_width = (total_button_width - spacing) * 0.5
+                local button_y = window_height - button_height - padding
+
+                imgui.SetCursorPosY(button_y)
+                imgui.SetCursorPosX(padding)
+
+                imgui.PushStyleVarFloat(imgui.StyleVar.FrameRounding, 4.0)
+
+                imgui.PushStyleColor(imgui.Col.Button, imgui.ImVec4(0.14, 0.55, 0.30, 1.0))
+                imgui.PushStyleColor(imgui.Col.ButtonHovered, imgui.ImVec4(0.18, 0.65, 0.36, 1.0))
+                imgui.PushStyleColor(imgui.Col.ButtonActive, imgui.ImVec4(0.10, 0.45, 0.24, 1.0))
+
+                local btn1_label = notif.actions[1].label or "ACCEPT"
+                local btn1_cb = notif.actions[1].callback
+                if imgui.Button(btn1_label, imgui.ImVec2(button_width, button_height)) then
+                    if is_cursor_visible then
+                        local ok, err = pcall(btn1_cb)
                         if not ok then
                             log('UI', log_levels.ERROR, "Notification action callback failed: " .. tostring(err))
                         end
                         notif.expiry_time = 0
                     end
-                    imgui.SameLine()
                 end
+                imgui.PopStyleColor(3)
+
+                imgui.SameLine(0, spacing)
+
+                imgui.PushStyleColor(imgui.Col.Button, imgui.ImVec4(0.45, 0.16, 0.16, 1.0))
+                imgui.PushStyleColor(imgui.Col.ButtonHovered, imgui.ImVec4(0.55, 0.20, 0.20, 1.0))
+                imgui.PushStyleColor(imgui.Col.ButtonActive, imgui.ImVec4(0.35, 0.12, 0.12, 1.0))
+
+                if #notif.actions >= 2 then
+                    local btn2_label = notif.actions[2].label or "DECLINE"
+                    local btn2_cb = notif.actions[2].callback
+                    if imgui.Button(btn2_label, imgui.ImVec2(button_width, button_height)) then
+                        if is_cursor_visible then
+                            local ok, err = pcall(btn2_cb)
+                            if not ok then
+                                log('UI', log_levels.ERROR, "Notification action callback failed: " .. tostring(err))
+                            end
+                            notif.expiry_time = 0
+                        end
+                    end
+                else
+                    if imgui.Button("DECLINE", imgui.ImVec2(button_width, button_height)) then
+                        if is_cursor_visible then
+                            notif.expiry_time = 0
+                        end
+                    end
+                end
+                imgui.PopStyleColor(3)
+
+                imgui.PopStyleVar() -- FrameRounding
             end
         end
         imgui.End()
-
-        imgui.PopStyleColor()
-        imgui.PopStyleVar()
+        imgui.PopStyleVar(2)  -- WindowRounding, WindowBorderSize
+        imgui.PopStyleColor(2) -- WindowBg, Border
     end
 end
 
@@ -7678,15 +9044,15 @@ imgui.OnFrame(
             end
         end
 
-        if core and core.isAuthenticated and core.isAuthenticated() and alpr_passive_scan_enabled and not UI.alpr_window[0] then
+        if core and core.isAuthenticated and core.isAuthenticated() and alpr_state.alpr_passive_scan_enabled and not UI.alpr_window[0] then
             if cadui_module.isPlayerInPatrolCar() then
                 local now_ms = os.clock() * 1000
-                if now_ms - last_alpr_scan_time > 1000 then
+                if now_ms - alpr_state.last_alpr_scan_time > 1000 then
                     updateALPRData()
-                    last_alpr_scan_time = now_ms
+                    alpr_state.last_alpr_scan_time = now_ms
                 end
             else
-                alpr_passive_hud_until = 0
+                alpr_state.alpr_passive_hud_until = 0
             end
         end
 
@@ -7741,7 +9107,7 @@ imgui.OnFrame(
         end
 
         local other_windows_active = UI.mdt[0] or UI.login_window[0] or UI.alpr_log_window[0] or UI.bolo_editor[0] or UI.bolo_creator_window[0] or UI.map_window[0]
-        local show_cursor = other_windows_active or (UI.alpr_window[0] and alpr_interaction_mode) or (key_being_bound ~= nil)
+        local show_cursor = other_windows_active or (UI.alpr_window[0] and alpr_state.alpr_interaction_mode) or (key_being_bound ~= nil)
         
         self.HideCursor = not show_cursor
         if sampShowCursor and type(sampShowCursor) == 'function' then
@@ -7762,11 +9128,8 @@ imgui.OnFrame(
         if UI.alpr_window[0] or passive_alpr_hud_visible then
             renderALPRHud()
         end
-        if UI.alpr_manager[0] then
-            renderALPRManager()
-        end
-        if UI.alpr_log_window[0] then
-            renderALPRLogWindow()
+        if UI.alpr_manager[0] or UI.alpr_log_window[0] then
+            renderALPRCombined()
         end
         if UI.bolo_editor[0] then
             drawBoloEditor()
@@ -7781,7 +9144,7 @@ imgui.OnFrame(
             renderUnitMiniHud()
         end
         renderSimplexUnitSelector()
-        renderNotifications(show_cursor)
+        renderNotificationsNew(show_cursor)
         if fonts[18] then imgui.PopFont() end
     end
 )
@@ -8077,10 +9440,11 @@ cadui_module.initialize = function(deps)
             end
         end
 
-        alpr_camera_config.front[0] = settings.get('alpr_settings', 'cam_front', true)
-        alpr_camera_config.rear[0] = settings.get('alpr_settings', 'cam_rear', true)
-        alpr_camera_config.sides[0] = settings.get('alpr_settings', 'cam_sides', true)
-        alpr_passive_scan_enabled = settings.get('alpr_settings', 'passive_scan', true)
+        alpr_state.alpr_camera_config.front[0] = settings.get('alpr_settings', 'cam_front', true)
+        alpr_state.alpr_camera_config.rear[0] = settings.get('alpr_settings', 'cam_rear', true)
+        alpr_state.alpr_camera_config.sides[0] = settings.get('alpr_settings', 'cam_sides', true)
+        alpr_state.alpr_passive_scan_enabled = settings.get('alpr_settings', 'passive_scan', true)
+        interface_sound_volume = tonumber(settings.get('audio_settings', 'master_volume', 1.0)) or 1.0
         UI.unit_mini_hud[0] = settings.get('ui_settings', 'unit_mini_hud', true)
         UI.unit_mini_hud_last_slot = tonumber(settings.get('ui_settings', 'last_slot_used', 1)) or 1
         UI.unit_mini_hud_pos_x = tonumber(settings.get('ui_settings', 'unit_mini_hud_pos_x', UI.unit_mini_hud_pos_x)) or UI.unit_mini_hud_pos_x
@@ -8406,6 +9770,10 @@ cadui_module.initialize = function(deps)
             else
                 addNotification("SOUND TEST", "Failed to play: " .. input, 6)
             end
+        end)
+
+        sampRegisterChatCommand("testpopup", function(arg)
+            addNotification("TEST POPUP", "TEST POPUP: This is a test popup with new styling: blue header, dark gray body, white text, orange square buttons.", 10)
         end)
 
         sampRegisterChatCommand("ps", function(arg)
