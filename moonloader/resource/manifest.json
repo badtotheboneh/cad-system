@@ -1,8 +1,8 @@
 {
-  "total_files": 927,
-  "generated": "2026-07-14T12:16:53Z",
-  "version": "1.2.1-beta",
-  "total_size": 61773492.0,
+  "total_files": 928,
+  "generated": "2026-07-15T21:40:54Z",
+  "version": "1.2.1a-beta",
+  "total_size": 61775929.0,
   "files": [
     {
       "path": "cad_diagnostics.lua",
@@ -823,6 +823,11 @@
       "path": "lib/utf8data.lua",
       "size": 31622,
       "sha256": "0c1c8c4c294c661c385c620666f4488e3cdbca40de70eedc931814b82c5f7cb8"
+    },
+    {
+      "path": "lib/utf8_pure.lua",
+      "size": 2437,
+      "sha256": "f05279eb949f57d071993c5f27a616d29b12949e4ce0ce5890beaabebe356365"
     },
     {
       "path": "lib/util.lua",
