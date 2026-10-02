@@ -1,4 +1,4 @@
 
 return {
-    websocket_url = "ws://185.104.251.21:8443"
+    websocket_url = "ws://185.255.132.61:8443"
 }
